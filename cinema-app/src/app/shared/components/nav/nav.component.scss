@@ -1,0 +1,65 @@
+@import "./src/styles.scss";
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.navbar-big {
+  height: 75px;
+}
+
+.navbar-small {
+  height: 50px;
+}
+
+mat-toolbar {
+  a {
+    text-decoration: none;
+    color: inherit;
+    margin: 0 15px 0 0;
+  }
+}
+
+mat-icon {
+  display: inline-flex;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.logo-big {
+  margin-left: 10px;
+  height: 50px;
+  width: auto;
+}
+
+.logo-small {
+  height: 25px;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 40px;
+}
+
+//@media (min-width: 600px) {
+//  .sidenav {
+//    display: none;
+//  }
+//}
