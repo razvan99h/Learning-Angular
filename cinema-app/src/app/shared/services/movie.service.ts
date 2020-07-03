@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
-import {Movie} from '../models/movie.model';
+import { Movie } from '../models/movie.model';
 
-import {GlobalVariable} from '../../../globals';
+import { environment } from '../../../environments/environment';
 
-import {Observable, from} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {map, flatMap, mergeMap} from 'rxjs/operators';
-import {MoviesDTO} from '../models/moviesDTO.model';
+import { map } from 'rxjs/operators';
+import { MoviesDTO } from '../models/moviesDTO.model';
 
 
 @Injectable()
@@ -20,7 +20,7 @@ export class MovieService {
 
   getMovie(id: number): Observable<Movie> {
     console.log(`getMovie ---- method entered: id = ${id}`);
-    const url = GlobalVariable.MOVIES_LINK + '/' + id;
+    const url = environment.MOVIES_LINK + '/' + id + '?api_key=' + environment.API_KEY;
     return this.httpClient.get<Movie>(url).pipe(
       map(result => {
         console.log('getMovie --- method finished: result = ', result);
@@ -30,7 +30,7 @@ export class MovieService {
 
   getAllMovies(): Observable<MoviesDTO> {
     console.log('getAllMovies --- method entered');
-    const url = GlobalVariable.MOVIES_LINK + '/now_playing?api_key=' + GlobalVariable.API_KEY;
+    const url = environment.MOVIES_LINK + '/now_playing?api_key=' + environment.API_KEY;
     return this.httpClient.get<MoviesDTO>(url).pipe(
       map(result => {
         console.log('getAllMovies --- method finished: result = ', result);

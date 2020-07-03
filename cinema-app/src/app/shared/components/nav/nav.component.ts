@@ -5,7 +5,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-nav',
+  selector: 'cmb-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
