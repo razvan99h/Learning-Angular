@@ -32,7 +32,7 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
 
-      <img src="./assets/img/logo.png" [ngClass]="{'logo-small': (isHandset$ | async), 'logo-big': !(isHandset$ | async)}">
+      <img (click)="goToMain()" src="./assets/img/logo.png" [ngClass]="{'logo-small': (isHandset$ | async), 'logo-big': !(isHandset$ | async)}">
 
       <span class="spacer" *ngIf="!(isHandset$ | async)"></span>
       <div *ngIf="!(isHandset$ | async)">
