@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { MovieService } from '../shared/services/movie.service';
-import { Movie } from '../shared/models/movie.model';
-import { environment } from '../../environments/environment';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MovieService } from '../../shared/services/movie.service';
+import { Movie } from '../../shared/models/movie.model';
+import { environment } from '../../../environments/environment';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { MovieDetailsComponent } from '../movie-details/movie-details.component';
+import { SharedService } from '../../shared/services/shared.service';
 
 
 @Component({
@@ -13,13 +15,17 @@ import { map, shareReplay } from 'rxjs/operators';
   styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent implements OnInit {
-  movies: Array<Movie>;
 
+  @ViewChild(MovieDetailsComponent)
+  private movieDetailsComponent: MovieDetailsComponent;
+
+  movies: Array<Movie>;
   isHandset$: Observable<boolean>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private movieService: MovieService,
+    private sharedService: SharedService,
   ) {
 
     this.isHandset$ = this.breakpointObserver
@@ -47,6 +53,11 @@ export class HomepageComponent implements OnInit {
 
         console.log(this.movies);
       });
+  }
+
+  goToMovieDetails(movieID: number): void {
+    console.log('hopa');
+    this.sharedService.sendClickEventMovieDetails(movieID);
   }
 
 }

@@ -12,14 +12,16 @@ import { map } from 'rxjs/operators';
 import { MoviesDTO } from '../models/moviesDTO.model';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class MovieService {
 
   constructor(private httpClient: HttpClient) {
   }
 
   getMovie(id: number): Observable<Movie> {
-    console.log(`getMovie ---- method entered: id = ${id}`);
+    console.log(`getMovie --- method entered: id = ${id}`);
     const url = environment.MOVIES_LINK + '/' + id + '?api_key=' + environment.API_KEY;
     return this.httpClient.get<Movie>(url).pipe(
       map(result => {
