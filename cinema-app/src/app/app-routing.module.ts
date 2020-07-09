@@ -6,9 +6,10 @@ import { MovieDetailsComponent } from './pages/movie-details/movie-details.compo
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
-  { path: 'movie/:id', component: MovieDetailsComponent, children: [] }
-];
+  { path: 'movie/:id', component: MovieDetailsComponent, children: [] },
 
+];
+// TODO: { path: '**', component: PageNotFound }
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

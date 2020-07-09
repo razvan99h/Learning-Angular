@@ -1,19 +1,20 @@
 <div [ngSwitch]="movieStatus">
 
-  <div *ngSwitchDefault></div>
+  <section *ngSwitchDefault></section>
 
-  <div *ngSwitchCase="'unavailable'">
+  <section *ngSwitchCase="'unavailable'">
     <h1 [ngClass]="{'h1-small': (isHandset$ | async), 'h1-big': !(isHandset$ | async)}">
       Page unavailable.
     </h1>
-  </div>
+  </section>
 
-  <div *ngSwitchCase="'available'">
+  <section *ngSwitchCase="'available'">
     <h1 [ngClass]="{'h1-small': (isHandset$ | async), 'h1-big': !(isHandset$ | async)}">
-      titlu sterge
+      {{movie.title}}
+
     </h1>
-    <h1>{{movie.title}}</h1>
-  </div>
+    <img class="main-img" src="{{movie.posterPath}}" alt="Movie poster">
+  </section>
 
 </div>
 

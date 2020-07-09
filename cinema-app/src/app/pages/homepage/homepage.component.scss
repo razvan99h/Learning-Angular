@@ -30,16 +30,21 @@ mat-card{
   text-align: left;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.45);
 
-  img {
+  .crop-container {
+    width: 232px;
+    height: 344px;
     box-sizing: border-box;
     border: 4px solid white;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 }
 
 mat-card:hover {
-  //box-shadow: 0 0 20px 0 rgba(255, 233, 39, 0.7);
-  img {
-    box-sizing: border-box;
+  .crop-container {
     transition: 0.5s;
     border: 4px solid rgba(255, 233, 39, 1);
   }

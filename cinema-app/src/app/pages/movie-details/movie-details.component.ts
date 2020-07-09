@@ -3,7 +3,7 @@ import { Movie } from '../../shared/models/movie.model';
 import { MovieService } from '../../shared/services/movie.service';
 import { SharedService } from '../../shared/services/shared.service';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map, shareReplay } from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   movie: Movie;
   movieStatus: string;
   isHandset$: Observable<boolean>;
-  subscription: Subscription;
+  subscriptionMovieDetails: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,24 +36,41 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const movieID = Number(this.route.snapshot.paramMap.get('id'));
-    this.movieService.getMovie(movieID)
-      .subscribe(
-        movie => {
-          this.movie = movie;
-          this.movieStatus = 'available';
-        },
-        error => {
-          this.movieStatus = 'unavailable';
-        });
+    this.movieService
+      .getMovie(movieID)
+      .subscribe(movie => {
+        this.movieStatus = 'available';
+        this.movie = movie;
+        this.movieService
+          .getVideoYoutube(this.movie.id)
+          .subscribe(videoYoutube => {
+            this.movie.videoYoutube = videoYoutube;
+          });
+        this.movieService
+          .getImages(this.movie.id)
+          .subscribe(images => {
+            this.movie.images = images;
+          });
+        this.movieService
+          .getPersons(this.movie.id)
+          .subscribe(persons => {
+            this.movie.cast = persons.cast;
+            this.movie.crew = persons.crew;
+          });
 
-    // TODO: stat 2h pe asta ca nu functiona: sa iau id-ul asa, sau din link?
-    // this.subscription = this.sharedService.getClickEventMovieDetails().subscribe(id => {
+      }, () => {
+        this.movieStatus = 'unavailable';
+      });
+
+    // this.subscriptionMovieDetails = this.sharedService.getClickEventMovieDetails().subscribe(id => {
     //   console.log('movieID: ', id);
     // });
 
   }
 
+
   ngOnDestroy(): void {
-    // this.subscription.unsubscribe();
+    // this.subscriptionMovieDetails.unsubscribe();
+    // TODO: ar trebui sa dau unsubscribe la observable-urile din movieService? cu ce metoda?
   }
 }
