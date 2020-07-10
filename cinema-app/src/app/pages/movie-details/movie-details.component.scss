@@ -1,15 +1,101 @@
+@import "src/assets/styles/variables";
+
 h1 {
+  margin: 0;
   color: white;
-  margin: 30px 20px;
   font-family: Roboto, sans-serif;
   font-weight: 700;
-  text-align: center;
+  text-align: left;
 }
 
+.container {
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+
+.container-big {
+  padding: 0 5%;
+}
+
+
+
+.background {
+  background-color: rgba(20, 20, 20, 0.8);
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.6);
+  margin: 0;
+  padding: 30px 50px;
+  height: 2000px;
+}
 
 .main-img {
   box-sizing: border-box;
   border: 4px solid white;
+  height: auto;
+
+  max-width: 100%;
+}
+
+@media (min-width: 600px) and (max-width: 749px) {
+  .main-img {
+    width: 70%;
+  }
+}
+
+@media (min-width: 750px) and (max-width: 1199px) {
+  .main-img {
+    width: 30%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .main-img {
+    width: 300px;
+  }
 }
 
 
+.line {
+  background-color: $line-gray;
+  margin-top: 15px;
+  height: 1px;
+  width: 100%;
+}
+
+.flex-container-details {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+
+  mat-icon {
+    vertical-align: middle;
+    padding-top: 2px;
+    font-size: 19px;
+  }
+
+  div {
+    color: $light-gray;
+    margin: 15px 20px 0 0;
+    padding-right: 20px;
+    max-width: 100%;
+  }
+
+  #details2 {
+    min-width: 200px;
+  }
+
+  #details1, #details3 #details4 {
+    min-width: 100px;
+  }
+
+  #details1, #details2, #details3 {
+    border-right: 1px solid $line-gray;
+  }
+}
+
+
+.flex-container-img-video {
+  display: flex;
+  flex-wrap: wrap;
+
+}

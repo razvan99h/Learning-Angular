@@ -1,5 +1,5 @@
 import { Image } from './image.model';
-import { Video } from './video.model';
+import { VideoYoutube } from './video.model';
 import { environment } from '../../../environments/environment';
 import { Person } from './person.model';
 import { Genre } from './genre.model';
@@ -13,6 +13,7 @@ export interface MovieTMDB {
   release_date: Date;
   runtime: number;
   vote_average: number;
+  overview: string;
 }
 
 export interface MoviesTMDB {
@@ -28,7 +29,8 @@ export class Movie {
   releaseDate: Date;
   runtime: number;
   voteAverage: number;
-  videoYoutube: Video;
+  overview: string;
+  videoYoutube: VideoYoutube;
   images: Image[];
   similarMovies: Movie[];
   cast: Person[];
@@ -43,6 +45,7 @@ export class Movie {
       this.releaseDate = new Date(movieTMDB.release_date);
       this.runtime = movieTMDB.runtime;
       this.voteAverage = movieTMDB.vote_average;
+      this.overview = movieTMDB.overview;
       if (movieTMDB.poster_path == null) {
         this.posterPath = './assets/img/default_poster.jpg';
       } else {

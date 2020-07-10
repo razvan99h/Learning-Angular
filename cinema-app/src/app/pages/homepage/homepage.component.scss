@@ -50,3 +50,6 @@ mat-card:hover {
   }
 }
 
+mat-card:focus {
+  outline: none;
+}

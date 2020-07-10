@@ -15,6 +15,7 @@ import { SharedService } from './shared/services/shared.service';
 import { SharedModule } from './shared/shared.module';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { MovieDetailsComponent } from './pages/movie-details/movie-details.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { MovieDetailsComponent } from './pages/movie-details/movie-details.compo
     SharedModule,
     MatCardModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    MatIconModule
   ],
   providers: [
     MovieService,

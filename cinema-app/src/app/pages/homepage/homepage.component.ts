@@ -36,6 +36,7 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // TODO: add genres and grade on hover
     this.movieService
       .getAllMovies(4, 22)
       .subscribe(movies => {

@@ -35,6 +35,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // TODO: samybe add similar movies?
     const movieID = Number(this.route.snapshot.paramMap.get('id'));
     this.movieService
       .getMovie(movieID)

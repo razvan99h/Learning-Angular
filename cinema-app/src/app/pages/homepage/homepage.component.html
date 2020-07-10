@@ -9,7 +9,6 @@
             *ngFor="let movie of movies"
             routerLink="movie/{{movie.id}}">
     <div mat-card-image class="crop-container" >
-<!--      style="background-image: url({{movie.posterPath}});">-->
       <img src="{{movie.posterPath}}" alt="Movie poster">
     </div>
     <mat-card-content>
