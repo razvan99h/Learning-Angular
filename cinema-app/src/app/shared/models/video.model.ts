@@ -23,11 +23,10 @@ export class VideoYoutube {
       this.id = videoTMDB.id;
       this.name = videoTMDB.name;
       this.link = environment.YOUTUBE_LINK + videoTMDB.key;
-    }
-    else {
+    } else {
       this.id = 'rickroll';
       this.name = 'Got RickRolled boi';
-      this.link = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+      this.link = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
     }
   }
 }

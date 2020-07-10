@@ -8,6 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
+import { MatListModule } from '@angular/material/list';
+
 
 import { MovieService } from './shared/services/movie.service';
 import { SharedService } from './shared/services/shared.service';
@@ -31,11 +33,13 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatButtonModule,
     HttpClientModule,
-    MatIconModule
+    MatIconModule,
+    MatListModule,
   ],
   providers: [
     MovieService,
-    SharedService],
+    SharedService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

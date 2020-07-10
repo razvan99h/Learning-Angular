@@ -6,6 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map, shareReplay } from 'rxjs/operators';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Person } from '../../shared/models/person.model';
 
 @Component({
   selector: 'cmb-movie-details',
@@ -17,15 +19,20 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   movieStatus: string;
   isHandset$: Observable<boolean>;
   subscriptionMovieDetails: Subscription;
+  fullCrew: boolean;
+  fullCast: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private breakpointObserver: BreakpointObserver,
     private movieService: MovieService,
+    private sanitizer: DomSanitizer,
     private sharedService: SharedService,
   ) {
     this.movie = new Movie();
     this.movieStatus = 'default';
+    this.fullCrew = false;
+    this.fullCast = false;
     this.isHandset$ = this.breakpointObserver
       .observe(Breakpoints.Handset)
       .pipe(
@@ -66,9 +73,25 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     // this.subscriptionMovieDetails = this.sharedService.getClickEventMovieDetails().subscribe(id => {
     //   console.log('movieID: ', id);
     // });
-
   }
 
+  transform(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  sortCrew(crew: Person[]): Person[] {
+    if (crew == null) {
+      return [];
+    }
+    return crew.sort(person => person.job === 'Director' ? -1 : 1);
+  }
+
+  getDirectors(crew: Person[]): Person[] {
+    if (crew == null) {
+      return [];
+    }
+    return this.sortCrew(crew.filter(person => person.job === 'Director'));
+  }
 
   ngOnDestroy(): void {
     // this.subscriptionMovieDetails.unsubscribe();

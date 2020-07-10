@@ -18,13 +18,13 @@
         <div class="line"></div>
 
         <div class="flex-container-details">
-          <div id="details1">
+          <div id="details1" *ngIf="movie.runtime > 0">
             <mat-icon>schedule</mat-icon>
             {{(movie.runtime / 60) | number:'1.0-0'}}h {{movie.runtime % 60}}min
 
           </div>
 
-          <div id="details2">
+          <div id="details2" *ngIf="movie.genres.length > 0">
             <mat-icon>flag</mat-icon>
             <span *ngFor="let genre of movie.genres; last as isLast">
               {{genre.name}}<span *ngIf="! isLast">, </span>
@@ -40,20 +40,122 @@
               year: 'numeric'
             })}}
           </div>
-          <div id="details4">
+          <div id="details4" *ngIf="movie.voteAverage > 0">
             <mat-icon>star</mat-icon>
             {{movie.voteAverage}}
           </div>
         </div>
 
-        <div class=".flex-container-img-video">
+        <div class="flex-container-img-video">
           <img class="main-img" src="{{movie.posterPath}}" alt="Movie poster">
-<!--          <iframe width="420" height="345" frameborder="0" allowfullscreen src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>-->
+          <iframe allowfullscreen [src]="transform(movie.videoYoutube.link)"></iframe>
+        </div>
+
+        <div class="flex-container-text">
+
+          <div class="text-left">
+            <h4>Cast</h4>
+            <div *ngIf="! fullCast">
+              <mat-list>
+                <mat-list-item *ngFor="let person of movie.cast | slice:0:4">
+                  <img matListAvatar src="{{person.profilePath}}" alt="...">
+                  <h3 matLine> {{person.name}} </h3>
+                  <p matLine>
+                    {{person.character}}
+                  </p>
+                </mat-list-item>
+              </mat-list>
+              <div class="expand">
+                <mat-icon>expand_more</mat-icon>
+                <a (click)="fullCast = ! fullCast">Full cast</a>
+              </div>
+            </div>
+            <div *ngIf="fullCast">
+              <mat-list>
+                <mat-list-item *ngFor="let person of movie.cast">
+                  <img matListAvatar src="{{person.profilePath}}" alt="...">
+                  <h3 matLine> {{person.name}} </h3>
+                  <p matLine>
+                    {{person.character}}
+                  </p>
+                </mat-list-item>
+              </mat-list>
+              <div class="expand">
+                <mat-icon>expand_less</mat-icon>
+                <a (click)="fullCast = ! fullCast">Less details</a>
+              </div>
+            </div>
+
+            <h4>Crew</h4>
+            <div *ngIf="! fullCrew">
+              <mat-list>
+                <mat-list-item *ngFor="let person of getDirectors(movie.crew)">
+                  <img matListAvatar src="{{person.profilePath}}" alt="...">
+                  <h3 matLine> {{person.name}} </h3>
+                  <p matLine>
+                    {{person.job}}
+                  </p>
+                </mat-list-item>
+              </mat-list>
+              <div class="expand">
+                <mat-icon>expand_more</mat-icon>
+                <a (click)="fullCrew = ! fullCrew">Full crew</a>
+              </div>
+            </div>
+            <div *ngIf="fullCrew">
+              <mat-list>
+                <mat-list-item *ngFor="let person of sortCrew(movie.crew)">
+                  <img matListAvatar src="{{person.profilePath}}" alt="...">
+                  <h3 matLine> {{person.name}} </h3>
+                  <p matLine>
+                    {{person.job}}
+                  </p>
+                </mat-list-item>
+              </mat-list>
+              <div class="expand">
+                <mat-icon>expand_less</mat-icon>
+                <a (click)="fullCrew = ! fullCrew">Less details</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <h4>Synopsis</h4>
+            <p *ngIf="movie.overview.length > 0">{{movie.overview}}</p>
+            <p *ngIf="movie.overview.length == 0" class="italic">No synopsis available yet.</p>
+
+            <!--          Varianta asta face bullshit-uri cu css-ul-->
+            <!--          <div *ngIf="movie.overview.length > 0 then overview else noOverview"></div>-->
+            <!--          <ng-template #overview class="overview">{{movie.overview}}</ng-template>-->
+            <!--          <ng-template #noOverview class="overview italic">No synopsis available yet.</ng-template>-->
+
+            <h4>Production companies</h4>
+            <div *ngFor="let company of movie.productionCompanies" class="span-list">
+              <span>
+                {{company.name}}<span *ngIf="company.originCountry"> ({{company.originCountry}})</span>
+              </span>
+            </div>
+            <p *ngIf="movie.productionCompanies.length == 0">No companies available yet.</p>
+
+            <h4>Financial figures</h4>
+            <div class="span-list">
+              Budget:
+              <span *ngIf="movie.budget > 0">{{movie.budget / 1000000 | number:'1.0-2'}} million $</span>
+              <span *ngIf="movie.budget == 0" class="italic"> no information</span>
+            </div>
+            <br>
+            <div class="span-list">
+              Revenue:
+              <span *ngIf="movie.revenue > 0">{{movie.revenue / 1000000 | number:'1.0-2'}} million $</span>
+              <span *ngIf="movie.revenue == 0" class="italic"> no information</span>
+            </div>
+          </div>
+
+
         </div>
 
       </div>
     </div>
   </section>
-
 </div>
 

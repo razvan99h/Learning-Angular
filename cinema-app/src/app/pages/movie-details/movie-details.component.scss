@@ -18,40 +18,12 @@ h1 {
   padding: 0 5%;
 }
 
-
-
 .background {
   background-color: rgba(20, 20, 20, 0.8);
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.6);
   margin: 0;
   padding: 30px 50px;
-  height: 2000px;
-}
-
-.main-img {
-  box-sizing: border-box;
-  border: 4px solid white;
-  height: auto;
-
-  max-width: 100%;
-}
-
-@media (min-width: 600px) and (max-width: 749px) {
-  .main-img {
-    width: 70%;
-  }
-}
-
-@media (min-width: 750px) and (max-width: 1199px) {
-  .main-img {
-    width: 30%;
-  }
-}
-
-@media (min-width: 1200px) {
-  .main-img {
-    width: 300px;
-  }
+  height: 100%;
 }
 
 
@@ -61,6 +33,7 @@ h1 {
   height: 1px;
   width: 100%;
 }
+
 
 .flex-container-details {
   display: flex;
@@ -97,5 +70,122 @@ h1 {
 .flex-container-img-video {
   display: flex;
   flex-wrap: wrap;
+
+  .main-img {
+    box-sizing: border-box;
+    border: 4px solid white;
+    height: auto;
+
+    max-width: 100%;
+  }
+
+  iframe {
+    border: none;
+    width: 100%;
+    height: auto;
+    margin-top: 30px;
+    min-height: 250px;
+  }
+
+
+  @media (min-width: 600px) and (max-width: 749px) {
+    .main-img {
+      width: 70%;
+    }
+    iframe {
+      min-height: 300px;
+    }
+  }
+
+  @media (min-width: 750px) and (max-width: 1199px) {
+    .main-img {
+      width: 30%;
+    }
+    iframe {
+      width: calc(70% - 30px);
+      margin-top: 0;
+      margin-left: 30px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .main-img {
+      width: 300px;
+    }
+    iframe {
+      width: calc(100% - 300px - 30px);
+      margin-top: 0;
+      margin-left: 30px;
+    }
+  }
+}
+
+
+.flex-container-text {
+  display: flex;
+  flex-wrap: wrap;
+
+  h4 {
+    color: white;
+    font-size: 24px;
+  }
+
+  .text-left {
+    flex: 1;
+    min-width: 187px;
+
+    h3 {
+      color: white;
+      font-weight: 500;
+      font-size: 18px;
+    }
+
+    p {
+      color: $light-gray;
+    }
+
+    .expand {
+      margin-left: 71px;
+      color: $light-gray;
+
+      mat-icon {
+        vertical-align: middle;
+        padding-top: 2px;
+        font-size: 19px;
+      }
+
+      a {
+        font-style: italic;
+        justify-content: center;
+      }
+    }
+
+    mat-list {
+      padding: 0 0 10px 0;
+    }
+
+    .mat-list-avatar{
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  .text-right {
+    flex: 2;
+    min-width: 295px;
+
+
+    p, span, .span-list {
+      color: $light-gray;
+    }
+
+    .span-list {
+      padding: 5px 0;
+    }
+
+    .italic {
+      font-style: italic;
+    }
+  }
 
 }

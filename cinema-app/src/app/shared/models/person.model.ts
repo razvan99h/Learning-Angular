@@ -34,6 +34,10 @@ export class Person {
     this.character = personTMDB.character;
     this.department = personTMDB.department;
     this.job = personTMDB.job;
-    this.profilePath = environment.IMAGE_LINK + imageSize + personTMDB.profile_path;
+    if (personTMDB.profile_path != null) {
+      this.profilePath = environment.IMAGE_LINK + imageSize + personTMDB.profile_path;
+    } else {
+      this.profilePath = 'assets/img/default_profile.png';
+    }
   }
 }

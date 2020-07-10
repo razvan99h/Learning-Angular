@@ -3,6 +3,7 @@ import { VideoYoutube } from './video.model';
 import { environment } from '../../../environments/environment';
 import { Person } from './person.model';
 import { Genre } from './genre.model';
+import { Company, CompanyTMDB } from './company.model';
 
 export interface MovieTMDB {
   // tslint:disable:variable-name
@@ -14,6 +15,9 @@ export interface MovieTMDB {
   runtime: number;
   vote_average: number;
   overview: string;
+  revenue: number;
+  budget: number;
+  production_companies: CompanyTMDB[];
 }
 
 export interface MoviesTMDB {
@@ -30,11 +34,15 @@ export class Movie {
   runtime: number;
   voteAverage: number;
   overview: string;
+  revenue: number;
+  budget: number;
   videoYoutube: VideoYoutube;
   images: Image[];
   similarMovies: Movie[];
   cast: Person[];
   crew: Person[];
+  productionCompanies: Company[];
+
 
   constructor(movieTMDB?: MovieTMDB, imageSize: string = '/w300') {
     if (movieTMDB != null) {
@@ -46,10 +54,16 @@ export class Movie {
       this.runtime = movieTMDB.runtime;
       this.voteAverage = movieTMDB.vote_average;
       this.overview = movieTMDB.overview;
+      this.budget = movieTMDB.budget;
+      this.revenue = movieTMDB.revenue;
       if (movieTMDB.poster_path == null) {
         this.posterPath = './assets/img/default_poster.jpg';
       } else {
         this.posterPath = environment.IMAGE_LINK + imageSize + movieTMDB.poster_path;
+      }
+      this.videoYoutube = new VideoYoutube();
+      if (movieTMDB.production_companies != null) {
+        this.productionCompanies = movieTMDB.production_companies.map(companyTMDB => new Company(companyTMDB));
       }
     }
   }
