@@ -10,6 +10,7 @@ export interface MovieTMDB {
   id: number;
   title: string;
   genres: Genre[];
+  genre_ids: number[];
   poster_path: string;
   release_date: Date;
   runtime: number;
@@ -29,6 +30,7 @@ export class Movie {
   id: number;
   title: string;
   genres: Genre[];
+  genreIDs: number[];
   posterPath: string;
   releaseDate: Date;
   runtime: number;
@@ -49,6 +51,7 @@ export class Movie {
       this.id = movieTMDB.id;
       this.title = movieTMDB.title;
       this.genres = movieTMDB.genres;
+      this.genreIDs = movieTMDB.genre_ids;
       this.posterPath = movieTMDB.poster_path;
       this.releaseDate = new Date(movieTMDB.release_date);
       this.runtime = movieTMDB.runtime;

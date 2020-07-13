@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 import { VideosTMDB, VideoTMDB, VideoYoutube } from '../models/video.model';
 import { Image, ImagesTMDB } from '../models/image.model';
 import { Person, Persons, PersonsTMDB } from '../models/person.model';
+import { Genre, GenresTMDB } from '../models/genre.model';
 
 
 @Injectable({
@@ -39,7 +40,7 @@ export class MovieService {
   }
 
   getAllMovies(page: number = 1, maxTitleLength: number = -1): Observable<Movie[]> {
-    console.log(`getAllMovies <<< maxTitleLength = ${maxTitleLength}`);
+    console.log(`getAllMovies <<< page = ${page}, maxTitleLength = ${maxTitleLength}`);
     const url = environment.MOVIES_LINK + '/now_playing?page=' + page + '&api_key=' + environment.API_KEY;
     return this.httpClient
       .get<MoviesTMDB>(url)
@@ -102,6 +103,24 @@ export class MovieService {
           persons.crew = personsTMDB.crew.map(personTMDB => new Person(personTMDB));
           console.log('getPersons >>> persons = ', persons);
           return persons;
+        })
+      );
+  }
+
+  getAllGenres(): Observable<Map<number, string>> {
+    console.log(`getAllGenres`);
+    const url = environment.GENRES_LINK + '?api_key=' + environment.API_KEY;
+    return this.httpClient
+      .get<GenresTMDB>(url)
+      .pipe(
+        map(genresTMDB => {
+          const genres = genresTMDB.genres
+            .reduce((genreMap: Map<number, string>, genre: Genre) => {
+              genreMap.set(genre.id, genre.name);
+              return genreMap;
+            }, new Map());
+          console.log('getAllGenres >>> genres = ', genres);
+          return genres;
         })
       );
   }

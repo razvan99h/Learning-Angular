@@ -9,6 +9,13 @@
             *ngFor="let movie of movies"
             routerLink="movie/{{movie.id}}">
     <div mat-card-image class="crop-container" >
+      <div class="hover">
+        <h1>
+          <mat-icon>star</mat-icon>
+          {{movie.voteAverage}}
+        </h1>
+        <h4 *ngFor="let genreID of movie.genreIDs">{{genres.get(genreID)}}</h4>
+      </div>
       <img src="{{movie.posterPath}}" alt="Movie poster">
     </div>
     <mat-card-content>

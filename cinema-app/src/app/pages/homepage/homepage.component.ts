@@ -19,6 +19,7 @@ export class HomepageComponent implements OnInit {
   private movieDetailsComponent: MovieDetailsComponent;
 
   movies: Movie[];
+  genres: Map<number, string>;
   isHandset$: Observable<boolean>;
 
   constructor(
@@ -36,13 +37,20 @@ export class HomepageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // TODO: add genres and grade on hover
     this.movieService
-      .getAllMovies(4, 22)
-      .subscribe(movies => {
-        this.movies = movies;
-        // TODO: citesc despre merge request
+      .getAllGenres()
+      .subscribe(genres => {
+        this.genres = genres;
+
+        this.movieService
+          .getAllMovies(4, 22)
+          .subscribe(movies => {
+            this.movies = movies;
+            // TODO: citesc despre merge request
+          });
+        console.log(genres);
       });
+
   }
 
   // goToMovieDetails(movieID: number): void {
