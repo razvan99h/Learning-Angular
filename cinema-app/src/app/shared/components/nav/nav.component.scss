@@ -63,6 +63,11 @@ mat-sidenav-content {
   img {
     cursor: pointer;
   }
+  scrollbar-width: none;
+}
+
+mat-sidenav-content::-webkit-scrollbar {
+  display: none;
 }
 
 .mat-drawer-container {
@@ -72,9 +77,3 @@ mat-sidenav-content {
 .close-button {
   cursor: pointer;
 }
-
-//@media (min-width: 600px) {
-//  .sidenav {
-//    display: none;
-//  }
-//}

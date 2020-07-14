@@ -18,12 +18,15 @@ import { SharedModule } from './shared/shared.module';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { MovieDetailsComponent } from './pages/movie-details/movie-details.component';
 import { MatIconModule } from '@angular/material/icon';
+import { ReservationComponent } from './pages/reservation/reservation.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
     MovieDetailsComponent,
+    ReservationComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +38,7 @@ import { MatIconModule } from '@angular/material/icon';
     HttpClientModule,
     MatIconModule,
     MatListModule,
+    MatDialogModule
   ],
   providers: [
     MovieService,

@@ -47,7 +47,10 @@
         </div>
 
         <div class="flex-container-img-video">
-          <img class="main-img" src="{{movie.posterPath}}" alt="Movie poster">
+          <div class="flex-container-reservation">
+            <img class="main-img" src="{{movie.posterPath}}" alt="Movie poster">
+            <button mat-raised-button color="warn" (click)="openDialog()">Book this movie</button>
+          </div>
           <iframe allowfullscreen [src]="transform(movie.videoYoutube.link)"></iframe>
         </div>
 

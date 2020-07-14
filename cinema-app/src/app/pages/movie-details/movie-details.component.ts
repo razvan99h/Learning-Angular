@@ -8,6 +8,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map, shareReplay } from 'rxjs/operators';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Person } from '../../shared/models/person.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ReservationComponent } from '../reservation/reservation.component';
 
 @Component({
   selector: 'cmb-movie-details',
@@ -28,6 +30,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     private movieService: MovieService,
     private sanitizer: DomSanitizer,
     private sharedService: SharedService,
+    public dialog: MatDialog,
   ) {
     this.movie = new Movie();
     this.movieStatus = 'default';
@@ -91,6 +94,17 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
       return [];
     }
     return this.sortCrew(crew.filter(person => person.job === 'Director'));
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ReservationComponent, {
+      data: this.movie,
+      panelClass: 'custom-modal'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
   ngOnDestroy(): void {

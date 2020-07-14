@@ -14,7 +14,8 @@
           <mat-icon>star</mat-icon>
           {{movie.voteAverage}}
         </h1>
-        <h4 *ngFor="let genreID of movie.genreIDs">{{genres.get(genreID)}}</h4>
+        <h4 *ngFor="let genreID of movie.genreIDs | slice:0:3;">{{genres.get(genreID)}}</h4>
+        <button mat-raised-button color="warn" >View Details</button>
       </div>
       <img src="{{movie.posterPath}}" alt="Movie poster">
     </div>
@@ -22,9 +23,7 @@
       <h4>{{movie.title}}</h4>
       <p>{{movie.releaseDate.getFullYear()}}</p>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>BOOK</button>
-    </mat-card-actions>
+
   </mat-card>
 </main>
 

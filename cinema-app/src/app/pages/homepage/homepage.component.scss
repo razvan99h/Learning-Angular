@@ -32,6 +32,7 @@ mat-card {
   background-color: black;
   text-align: left;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.45);
+  cursor: pointer;
 
   .crop-container {
     width: 232px;
@@ -66,6 +67,11 @@ mat-card {
         margin: 3px;
         color: $omniplex-yellow;
         vertical-align: top;
+      }
+
+      button {
+        margin-top: 20px;
+        font-weight: bold;
       }
     }
 

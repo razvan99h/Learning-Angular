@@ -1,8 +1,10 @@
 @import '~@angular/material/_theming';
+@import 'variables';
 
 // color theme - gray
 $my-app-primary: mat-palette($mat-grey, 900);
 $my-app-accent: mat-palette($mat-grey, 500);
-$my-app-warn: mat-palette($mat-yellow, 500);
+$my-app-warn: mat-palette($omniplex-yellow-map, 100);
 $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
 @include angular-material-theme($my-app-theme);
+

@@ -7,8 +7,9 @@ html, body {
 }
 
 body {
-  margin: 0;
+  margin: 0 0 0 -1px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  overflow: hidden;
 }
 
 .h1-big {
@@ -17,4 +18,19 @@ body {
 
 .h1-small {
   font-size: 25px;
+}
+
+///* hide scrollbar */
+//mat-dialog-content {
+//  scrollbar-width: none;
+//}
+//mat-dialog-content::-webkit-scrollbar {
+//  display: none;
+//}
+
+.custom-modal {
+  mat-dialog-container {
+    background-color:  mat-color($my-app-primary, default);
+    color: white;
+  }
 }

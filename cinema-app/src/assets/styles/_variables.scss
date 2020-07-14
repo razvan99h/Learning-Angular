@@ -2,5 +2,14 @@ $line-gray: #686868;
 $light-gray: #c3c3c3;
 $omniplex-yellow: rgba(255, 233, 39, 1);
 
+$omniplex-yellow-map: (
+  100: rgba(255, 233, 39, 1),
+  contrast: (
+    100: black
+  )
+)
+
+
+
 
 

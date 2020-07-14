@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>Book tickets for {{movie.title}}</h2>
+<p>Click one or more of the available seats to select: </p>
+<div class="screen">
+  Screen
+</div>
+<mat-dialog-content class="mat-typography">
+  <div class="flex-container-seats">
+
+    <!--    <div class="flex-item"-->
+    <!--         *ngFor="let seat of seats"-->
+    <!--         [ngClass]="{'break': (seat + 1) % cinemaWidth == 0 && seat != 0}">-->
+
+    <!--      <div class="square" style="-->
+    <!--          width: calc({{computeSquareWidth()}} - 10px);-->
+    <!--          padding-bottom: calc({{computeSquareWidth()}}% - 10px);-->
+    <!--          margin: 5px;-->
+    <!--          font-size: {{computeSquareWidth() + 7}}px;">-->
+    <!--        <div class="content">-->
+    <!--          <div class="table">-->
+    <!--            <div class="table-cell">-->
+    <!--              R{{getInteger(seat / cinemaWidth + 1)}}-->
+    <!--              S{{seat % cinemaWidth + 1}}-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--        </div>-->
+    <!--      </div>-->
+
+    <!--      <br *ngIf="seat % cinemaWidth == 0 && seat != 0">-->
+    <!--    </div>-->
+
+    <div class="flex-row" *ngFor="let configRow of config; index as row">
+      <div class="seat"
+           *ngFor="let seat of configRow; index as column"
+           [ngClass]="{
+           'selected': config[row][column] == 'selected',
+           'occupied': config[row][column] == 'occupied',
+           'free': config[row][column] == 'free'
+           }"
+           (click)="selectSeat(row, column)">
+        R{{row + 1}} S{{column + 1}}
+      </div>
+    </div>
+  </div>
+  <p *ngIf="selected.length == 0" class="italic">You haven't selected any seats</p>
+  <p *ngIf="selected.length == 1">You selected {{selected.length}} seat</p>
+  <p *ngIf="selected.length > 1">You selected {{selected.length}} seats</p>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button cdkFocusInitial
+          [mat-dialog-close]="true"
+          *ngIf="selected.length != 0"
+          (click)="bookTickets()">
+    Book
+  </button>
+</mat-dialog-actions>
