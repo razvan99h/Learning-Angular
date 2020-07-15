@@ -12,7 +12,7 @@
 .flex-container-seats {
   display: flex;
   flex-direction: column;
-  //overflow-x: scroll;
+  overflow: auto;
 
   .flex-row {
     display: flex;
@@ -29,6 +29,11 @@
       text-align: center;
       vertical-align: middle;
       user-select: none;
+      cursor: pointer;
+    }
+    .seat:hover {
+      transition: 0.2s;
+      filter: brightness(85%);
     }
 
     .free {
@@ -49,8 +54,20 @@
   font-style: italic;
 }
 
+mat-dialog-content {
+  padding-left: 0;
 
+}
 
+.day-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.day-radio-button {
+  margin: 5px;
+}
 
 //.flex-container-seats {
 //  display: flex;

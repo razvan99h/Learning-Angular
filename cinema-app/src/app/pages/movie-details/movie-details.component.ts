@@ -23,6 +23,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   subscriptionMovieDetails: Subscription;
   fullCrew: boolean;
   fullCast: boolean;
+  youtubeVideo: SafeResourceUrl;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,6 +33,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     public dialog: MatDialog,
   ) {
+    this.youtubeVideo = this.sanitizer.bypassSecurityTrustResourceUrl('');
     this.movie = new Movie();
     this.movieStatus = 'default';
     this.fullCrew = false;
@@ -56,6 +58,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
           .getVideoYoutube(this.movie.id)
           .subscribe(videoYoutube => {
             this.movie.videoYoutube = videoYoutube;
+            this.youtubeVideo = this.transform(this.movie.videoYoutube.link);
           });
         this.movieService
           .getImages(this.movie.id)

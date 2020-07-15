@@ -20,6 +20,13 @@ import { MovieDetailsComponent } from './pages/movie-details/movie-details.compo
 import { MatIconModule } from '@angular/material/icon';
 import { ReservationComponent } from './pages/reservation/reservation.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -38,7 +45,15 @@ import { MatDialogModule } from '@angular/material/dialog';
     HttpClientModule,
     MatIconModule,
     MatListModule,
-    MatDialogModule
+    MatDialogModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatRadioModule,
+    FormsModule
   ],
   providers: [
     MovieService,

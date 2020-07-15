@@ -4,8 +4,10 @@ $omniplex-yellow: rgba(255, 233, 39, 1);
 
 $omniplex-yellow-map: (
   100: rgba(255, 233, 39, 1),
+  500: rgba(255, 233, 39, 0.5),
   contrast: (
-    100: black
+    100: black,
+    500: rgba(0, 0, 0, 0.7),
   )
 )
 

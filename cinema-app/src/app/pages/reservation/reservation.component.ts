@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Movie } from '../../shared/models/movie.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Seat } from '../../shared/models/seat.model';
 
 @Component({
   selector: 'cmb-reservation',
@@ -9,41 +11,52 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class ReservationComponent implements OnInit {
   movie: Movie;
-  cinemaWidth = 20;
-  cinemaHeight = 13;
-  config: string[][];
-  selected: [number, number][];
+  cinemaWidth: number;
+  cinemaHeight: number;
+  cinemaConfig: string[][];
+  selectedSeats: Seat[];
+  availableDays: number[];
+  days: string[];
+  selectedDay: string;
+
 
   constructor(
     public dialogRef: MatDialogRef<ReservationComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Movie
+    @Inject(MAT_DIALOG_DATA) public data: Movie,
   ) {
+    this.days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     this.movie = data;
-    this.selected = [];
+    this.selectedSeats = [];
+    this.selectedDay = '';
 
     // TODO: fetch data from elsewhere
-    this.config = [];
+    this.cinemaConfig = [];
+    this.cinemaWidth = 15;
+    this.cinemaHeight = 7;
+    this.availableDays = [0, 1, 3, 6];
 
     for (let i = 0; i < this.cinemaHeight; i++) {
-      this.config.push([]);
+      this.cinemaConfig.push([]);
       for (let j = 0; j < this.cinemaWidth; j++) {
-        this.config[i].push('free');
+        this.cinemaConfig[i].push('free');
       }
     }
-    console.log(this.config);
+    console.log(this.cinemaConfig);
   }
 
   ngOnInit(): void {
+
   }
 
   selectSeat(row: number, column: number): void {
-    console.log(this.config[row][column], row, column);
-    if (this.config[row][column] === 'selected') {
-      this.config[row][column] = 'free';
-      delete this.selected[this.selected.indexOf([row, column])];
-    } else if (this.config[row][column] === 'free') {
-      this.selected.push([row, column]);
-      this.config[row][column] = 'selected';
+    // console.log(this.config[row][column], row, column);
+    if (this.cinemaConfig[row][column] === 'selected') {
+      this.cinemaConfig[row][column] = 'free';
+      this.selectedSeats = this.selectedSeats
+        .filter(seat => !seat.equals(new Seat(row, column)));
+    } else if (this.cinemaConfig[row][column] === 'free') {
+      this.selectedSeats.push(new Seat(row, column));
+      this.cinemaConfig[row][column] = 'selected';
     }
   }
 
