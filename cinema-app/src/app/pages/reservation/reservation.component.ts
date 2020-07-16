@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Movie } from '../../shared/models/movie.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Seat } from '../../shared/models/seat.model';
 
 @Component({
@@ -63,4 +62,5 @@ export class ReservationComponent implements OnInit {
   bookTickets(): void {
     // TODO: make it do something
   }
+
 }

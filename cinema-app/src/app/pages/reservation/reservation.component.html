@@ -6,10 +6,11 @@
   </div>
   <mat-vertical-stepper [linear]="true"  #stepper>
 
-    <mat-step label="Choose dates" state="phone" [editable]="false">
+    <mat-step label="Choose dates" state="phone"
+              [editable]="true"
+              [completed]="selectedDay != ''">
 
-      <p>Choose one of the following days:</p>
-      <label id="day-radio-group-label">Pick your favorite season</label>
+      <label id="day-radio-group-label">Choose one of the following days:</label>
       <mat-radio-group
         aria-labelledby="day-radio-group-label"
         class="day-radio-group"
@@ -18,6 +19,7 @@
         <mat-radio-button
           class="day-radio-button"
           *ngFor="let day of availableDays"
+          required
           [disableRipple]="true"
           [value]="days[day]">
           {{days[day]}}
@@ -25,11 +27,20 @@
       </mat-radio-group>
 
       <div>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperNext type="button" [disabled]="selectedDay == ''" >
+          <span *ngIf="selectedDay == ''" class="italic">
+            Select a day in order to continue
+          </span>
+          <span *ngIf="selectedDay != ''">
+            Next
+          </span>
+        </button>
       </div>
     </mat-step>
 
-    <mat-step label="Choose seats" state="chat" [editable]="false">
+    <mat-step label="Choose seats" state="chat"
+              [editable]="true"
+              [completed]="selectedSeats.length > 0">
       <p>Click one or more of the available seats to select: </p>
       <div class="screen">
         Screen
@@ -76,13 +87,22 @@
       <p *ngIf="selectedSeats.length > 1">You selected {{selectedSeats.length}} seats</p>
 
       <div>
-        <button mat-button (click)="stepper.reset()">Reset date</button>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext type="button" [disabled]="selectedSeats.length == 0">
+          <span *ngIf="selectedSeats.length == 0" class="italic">
+            Select a seat in order to continue
+          </span>
+          <span *ngIf="selectedSeats.length > 0">
+            Next
+          </span>
+        </button>
       </div>
     </mat-step>
 
     <mat-step label="Confirm selection" [editable]="false">
-      <p>You're welcome.</p>
+      <p>You've selected the following seats for {{selectedDay}}:</p>
+      <p *ngFor="let seat of selectedSeats"> - Row {{seat.row + 1}}, Seat nr. {{seat.column + 1}}</p>
+      <button mat-button matStepperPrevious>Back</button>
     </mat-step>
 
   </mat-vertical-stepper>

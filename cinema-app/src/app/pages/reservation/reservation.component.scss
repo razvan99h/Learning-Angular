@@ -69,6 +69,10 @@ mat-dialog-content {
   margin: 5px;
 }
 
+.mat-button[disabled] {
+  color: rgba(255, 255, 255, 0.3);
+}
+
 //.flex-container-seats {
 //  display: flex;
 //  flex-wrap: wrap;
