@@ -8,11 +8,14 @@ h1 {
   text-align: left;
 }
 
+ng-template {
+  color: $light-gray;
+}
+
 .container {
   margin: 0 auto;
   max-width: 1200px;
 }
-
 
 .container-big {
   padding: 0 5%;
@@ -66,6 +69,11 @@ h1 {
   }
 }
 
+@media (max-width: 767px) {
+  .flex-container-img-video {
+    justify-content: center;
+  }
+}
 
 .flex-container-img-video {
   display: flex;
@@ -98,8 +106,13 @@ h1 {
     min-height: 250px;
   }
 
+  @media (max-width: 767px) {
+    .main-img {
+      align-self: center;
+    }
+  }
 
-  @media (min-width: 600px) and (max-width: 749px) {
+  @media (min-width: 600px) and (max-width: 767px) {
     .flex-container-reservation {
       width: 70%;
     }
@@ -108,7 +121,7 @@ h1 {
     }
   }
 
-  @media (min-width: 750px) and (max-width: 1199px) {
+  @media (min-width: 768px) and (max-width: 1199px) {
     .flex-container-reservation {
       width: 30%;
     }
@@ -143,7 +156,7 @@ h1 {
 
   .text-left {
     flex: 1;
-    min-width: 187px;
+    min-width: 230px;
 
     h3 {
       color: white;
@@ -158,6 +171,7 @@ h1 {
     .expand {
       margin-left: 71px;
       color: $light-gray;
+      cursor: pointer;
 
       mat-icon {
         vertical-align: middle;
@@ -175,7 +189,7 @@ h1 {
       padding: 0 0 10px 0;
     }
 
-    .mat-list-avatar{
+    .mat-list-avatar {
       width: 60px;
       height: 60px;
     }
@@ -183,7 +197,7 @@ h1 {
 
   .text-right {
     flex: 2;
-    min-width: 295px;
+    min-width: 230px;
 
 
     p, span, .span-list {

@@ -7,8 +7,9 @@ import { MovieDetailsComponent } from './pages/movie-details/movie-details.compo
 const routes: Routes = [
   { path: '', component: HomepageComponent },
   { path: 'movie/:id', component: MovieDetailsComponent, children: [] },
-
+  // TODO: citesc despre route resolve - ca sa dea pagina MovieDetailsComponent load doar cand are datele
 ];
+// TODO: citesc despre guard-uri
 // TODO: { path: '**', component: PageNotFound }
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

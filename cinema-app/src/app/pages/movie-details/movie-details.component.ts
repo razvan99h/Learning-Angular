@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Movie } from '../../shared/models/movie.model';
 import { MovieService } from '../../shared/services/movie.service';
 import { SharedService } from '../../shared/services/shared.service';
@@ -14,7 +14,8 @@ import { ReservationComponent } from '../reservation/reservation.component';
 @Component({
   selector: 'cmb-movie-details',
   templateUrl: './movie-details.component.html',
-  styleUrls: ['./movie-details.component.scss']
+  styleUrls: ['./movie-details.component.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MovieDetailsComponent implements OnInit, OnDestroy {
   movie: Movie;
@@ -26,6 +27,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   youtubeVideo: SafeResourceUrl;
 
   constructor(
+    // private changeDetectorRef: ChangeDetectorRef,
     private route: ActivatedRoute,
     private breakpointObserver: BreakpointObserver,
     private movieService: MovieService,
@@ -47,13 +49,14 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // TODO: samybe add similar movies?
     const movieID = Number(this.route.snapshot.paramMap.get('id'));
     this.movieService
       .getMovie(movieID)
       .subscribe(movie => {
+        // this.changeDetectorRef.markForCheck()
         this.movieStatus = 'available';
         this.movie = movie;
+        // TODO: read about fork join - pentru o metoda de getMovie data in loc de 3 call-uri
         this.movieService
           .getVideoYoutube(this.movie.id)
           .subscribe(videoYoutube => {
@@ -86,14 +89,14 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   }
 
   sortCrew(crew: Person[]): Person[] {
-    if (crew == null) {
+    if (crew === null) {
       return [];
     }
     return crew.sort(person => person.job === 'Director' ? -1 : 1);
   }
 
   getDirectors(crew: Person[]): Person[] {
-    if (crew == null) {
+    if (crew === null) {
       return [];
     }
     return this.sortCrew(crew.filter(person => person.job === 'Director'));

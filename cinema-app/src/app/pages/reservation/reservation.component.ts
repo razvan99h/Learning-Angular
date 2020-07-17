@@ -8,6 +8,8 @@ import { Seat } from '../../shared/models/seat.model';
   templateUrl: './reservation.component.html',
   styleUrls: ['./reservation.component.scss']
 })
+// TODO: read about encapsulation
+
 export class ReservationComponent implements OnInit {
   movie: Movie;
   cinemaWidth: number;
