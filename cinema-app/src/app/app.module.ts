@@ -9,10 +9,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
-
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { environment } from '../environments/environment';
 
 import { MovieService } from './shared/services/movie.service';
 import { SharedService } from './shared/services/shared.service';
+import { ReservationService } from './shared/services/reservation.service';
 
 import { SharedModule } from './shared/shared.module';
 import { HomepageComponent } from './pages/homepage/homepage.component';
@@ -27,6 +30,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+
 
 @NgModule({
   declarations: [
@@ -53,11 +57,14 @@ import { MatRadioModule } from '@angular/material/radio';
     MatDatepickerModule,
     MatNativeDateModule,
     MatRadioModule,
-    FormsModule
+    FormsModule,
+    AngularFireModule.initializeApp(environment.FIREBASE),
+    AngularFireDatabaseModule
   ],
   providers: [
     MovieService,
-    SharedService
+    SharedService,
+    ReservationService
   ],
   bootstrap: [AppComponent]
 })

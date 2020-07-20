@@ -51,4 +51,9 @@
     transition: 0.2s;
     background-color: mat-color($my-app-primary, 800);
   }
+
+  #pay-button:hover {
+    background-color: mat-color($my-app-warn, 500);
+  }
+
 }

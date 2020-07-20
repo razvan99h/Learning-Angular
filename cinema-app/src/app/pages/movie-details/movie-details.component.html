@@ -56,7 +56,7 @@
 
         <div class="flex-container-text">
           <div class="text-left">
-            <div *ngIf="movie.cast.length > 0">
+            <div *ngIf="movie.cast !== undefined">
               <h4>Cast</h4>
 <!--              TODO: nu e mai bine sa fi scris ngIf la cele 2 div-uri: fullCastList, shortCastList?-->
               <div *ngIf="fullCast then fullCastList else shortCastList"></div>
@@ -92,7 +92,7 @@
               </ng-template>
             </div>
 
-            <div *ngIf="movie.crew.length > 0">
+            <div *ngIf="movie.crew != undefined">
               <h4>Crew</h4>
               <div *ngIf="fullCrew then fullCrewList else shortCrewList"></div>
               <ng-template #shortCrewList>

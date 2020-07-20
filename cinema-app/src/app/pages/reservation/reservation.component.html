@@ -101,11 +101,14 @@
     </mat-step>
 
     <mat-step label="Confirm selection" [editable]="false">
-      <p>You've selected the following seats for {{selectedDay}}:</p>
+      <p>You selected the following seats for {{selectedDay}}:</p>
 <!--      TODO: merita sa folosesc mat-list daca imi adauga prea mult default styling? (spatii prea mari int linii)-->
-      <p *ngFor="let seat of selectedSeats"> - Row {{seat.row + 1}}, Seat nr. {{seat.column + 1}}</p>
-<!--      TODO: pun un x si un buton de pay -->
-      <button mat-button matStepperPrevious>Back</button>
+      <p *ngFor="let seat of selectedSeats">
+        - Row {{seat.row + 1}}, Seat nr. {{seat.column + 1}}
+      </p>
+      <button mat-button matStepperPrevious>
+        Modify
+      </button>
     </mat-step>
 
   </mat-vertical-stepper>
@@ -114,10 +117,10 @@
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button cdkFocusInitial
+  <button mat-raised-button cdkFocusInitial color="warn" id="pay-button"
           [mat-dialog-close]="true"
-          *ngIf="selectedSeats.length != 0"
-          (click)="bookTickets()">
-    Book
+          *ngIf="stepper.selectedIndex === 2"
+          (click)="bookSeats()">
+    Pay & Book
   </button>
 </mat-dialog-actions>

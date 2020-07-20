@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Movie } from '../../shared/models/movie.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Seat } from '../../shared/models/seat.model';
+import { ReservationService } from '../../shared/services/reservation.service';
 
 @Component({
   selector: 'cmb-reservation',
@@ -16,12 +17,14 @@ export class ReservationComponent implements OnInit {
   cinemaHeight: number;
   cinemaConfig: string[][];
   selectedSeats: Seat[];
+  occupiedSeats: Seat[];
   availableDays: number[];
   days: string[];
   selectedDay: string;
 
 
   constructor(
+    public reservationService: ReservationService,
     public dialogRef: MatDialogRef<ReservationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Movie,
   ) {
@@ -36,17 +39,33 @@ export class ReservationComponent implements OnInit {
     this.cinemaHeight = 7;
     this.availableDays = [0, 1, 3, 6];
 
+    this.createCinemaConfig();
+  }
+
+  ngOnInit(): void {
+    this.getOccupiedSeats();
+  }
+
+  createCinemaConfig(): void {
     for (let i = 0; i < this.cinemaHeight; i++) {
       this.cinemaConfig.push([]);
       for (let j = 0; j < this.cinemaWidth; j++) {
         this.cinemaConfig[i].push('free');
       }
     }
-    console.log(this.cinemaConfig);
+    // console.log(this.cinemaConfig);
   }
 
-  ngOnInit(): void {
-
+  getOccupiedSeats(): void {
+    this.reservationService
+      .getBookedSeats()
+      .subscribe(
+        seats => {
+          seats.forEach(seat => {
+            this.cinemaConfig[seat.row][seat.column] = 'occupied';
+          });
+        }
+      );
   }
 
   selectSeat(row: number, column: number): void {
@@ -61,8 +80,8 @@ export class ReservationComponent implements OnInit {
     }
   }
 
-  bookTickets(): void {
-    // TODO: make it do something
+  bookSeats(): void {
+    this.reservationService.bookSeats(this.selectedSeats);
   }
 
 }

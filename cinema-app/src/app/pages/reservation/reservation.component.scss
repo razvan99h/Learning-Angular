@@ -31,10 +31,6 @@
       user-select: none;
       cursor: pointer;
     }
-    .seat:hover {
-      transition: 0.2s;
-      filter: brightness(85%);
-    }
 
     .free {
       background-color: green;
@@ -46,6 +42,12 @@
 
     .occupied {
       background-color: red;
+      cursor: default;
+    }
+
+    .free:hover, .selected:hover {
+      transition: 0.2s;
+      filter: brightness(85%);
     }
   }
 }
@@ -72,6 +74,11 @@ mat-dialog-content {
 .mat-button[disabled] {
   color: rgba(255, 255, 255, 0.3);
 }
+
+#pay-button {
+  font-weight: bold;
+}
+
 
 //.flex-container-seats {
 //  display: flex;
