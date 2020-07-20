@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Movie } from '../../shared/models/movie.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Seat } from '../../shared/models/seat.model';
 import { ReservationService } from '../../shared/services/reservation.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cmb-reservation',
@@ -11,7 +12,7 @@ import { ReservationService } from '../../shared/services/reservation.service';
 })
 // TODO: read about encapsulation
 
-export class ReservationComponent implements OnInit {
+export class ReservationComponent implements OnInit, OnDestroy {
   movie: Movie;
   cinemaWidth: number;
   cinemaHeight: number;
@@ -21,6 +22,7 @@ export class ReservationComponent implements OnInit {
   availableDays: number[];
   days: string[];
   selectedDay: string;
+  private bookedSeatsSubscription: Subscription;
 
 
   constructor(
@@ -53,14 +55,24 @@ export class ReservationComponent implements OnInit {
         this.cinemaConfig[i].push('free');
       }
     }
-    // console.log(this.cinemaConfig);
+  }
+
+  freeCinemaConfig(): void {
+    for (let i = 0; i < this.cinemaHeight; i++) {
+      for (let j = 0; j < this.cinemaWidth; j++) {
+        this.cinemaConfig[i][j] = 'free';
+      }
+    }
   }
 
   getOccupiedSeats(): void {
-    this.reservationService
+    this.bookedSeatsSubscription = this.reservationService
       .getBookedSeats()
       .subscribe(
         seats => {
+          this.cinemaConfig = this.cinemaConfig.map(row =>
+            row.map(seatState => 'free')
+          );
           seats.forEach(seat => {
             this.cinemaConfig[seat.row][seat.column] = 'occupied';
           });
@@ -84,4 +96,7 @@ export class ReservationComponent implements OnInit {
     this.reservationService.bookSeats(this.selectedSeats);
   }
 
+  ngOnDestroy(): void {
+    this.bookedSeatsSubscription.unsubscribe();
+  }
 }

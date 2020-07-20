@@ -2,15 +2,29 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { MovieDetailsComponent } from './pages/movie-details/movie-details.component';
+import { MovieDetailsResolverService } from './pages/movie-details/movie-details-resolver.service';
+import { PageUnavailableComponent } from './shared/components/page-unavailable/page-unavailable.component';
 
 
 const routes: Routes = [
-  { path: '', component: HomepageComponent },
-  { path: 'movie/:id', component: MovieDetailsComponent, children: [] },
-  // TODO: citesc despre route resolve - ca sa dea pagina MovieDetailsComponent load doar cand are datele
+  {
+    path: '',
+    component: HomepageComponent
+  },
+  {
+    path: 'unavailable',
+    component: PageUnavailableComponent,
+  },
+  {
+    path: 'movie/:id',
+    component: MovieDetailsComponent,
+    children: [],
+    resolve: {
+      movie: MovieDetailsResolverService
+    }
+  },
 ];
-// TODO: citesc despre guard-uri
-// TODO: { path: '**', component: PageNotFound }
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

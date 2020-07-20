@@ -8,11 +8,16 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { PageUnavailableComponent } from './components/page-unavailable/page-unavailable.component';
+import { RouterModule } from '@angular/router';
 
 
 
 @NgModule({
-  declarations: [NavComponent],
+  declarations: [
+    NavComponent,
+    PageUnavailableComponent
+  ],
   exports: [
     NavComponent
   ],
@@ -25,6 +30,7 @@ import { MatListModule } from '@angular/material/list';
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
+    RouterModule,
   ]
 })
 export class SharedModule { }

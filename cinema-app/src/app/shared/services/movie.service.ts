@@ -6,7 +6,7 @@ import { Movie, MoviesTMDB, MovieTMDB } from '../models/movie.model';
 
 import { environment } from '../../../environments/environment';
 
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 
 import { map } from 'rxjs/operators';
 import { VideosTMDB, VideoTMDB, VideoYoutube } from '../models/video.model';
@@ -107,8 +107,15 @@ export class MovieService {
       );
   }
 
+  getMovieData(movieID: number): Observable<any[]> {
+    const response1 = this.getVideoYoutube(movieID);
+    const response2 = this.getImages(movieID);
+    const response3 = this.getPersons(movieID);
+    return forkJoin([response1, response2, response3]);
+  }
+
   getAllGenres(): Observable<Map<number, string>> {
-    console.log(`getAllGenres`);
+    console.log(`getAllGenres <<<`);
     const url = environment.GENRES_LINK + '?api_key=' + environment.API_KEY;
     return this.httpClient
       .get<GenresTMDB>(url)

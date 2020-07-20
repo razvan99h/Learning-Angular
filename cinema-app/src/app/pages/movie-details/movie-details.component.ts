@@ -49,34 +49,13 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const movieID = Number(this.route.snapshot.paramMap.get('id'));
-    this.movieService
-      .getMovie(movieID)
-      .subscribe(movie => {
-        // this.changeDetectorRef.markForCheck()
-        this.movieStatus = 'available';
-        this.movie = movie;
-        // TODO: read about fork join - pentru o metoda de getMovie data in loc de 3 call-uri
-        this.movieService
-          .getVideoYoutube(this.movie.id)
-          .subscribe(videoYoutube => {
-            this.movie.videoYoutube = videoYoutube;
-            this.youtubeVideo = this.transform(this.movie.videoYoutube.link);
-          });
-        this.movieService
-          .getImages(this.movie.id)
-          .subscribe(images => {
-            this.movie.images = images;
-          });
-        this.movieService
-          .getPersons(this.movie.id)
-          .subscribe(persons => {
-            this.movie.cast = persons.cast;
-            this.movie.crew = persons.crew;
-          });
+    // this.changeDetectorRef.markForCheck() // -> for not having iframe flicker issue because of change detection
 
-      }, () => {
-        this.movieStatus = 'unavailable';
+    // fetch data through MovieDetailsResolver
+    this.route.data
+      .subscribe((data: { movie: Movie }) => {
+        this.youtubeVideo = this.transform(data.movie.videoYoutube.link);
+        this.movie = data.movie;
       });
 
     // this.subscriptionMovieDetails = this.sharedService.getClickEventMovieDetails().subscribe(id => {
@@ -109,7 +88,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      // console.log(`Dialog result: ${result}`);
     });
   }
 

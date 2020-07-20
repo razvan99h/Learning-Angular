@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Seat } from '../models/seat.model';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
 
@@ -15,12 +15,23 @@ export class ReservationService {
   }
 
   getBookedSeats(): Observable<Seat[]> {
-    return this.db.list<Seat>('reservations').valueChanges();
+    console.log(`getBookedSeats <<< `);
+    return this.db
+      .list<Seat>('reservations')
+      .valueChanges()
+      .pipe(
+        map(seats => {
+          console.log(`getBookedSeats >>> seats: `, seats);
+          return seats;
+        })
+      );
   }
 
   bookSeats(seats: Seat[]): void {
+    console.log(`bookSeats <<< seats: `, seats);
     seats.forEach(seat => {
       this.db.list('reservations').push(seat);
     });
+    console.log(`bookSeats >>>`);
   }
 }

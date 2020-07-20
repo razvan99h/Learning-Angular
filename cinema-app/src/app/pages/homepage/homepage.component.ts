@@ -48,7 +48,7 @@ export class HomepageComponent implements OnInit {
             this.movies = movies;
             // TODO: citesc despre merge request
           });
-        console.log(genres);
+        // console.log(genres);
       });
 
   }
