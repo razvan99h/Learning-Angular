@@ -57,3 +57,40 @@
   }
 
 }
+
+
+.custom-image-modal {
+  mat-dialog-container {
+    background-color: mat-color($my-app-primary, default);
+    padding: 12px;
+    color: white;
+
+    button {
+      box-shadow: none !important;
+    }
+    overflow: hidden;
+
+    .mat-button[disabled][disabled] {
+      color: mat-color($my-app-primary, 600)
+    }
+
+    .mat-button[disabled][disabled]:hover {
+      background-color: mat-color($my-app-primary, 900);
+    }
+
+    button:hover {
+      transition: 0.2s;
+      background-color: mat-color($my-app-primary, 800);
+    }
+  }
+
+  mat-dialog-actions {
+    padding-top: 0;
+    justify-content: space-between;
+    align-items: end;
+  }
+
+  .mat-ripple {
+    visibility: hidden;
+  }
+}

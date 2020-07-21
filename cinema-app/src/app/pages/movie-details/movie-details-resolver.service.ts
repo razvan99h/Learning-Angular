@@ -26,20 +26,23 @@ export class MovieDetailsResolverService implements Resolve<Movie> {
         mergeMap(movie => {
           const movieToShow = movie;
           if (movie) {
-            this.movieService
+            return this.movieService
               .getMovieData(movieID)
-              .subscribe(response => {
-                const videoYoutube = response[0];
-                const images = response[1];
-                const persons = response[2];
+              .pipe(
+                // we create an Observable<Movie> from the first call (1) of the .getMovieData()'s subscribe
+                take(1),
+                mergeMap(response => {
+                  const videoYoutube = response[0];
+                  const images = response[1];
+                  const persons = response[2];
 
-                movieToShow.videoYoutube = videoYoutube;
-                // this.youtubeVideo = this.transform(this.movie.videoYoutube.link);
-                movieToShow.images = images;
-                movieToShow.cast = persons.cast;
-                movieToShow.crew = persons.crew;
-              });
-            return of(movieToShow);
+                  movieToShow.videoYoutube = videoYoutube;
+                  movieToShow.images = images;
+                  movieToShow.cast = persons.cast;
+                  movieToShow.crew = persons.crew;
+                  return of(movieToShow);
+                })
+              );
           } else {
             // movie not found
             this.router.navigate(['unavailable']);
