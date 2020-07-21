@@ -19,12 +19,17 @@ export class Image {
   width: number;
   aspectRatio: number;
 
-  constructor(imageTMDB?: ImageTMDB, imageSize: string = '/w300') {
+  constructor(imageTMDB?: ImageTMDB, imageSize: string = 'w300') {
     if (imageSize != null) {
-      this.filePath = environment.IMAGE_LINK + imageSize + imageTMDB.file_path;
+      this.filePath = environment.IMAGE_LINK + '/' + imageSize + imageTMDB.file_path;
       this.height = imageTMDB.height;
       this.width = imageTMDB.width;
       this.aspectRatio = imageTMDB.aspect_ratio;
     }
+  }
+
+  setImageSize(imageSize: string): void {
+    const fileKey = this.filePath.slice(this.filePath.lastIndexOf('/'));
+    this.filePath = environment.IMAGE_LINK + '/' + imageSize + fileKey;
   }
 }

@@ -32,7 +32,7 @@ export class MovieService {
       .get<MovieTMDB>(url)
       .pipe(
         map(movieTMDB => {
-          const movie = new Movie(movieTMDB);
+          const movie = new Movie(movieTMDB, 'w500');
           console.log('getMovie >>> movie = ', movie);
           return movie;
         })

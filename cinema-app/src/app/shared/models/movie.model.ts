@@ -46,7 +46,7 @@ export class Movie {
   productionCompanies: Company[];
 
 
-  constructor(movieTMDB?: MovieTMDB, imageSize: string = '/w300') {
+  constructor(movieTMDB?: MovieTMDB, imageSize: string = 'w300') {
     if (movieTMDB != null) {
       this.id = movieTMDB.id;
       this.title = movieTMDB.title;
@@ -62,7 +62,7 @@ export class Movie {
       if (movieTMDB.poster_path === null) {
         this.posterPath = './assets/img/default_poster.jpg';
       } else {
-        this.posterPath = environment.IMAGE_LINK + imageSize + movieTMDB.poster_path;
+        this.posterPath = environment.IMAGE_LINK + '/' + imageSize + movieTMDB.poster_path;
       }
       this.videoYoutube = new VideoYoutube();
       if (movieTMDB.production_companies != null) {

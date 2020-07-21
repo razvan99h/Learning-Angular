@@ -8,7 +8,7 @@
       <div class="line"></div>
     </header>
 
-    <div class="flex-container-details">
+    <section class="flex-container-details">
       <!--          TODO: cum sa fac wrap la elemente si sa dispara linia daca se afla in capat?-->
       <div id="details1" *ngIf="movie.runtime > 0">
         <mat-icon>schedule</mat-icon>
@@ -35,23 +35,23 @@
         <mat-icon>star</mat-icon>
         {{movie.voteAverage}}
       </div>
-    </div>
+    </section>
 
-    <div class="flex-container-img-video">
+    <section class="flex-container-img-video">
       <div class="flex-container-reservation">
         <img class="main-img" src="{{movie.posterPath}}" alt="Movie poster">
-        <button mat-raised-button color="warn" (click)="openDialog()">Book this movie</button>
+        <button mat-raised-button color="warn" (click)="openReservationDialog()">Book this movie</button>
       </div>
       <iframe allowfullscreen [src]="youtubeVideo"></iframe>
-    </div>
+    </section>
 
-    <div class="flex-container-text">
+    <section class="flex-container-text">
       <div class="text-left">
         <div *ngIf="movie.cast !== undefined">
           <h4>Cast</h4>
           <!--              TODO: nu e mai bine sa fi scris ngIf la cele 2 div-uri: fullCastList, shortCastList?-->
           <div *ngIf="fullCast then fullCastList else shortCastList"></div>
-          <ng-template #fullCastList>
+          <ng-template #shortCastList>
             <mat-list>
               <mat-list-item *ngFor="let person of movie.cast | slice:0:4">
                 <img matListAvatar src="{{person.profilePath}}" alt="...">
@@ -66,7 +66,7 @@
               <a (click)="fullCast = ! fullCast">Full cast</a>
             </div>
           </ng-template>
-          <ng-template #shortCastList>
+          <ng-template #fullCastList>
             <mat-list>
               <mat-list-item *ngFor="let person of movie.cast">
                 <img matListAvatar src="{{person.profilePath}}" alt="...">
@@ -152,8 +152,21 @@
         </div>
       </div>
 
+    </section>
 
-    </div>
+    <section *ngIf="movie.images.length > 0" class="images">
+      <h4>Images</h4>
+      <p>Click on an image to expand it</p>
+      <div class="flex-container-images">
+        <div class="image-wrapper"
+             *ngFor="let image of movie.images; index as i"
+             [ngStyle]="{'width': (300 * image.aspectRatio).toString() + 'px'}">
+          <img alt=""
+               [src]="image.filePath"
+               (click)="openImageDialog(movie.images, i)">
+        </div>
+      </div>
+    </section>
 
   </div>
 </div>

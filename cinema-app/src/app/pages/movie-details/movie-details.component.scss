@@ -215,4 +215,34 @@ ng-template {
 
 }
 
+.images {
+  h4 {
+    color: white;
+    font-size: 24px;
+  }
+
+  p {
+    color: $light-gray;
+  }
+
+  .flex-container-images {
+    height: 215px;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    .image-wrapper {
+      height: 200px;
+
+      img {
+        height: 192px;
+        border: 4px solid white;
+      }
+    }
+  }
+}
+
+
 

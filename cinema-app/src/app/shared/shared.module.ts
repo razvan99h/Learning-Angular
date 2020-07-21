@@ -10,13 +10,16 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { PageUnavailableComponent } from './components/page-unavailable/page-unavailable.component';
 import { RouterModule } from '@angular/router';
+import { ImageDialogComponent } from './components/image-dialog/image-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
 @NgModule({
   declarations: [
     NavComponent,
-    PageUnavailableComponent
+    PageUnavailableComponent,
+    ImageDialogComponent
   ],
   exports: [
     NavComponent
@@ -31,6 +34,7 @@ import { RouterModule } from '@angular/router';
     MatSidenavModule,
     MatListModule,
     RouterModule,
+    MatDialogModule,
   ]
 })
 export class SharedModule { }

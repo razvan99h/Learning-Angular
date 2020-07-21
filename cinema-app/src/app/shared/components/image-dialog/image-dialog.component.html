@@ -1,0 +1,21 @@
+<mat-dialog-content class="mat-typography">
+  <img alt="" [src]="images[currentImage].filePath">
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div *ngIf="images.length > 1">
+    <button mat-button
+            [disabled]="! (currentImage > 0)"
+            (click)="currentImage = currentImage - 1">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <button mat-button
+            [disabled]="! (currentImage < images.length - 1)"
+            (click)="currentImage = currentImage + 1">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+
+  <button mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-dialog-actions>

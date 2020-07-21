@@ -10,6 +10,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Person } from '../../shared/models/person.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ReservationComponent } from '../reservation/reservation.component';
+import { Image } from '../../shared/models/image.model';
+import { ImageDialogComponent } from '../../shared/components/image-dialog/image-dialog.component';
 
 @Component({
   selector: 'cmb-movie-details',
@@ -81,14 +83,26 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     return this.sortCrew(crew.filter(person => person.job === 'Director'));
   }
 
-  openDialog(): void {
+  openReservationDialog(): void {
     const dialogRef = this.dialog.open(ReservationComponent, {
       data: this.movie,
-      panelClass: 'custom-modal'
+      panelClass: 'custom-modal',
+      maxWidth: '90vw'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       // console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openImageDialog(images: Image[], imageIndex: number): void {
+    const dialogRef = this.dialog.open(ImageDialogComponent, {
+      data: {
+        imageList: images,
+        currentImage: imageIndex
+      },
+      panelClass: 'custom-image-modal',
+      maxWidth: '95vw'
     });
   }
 

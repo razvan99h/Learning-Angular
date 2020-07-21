@@ -1,0 +1,17 @@
+img {
+  width: 100%;
+  height: 100%;
+}
+mat-dialog-content {
+  max-height: 1000px;
+}
+
+.mat-dialog-container {
+  padding: 12px;
+}
+
+@media (min-width: 768px) {
+  img {
+    max-width: 80vw;
+  }
+}
