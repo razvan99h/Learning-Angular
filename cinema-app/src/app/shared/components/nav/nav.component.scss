@@ -31,12 +31,26 @@
 }
 
 mat-toolbar {
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.6);
+
   a {
+    font-size: 16px;
     text-decoration: none;
     color: inherit;
-    margin: 0 15px 0 0;
+    margin: 0 7px 0 0;
+    padding: 27px 10px;
+
+    mat-icon {
+      margin-top: -3px;
+    }
   }
-  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.6);
+
+  a:hover {
+    cursor: pointer;
+    transition: 0.2s;
+    background-color: mat-color($my-app-primary, 800);
+  }
+
 }
 
 mat-icon {
@@ -77,3 +91,20 @@ mat-sidenav-content::-webkit-scrollbar {
 .close-button {
   cursor: pointer;
 }
+
+.mat-drawer {
+  background-color: mat-color($my-app-primary, 800);
+
+  .mat-list-item {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .mat-list-item:hover {
+    background: none;
+  }
+
+  .mat-ripple {
+    visibility: hidden;
+  }
+}
+

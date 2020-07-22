@@ -12,24 +12,6 @@ ng-template {
   color: $light-gray;
 }
 
-.container {
-  margin: 0 auto;
-  max-width: 1200px;
-}
-
-.container-big {
-  padding: 0 5%;
-}
-
-.background {
-  background-color: rgba(20, 20, 20, 0.8);
-  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.6);
-  margin: 0;
-  padding: 30px 50px;
-  height: 100%;
-}
-
-
 .line {
   background-color: $line-gray;
   margin-top: 15px;
@@ -94,7 +76,7 @@ ng-template {
 
     button {
       margin-top: 15px;
-      font-weight: bold;
+      font-weight: 500;
     }
   }
 

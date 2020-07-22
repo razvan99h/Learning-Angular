@@ -20,6 +20,30 @@ body {
   font-size: 25px;
 }
 
+.container {
+  margin: 0 auto;
+  max-width: 1200px;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.container-big {
+  padding: 0 5%;
+}
+
+.background {
+  flex: 1 1 auto;
+  background-color: rgba(20, 20, 20, 0.8);
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.6);
+  margin: 0;
+  padding: 30px 50px;
+}
+
+.cdk-global-scrollblock {
+  overflow-y: hidden;
+}
+
 ///* hide scrollbar */
 //mat-dialog-content {
 //  scrollbar-width: none;

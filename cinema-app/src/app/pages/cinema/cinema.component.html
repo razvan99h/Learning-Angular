@@ -1,0 +1,5 @@
+<div class="container" [ngClass]="{'container-big': !(isHandset$ | async)}">
+  <div class="background">
+    <router-outlet></router-outlet>
+  </div>
+</div>

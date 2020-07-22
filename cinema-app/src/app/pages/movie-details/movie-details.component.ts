@@ -31,7 +31,6 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   constructor(
     // private changeDetectorRef: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private breakpointObserver: BreakpointObserver,
     private movieService: MovieService,
     private sanitizer: DomSanitizer,
     private sharedService: SharedService,
@@ -42,12 +41,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     this.movieStatus = 'default';
     this.fullCrew = false;
     this.fullCast = false;
-    this.isHandset$ = this.breakpointObserver
-      .observe(Breakpoints.Handset)
-      .pipe(
-        map(result => result.matches),
-        shareReplay()
-      );
+    this.isHandset$ = this.sharedService.isHandset$;
   }
 
   ngOnInit(): void {
@@ -90,9 +84,9 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
       maxWidth: '90vw'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      // console.log(`Dialog result: ${result}`);
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log(`Dialog result: ${result}`);
+    // });
   }
 
   openImageDialog(images: Image[], imageIndex: number): void {

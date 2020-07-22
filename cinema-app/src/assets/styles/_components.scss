@@ -2,11 +2,19 @@
   mat-dialog-container, mat-vertical-stepper {
     background-color: mat-color($my-app-primary, default);
     color: white;
+
     button {
       box-shadow: none !important;
-
     }
+
     overflow: hidden;
+  }
+
+  button {
+    mat-icon {
+      margin-top: -3px;
+      margin-right: 2px;
+    }
   }
 
   .mat-step-header .mat-step-label.mat-step-label-active, mat-step-header {
@@ -42,18 +50,18 @@
   .mat-radio-input {
     visibility: hidden;
   }
-
-  .mat-ripple {
-    visibility: hidden;
-  }
+  // Tine de tema indigo-pink, de aia nu mergea
+  //.mat-ripple {
+  //  visibility: hidden;
+  //}
 
   button:hover {
     transition: 0.2s;
     background-color: mat-color($my-app-primary, 800);
   }
 
-  #pay-button:hover {
-    background-color: mat-color($my-app-warn, 500);
+  .main-button:hover {
+    background-color: mat-color($my-app-accent, 500);
   }
 
 }
@@ -68,6 +76,7 @@
     button {
       box-shadow: none !important;
     }
+
     overflow: hidden;
 
     .mat-button[disabled][disabled] {
@@ -88,9 +97,5 @@
     padding-top: 0;
     justify-content: space-between;
     align-items: end;
-  }
-
-  .mat-ripple {
-    visibility: hidden;
   }
 }

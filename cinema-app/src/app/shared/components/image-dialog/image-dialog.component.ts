@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Image } from '../../models/image.model';
 
 @Component({
@@ -12,7 +12,6 @@ export class ImageDialogComponent implements OnInit {
   currentImage: number;
 
   constructor(
-    public dialogRef: MatDialogRef<ImageDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { imageList: Image[], currentImage: number },
   ) {
     this.images = data.imageList;

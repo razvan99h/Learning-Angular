@@ -1,10 +1,8 @@
 <h2 mat-dialog-title>Book tickets for {{movie.title}}</h2>
 
-<mat-dialog-content class="mat-typography">
-  <div class="yellow=theme">
+<mat-dialog-content>
 
-  </div>
-  <mat-vertical-stepper [linear]="true"  #stepper>
+  <mat-vertical-stepper [linear]="true" #stepper>
 
     <mat-step label="Choose dates" state="phone"
               [editable]="true"
@@ -14,7 +12,7 @@
       <mat-radio-group
         aria-labelledby="day-radio-group-label"
         class="day-radio-group"
-        color="warn"
+        color="accent"
         [(ngModel)]="selectedDay">
         <mat-radio-button
           class="day-radio-button"
@@ -27,8 +25,8 @@
       </mat-radio-group>
 
       <div>
-<!--        TODO: read about === and === si schimb peste tot === in === -->
-        <button mat-button matStepperNext type="button" [disabled]="selectedDay === ''" >
+        <!--        TODO: read about === and === si schimb peste tot === in === -->
+        <button mat-button matStepperNext type="button" [disabled]="selectedDay === ''">
           <span *ngIf="selectedDay === ''" class="italic">
             Select a day in order to continue
           </span>
@@ -101,12 +99,13 @@
     </mat-step>
 
     <mat-step label="Confirm selection" [editable]="false">
-      <p>You selected the following seats for {{selectedDay}}:</p>
-<!--      TODO: merita sa folosesc mat-list daca imi adauga prea mult default styling? (spatii prea mari int linii)-->
+      <p>You have the following tickets for {{selectedDay}}:</p>
+      <!--      TODO: merita sa folosesc mat-list daca imi adauga prea mult default styling? (spatii prea mari int linii)-->
       <p *ngFor="let seat of selectedSeats">
         - Row {{seat.row + 1}}, Seat nr. {{seat.column + 1}}
       </p>
       <button mat-button matStepperPrevious>
+        <mat-icon>create</mat-icon>
         Modify
       </button>
     </mat-step>
@@ -116,11 +115,15 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-raised-button cdkFocusInitial color="warn" id="pay-button"
+  <button mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+    Cancel
+  </button>
+  <button mat-raised-button cdkFocusInitial color="accent" class="main-button"
           [mat-dialog-close]="true"
           *ngIf="stepper.selectedIndex === 2"
           (click)="bookSeats()">
+    <mat-icon>shopping_cart</mat-icon>
     Pay & Book
   </button>
 </mat-dialog-actions>

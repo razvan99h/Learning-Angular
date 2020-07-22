@@ -20,6 +20,7 @@
     margin-bottom: 10px;
 
     .seat {
+      font-size: 16px;
       width: 40px;
       height: 40px;
       min-width: 40px;
@@ -74,11 +75,6 @@ mat-dialog-content {
 .mat-button[disabled] {
   color: rgba(255, 255, 255, 0.3);
 }
-
-#pay-button {
-  font-weight: bold;
-}
-
 
 //.flex-container-seats {
 //  display: flex;

@@ -5,8 +5,8 @@ import { Observable, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class SharedService {
-  // TODO: cum e mai bine sa trimit: id prin link sau asa?
   private sourceMovieDetails = new Subject<number>();
+  isHandset$: Observable<boolean>;
 
   getClickEventMovieDetails(): Observable<number> {
     return this.sourceMovieDetails.asObservable();

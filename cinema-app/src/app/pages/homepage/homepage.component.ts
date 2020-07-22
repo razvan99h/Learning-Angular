@@ -34,6 +34,7 @@ export class HomepageComponent implements OnInit {
         map(result => result.matches),
         shareReplay()
       );
+    this.sharedService.isHandset$ = this.isHandset$;
   }
 
   ngOnInit(): void {

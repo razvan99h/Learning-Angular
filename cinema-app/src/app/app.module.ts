@@ -30,6 +30,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import { CreateCinemaComponent } from './pages/cinema/create-cinema/create-cinema.component';
+import { CinemaListComponent } from './pages/cinema/cinema-list/cinema-list.component';
+import { CinemaComponent } from './pages/cinema/cinema.component';
 
 
 @NgModule({
@@ -38,6 +41,9 @@ import { MatRadioModule } from '@angular/material/radio';
     HomepageComponent,
     MovieDetailsComponent,
     ReservationComponent,
+    CreateCinemaComponent,
+    CinemaListComponent,
+    CinemaComponent,
   ],
   imports: [
     BrowserModule,

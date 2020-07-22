@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>Create a new cinema room</h2>
+
+<mat-dialog-content class="mat-typography">
+
+  <form class="create-form">
+
+    <mat-form-field>
+      <mat-label>Number of rows</mat-label>
+      <input matInput placeholder=""
+             [formControl]="numberFormControl"
+             [errorStateMatcher]="matcher">
+      <mat-hint>Specify a number between 1 and 100</mat-hint>
+      <mat-error *ngIf="(numberFormControl.hasError('min') || numberFormControl.hasError('max'))
+      && !numberFormControl.hasError('required')">
+        Please specify a number between 1 and 100!
+      </mat-error>
+      <mat-error *ngIf="numberFormControl.hasError('required')">
+        Number of rows is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+    Cancel
+  </button>
+  <button mat-raised-button mat-dialog-close cdkFocusInitial color="accent" class="main-button">
+    <mat-icon>save</mat-icon>
+    Save
+  </button>
+</mat-dialog-actions>
+
+
+<!--<header>-->
+<!--  <h1 [ngClass]="{'h1-small': (isHandset$ | async), 'h1-big': !(isHandset$ | async)}">-->
+<!--    Create a new cinema room-->
+<!--  </h1>-->
+<!--</header>-->

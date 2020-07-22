@@ -18,7 +18,6 @@ export class ReservationComponent implements OnInit, OnDestroy {
   cinemaHeight: number;
   cinemaConfig: string[][];
   selectedSeats: Seat[];
-  occupiedSeats: Seat[];
   availableDays: number[];
   days: string[];
   selectedDay: string;
@@ -53,14 +52,6 @@ export class ReservationComponent implements OnInit, OnDestroy {
       this.cinemaConfig.push([]);
       for (let j = 0; j < this.cinemaWidth; j++) {
         this.cinemaConfig[i].push('free');
-      }
-    }
-  }
-
-  freeCinemaConfig(): void {
-    for (let i = 0; i < this.cinemaHeight; i++) {
-      for (let j = 0; j < this.cinemaWidth; j++) {
-        this.cinemaConfig[i][j] = 'free';
       }
     }
   }
