@@ -2,25 +2,90 @@
 
 <mat-dialog-content class="mat-typography">
 
-  <form class="create-form">
+  <form class="create-form" autocomplete="off">
 
     <mat-form-field>
-      <mat-label>Number of rows</mat-label>
+      <mat-label>Name of the room</mat-label>
       <input matInput placeholder=""
-             [formControl]="numberFormControl"
+             [formControl]="nameFC"
              [errorStateMatcher]="matcher">
-      <mat-hint>Specify a number between 1 and 100</mat-hint>
-      <mat-error *ngIf="(numberFormControl.hasError('min') || numberFormControl.hasError('max'))
-      && !numberFormControl.hasError('required')">
-        Please specify a number between 1 and 100!
+      <mat-hint>Less than 100 characters</mat-hint>
+      <mat-error *ngIf="nameFC.hasError('maxLength')">
+        Please specify a name with less than 100 characters!
       </mat-error>
-      <mat-error *ngIf="numberFormControl.hasError('required')">
-        Number of rows is <strong>required</strong>
+      <mat-error *ngIf="nameFC.hasError('required')">
+        Name of the room is <strong>required!</strong>
       </mat-error>
     </mat-form-field>
 
+    <mat-form-field>
+      <mat-label>Number of rows</mat-label>
+      <input type="number" matInput placeholder=""
+             [formControl]="rowFC"
+             [(ngModel)]="cinemaHeight"
+             [errorStateMatcher]="matcher">
+      <mat-hint>Between 1 and 100</mat-hint>
+      <mat-error *ngIf="(rowFC.hasError('min') || rowFC.hasError('max') || rowFC.hasError('pattern'))
+      && !rowFC.hasError('required')">
+        Please specify a number between 1 and 100!
+      </mat-error>
+      <mat-error *ngIf="rowFC.hasError('required')">
+        Number of rows is <strong>required!</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Number of seats / row</mat-label>
+      <input type="number" matInput placeholder=""
+             [formControl]="colFC"
+             [(ngModel)]="cinemaWidth"
+             [errorStateMatcher]="matcher">
+      <mat-hint>Between 1 and 100</mat-hint>
+      <mat-error *ngIf="(colFC.hasError('min') || colFC.hasError('max') || colFC.hasError('pattern'))
+      && !colFC.hasError('required')">
+        Please specify a number between 1 and 100!
+      </mat-error>
+      <mat-error *ngIf="colFC.hasError('required')">
+        Number of seats / row is <strong>required!</strong>
+      </mat-error>
+    </mat-form-field>
 
   </form>
+
+  <div class="button-row">
+    <button mat-button class="view-button"
+            *ngIf="rowFC.valid && colFC.valid && showConfig === false"
+            (click)="expandConfig()">
+      <mat-icon>view_comfy</mat-icon>
+      View configuration
+    </button>
+    <button mat-button class="view-button"
+            *ngIf="showConfig === true"
+            (click)="hideConfig()">
+      <mat-icon>view_comfy</mat-icon>
+      Hide configuration
+    </button>
+    <button mat-button class="view-button"
+            *ngIf="showConfig === true"
+            (click)="createCinemaConfig()">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+  </div>
+
+  <div *ngIf="showConfig">
+    <div class="screen">
+      Screen
+    </div>
+    <div class="flex-container-seats">
+      <div class="flex-row" *ngFor="let configRow of cinemaConfig; index as row">
+        <div class="seat" *ngFor="let seat of configRow; index as column">
+          R{{row + 1}} S{{column + 1}}
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 </mat-dialog-content>
 
@@ -29,7 +94,9 @@
     <mat-icon>close</mat-icon>
     Cancel
   </button>
-  <button mat-raised-button mat-dialog-close cdkFocusInitial color="accent" class="main-button">
+  <button mat-raised-button mat-dialog-close cdkFocusInitial color="accent" class="main-button"
+          *ngIf="this.colFC.valid && this.rowFC.valid && this.nameFC.valid"
+          (click)="saveConfig()">
     <mat-icon>save</mat-icon>
     Save
   </button>

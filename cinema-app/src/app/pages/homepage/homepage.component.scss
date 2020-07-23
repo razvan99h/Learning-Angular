@@ -9,15 +9,6 @@ h1 {
   text-align: center;
 }
 
-.example-card {
-  max-width: 400px;
-}
-
-.example-header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-size: cover;
-}
-
 .main-container {
   padding: 0 5%;
   margin: 0 auto;
@@ -65,7 +56,7 @@ mat-card {
       mat-icon {
         font-size: 30px;
         margin: 3px;
-        color: $omniplex-yellow;
+        color: $accent-color;
         vertical-align: top;
       }
 
@@ -87,7 +78,7 @@ mat-card {
 mat-card:hover {
   .crop-container {
     transition: 0.7s;
-    border: 4px solid $omniplex-yellow;
+    border: 4px solid $accent-color;
 
     .hover {
       opacity: 1;

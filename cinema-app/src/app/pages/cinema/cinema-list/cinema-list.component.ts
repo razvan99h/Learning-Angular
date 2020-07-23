@@ -1,7 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SharedService } from '../../../shared/services/shared.service';
-import { ReservationComponent } from '../../reservation/reservation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateCinemaComponent } from '../create-cinema/create-cinema.component';
 
@@ -26,7 +25,8 @@ export class CinemaListComponent implements OnInit {
   openCreateDialog(): void {
     const dialogRef = this.dialog.open(CreateCinemaComponent, {
       panelClass: 'custom-modal',
-      maxWidth: '90vw'
+      maxWidth: '90vw',
+      autoFocus: false
     });
 
     // dialogRef.afterClosed().subscribe(result => {

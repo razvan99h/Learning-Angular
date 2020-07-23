@@ -1,4 +1,4 @@
-@import "./src/styles.scss";
+@import "./src/assets/styles/variables";
 
 .sidenav-container {
   height: 100%;
@@ -48,7 +48,7 @@ mat-toolbar {
   a:hover {
     cursor: pointer;
     transition: 0.2s;
-    background-color: mat-color($my-app-primary, 800);
+    background-color: map-get($primary-map, 800);
   }
 
 }
@@ -93,7 +93,7 @@ mat-sidenav-content::-webkit-scrollbar {
 }
 
 .mat-drawer {
-  background-color: mat-color($my-app-primary, 800);
+  background-color: map-get($primary-map, 800);
 
   .mat-list-item {
     color: rgba(255, 255, 255, 0.85);
