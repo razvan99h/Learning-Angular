@@ -7,25 +7,15 @@
 <section>
   <mat-list>
 
-    <mat-divider></mat-divider>
-    <mat-list-item >
-      <mat-icon matListIcon>movie</mat-icon>
-      <h4 matLine>Room1</h4>
-<!--      <p matLine class="demo-2"> plm </p>-->
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <mat-list-item >
-      <mat-icon matListIcon>movie</mat-icon>
-      <h4 matLine>Room2</h4>
-<!--      <p matLine class="demo-2"> plm </p>-->
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <mat-list-item >
-      <mat-icon matListIcon>movie</mat-icon>
-      <h4 matLine>Room3</h4>
-<!--      <p matLine class="demo-2"> plm </p>-->
-    </mat-list-item>
-    <mat-divider></mat-divider>
+    <div *ngFor="let room of rooms; first as isFirst">
+      <mat-divider *ngIf="isFirst"></mat-divider>
+      <mat-list-item >
+        <mat-icon matListIcon>movie</mat-icon>
+        <h4 matLine>{{room.name}}</h4>
+        <!--      <p matLine class="demo-2"> ups </p>-->
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </div>
 
   </mat-list>
 

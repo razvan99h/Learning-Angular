@@ -72,6 +72,14 @@ export class Movie {
   }
 }
 
+export interface MovieDateFB {
+  _day: string;
+  _startHour: number;
+  _startMinute: number;
+  _endHour: number;
+  _endMinute: number;
+}
+
 export class MovieDate {
   private _day: string;
   private _startHour: number;
@@ -174,6 +182,14 @@ export class MovieDate {
     }
     return false;
   }
+}
+
+export interface MoviePlayingFB {
+  id: number;
+  title: string;
+  runtime: number;
+  releaseDate: Date;
+  _dates: MovieDateFB[];
 }
 
 export class MoviePlaying {

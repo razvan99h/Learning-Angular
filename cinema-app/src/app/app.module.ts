@@ -33,6 +33,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { CreateCinemaComponent } from './pages/cinema/create-cinema/create-cinema.component';
 import { CinemaListComponent } from './pages/cinema/cinema-list/cinema-list.component';
 import { CinemaComponent } from './pages/cinema/cinema.component';
+import { CinemaService } from './shared/services/cinema.service';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { CinemaComponent } from './pages/cinema/cinema.component';
   providers: [
     MovieService,
     SharedService,
-    ReservationService
+    ReservationService,
+    CinemaService
   ],
   bootstrap: [AppComponent]
 })

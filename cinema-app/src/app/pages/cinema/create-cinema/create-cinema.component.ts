@@ -4,6 +4,8 @@ import { SharedService } from '../../../shared/services/shared.service';
 import { FormControl, Validators } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../shared/models/error.model';
 import { MatDialogRef } from '@angular/material/dialog';
+import { CinemaService } from '../../../shared/services/cinema.service';
+import { CinemaRoom } from '../../../shared/models/cinema.model';
 
 @Component({
   selector: 'cmb-create-cinema',
@@ -18,11 +20,10 @@ export class CreateCinemaComponent implements OnInit {
   matcher: MyErrorStateMatcher;
   showConfig: boolean;
   cinemaConfig: string[][];
-  cinemaHeight: number;
-  cinemaWidth: number;
 
   constructor(
     private sharedService: SharedService,
+    private cinemaService: CinemaService,
     public dialogRef: MatDialogRef<CreateCinemaComponent>,
 
   ) {
@@ -52,9 +53,9 @@ export class CreateCinemaComponent implements OnInit {
 
   createCinemaConfig(): void {
     this.cinemaConfig = [];
-    for (let i = 0; i < this.cinemaHeight; i++) {
+    for (let i = 0; i < this.rowFC.value; i++) {
       this.cinemaConfig.push([]);
-      for (let j = 0; j < this.cinemaWidth; j++) {
+      for (let j = 0; j < this.colFC.value; j++) {
         this.cinemaConfig[i].push('free');
       }
     }
@@ -70,6 +71,6 @@ export class CreateCinemaComponent implements OnInit {
   }
 
   saveConfig(): void {
-    // TODO: save the config to Firebase
+    this.cinemaService.addRoom(new CinemaRoom(this.nameFC.value, this.rowFC.value, this.colFC.value));
   }
 }

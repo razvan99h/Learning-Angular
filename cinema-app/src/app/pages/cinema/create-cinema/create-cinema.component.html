@@ -22,7 +22,6 @@
       <mat-label>Number of rows</mat-label>
       <input type="number" matInput placeholder=""
              [formControl]="rowFC"
-             [(ngModel)]="cinemaHeight"
              [errorStateMatcher]="matcher">
       <mat-hint>Between 1 and 100</mat-hint>
       <mat-error *ngIf="(rowFC.hasError('min') || rowFC.hasError('max') || rowFC.hasError('pattern'))
@@ -38,7 +37,6 @@
       <mat-label>Number of seats / row</mat-label>
       <input type="number" matInput placeholder=""
              [formControl]="colFC"
-             [(ngModel)]="cinemaWidth"
              [errorStateMatcher]="matcher">
       <mat-hint>Between 1 and 100</mat-hint>
       <mat-error *ngIf="(colFC.hasError('min') || colFC.hasError('max') || colFC.hasError('pattern'))

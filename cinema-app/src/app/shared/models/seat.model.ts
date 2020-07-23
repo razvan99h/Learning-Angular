@@ -1,3 +1,8 @@
+export interface SeatFB {
+  row: number;
+  column: number;
+}
+
 export class Seat {
   row: number;
   column: number;
