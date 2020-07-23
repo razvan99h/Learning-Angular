@@ -12,6 +12,7 @@ import { PageUnavailableComponent } from './components/page-unavailable/page-una
 import { RouterModule } from '@angular/router';
 import { ImageDialogComponent } from './components/image-dialog/image-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 
 
@@ -19,7 +20,8 @@ import { MatDialogModule } from '@angular/material/dialog';
   declarations: [
     NavComponent,
     PageUnavailableComponent,
-    ImageDialogComponent
+    ImageDialogComponent,
+    ConfirmationDialogComponent
   ],
   exports: [
     NavComponent

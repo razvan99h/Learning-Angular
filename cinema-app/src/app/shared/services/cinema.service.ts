@@ -18,11 +18,13 @@ export class CinemaService {
   getCinemaRooms(): Observable<CinemaRoom[]> {
     console.log(`getCinemaRooms <<< `);
     return this.db
-      .list<CinemaRoomFB>('cinema-rooms')
+      .object('cinema-rooms')
       .valueChanges()
       .pipe(
-        map(roomsFB => {
-          const rooms = roomsFB.map(roomFB => new CinemaRoom(roomFB._name, roomFB._rows, roomFB._columns))
+        map(roomsObj => {
+          const rooms = Object.entries(roomsObj).map(([key, roomFB]) => {
+            return new CinemaRoom(roomFB._name, roomFB._rows, roomFB._columns, key);
+          });
           console.log(`getCinemaRooms >>> rooms: `, rooms);
           return rooms;
         })
@@ -31,7 +33,15 @@ export class CinemaService {
 
   addRoom(room: CinemaRoom): void {
     console.log(`addRoom <<< room: `, room);
-    this.db.list('cinema-rooms').push(room);
-    console.log(`addRoom >>>`);
+    this.db.list('cinema-rooms').push(room).then(() => {
+      console.log(`addRoom >>>`);
+    });
+  }
+
+  removeRoom(roomID: string): void {
+    console.log(`removeRoom <<< roomID: `, roomID);
+    this.db.object('/cinema-rooms/' + roomID).remove().then(() => {
+      console.log(`removeRoom >>>`);
+    });
   }
 }

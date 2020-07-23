@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Are you sure you want to {{message}}? </h2>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+    No
+  </button>
+  <button mat-button (click)="confirm()">
+    <mat-icon>check</mat-icon>
+    Yes
+  </button>
+</mat-dialog-actions>

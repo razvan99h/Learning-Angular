@@ -13,6 +13,7 @@ export class CinemaRoom {
   private _name: string;
   private _rows: number;
   private _columns: number;
+  private _roomID: string;
   private _moviesPlaying: MoviePlaying[];
   private _occupiedSeats: Seat[];
 
@@ -20,14 +21,25 @@ export class CinemaRoom {
     name: string,
     rows: number,
     columns: number,
+    roomID?: string,
     moviesPlaying?: MoviePlaying[],
     occupiedSeats?: Seat[]
   ) {
     this._name = name;
     this._rows = rows;
     this._columns = columns;
+    this._roomID = roomID === undefined ? null : roomID;
     this._moviesPlaying = moviesPlaying === undefined ? null : moviesPlaying;
     this._occupiedSeats = occupiedSeats === undefined ? null : occupiedSeats;
+  }
+
+
+  get roomID(): string {
+    return this._roomID;
+  }
+
+  set roomID(value: string) {
+    this._roomID = value;
   }
 
   get name(): string {

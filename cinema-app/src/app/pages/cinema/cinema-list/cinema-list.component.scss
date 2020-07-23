@@ -1,4 +1,62 @@
+@import 'src/assets/styles/variables';
+
 .create-button {
   margin-top: 24px;
 }
 
+.cinema-size {
+  color: $light-gray !important;
+}
+
+mat-list-item {
+  height: inherit !important;
+  min-height: 72px;
+}
+
+
+.flex-container-room {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  vertical-align: middle;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px;
+
+  h4, p {
+    margin: 4px 0;
+  }
+
+  .left {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin: 8px 0;
+    min-width: 250px;
+
+    .text {
+      margin-left: 16px;
+    }
+  }
+
+  .right {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+
+    .details {
+      mat-icon {
+        color: map-get(map-get($accent-map, contrast), 100);
+      }
+    }
+
+    button {
+      margin: 8px 8px;
+
+      mat-icon {
+        margin-right: 4px;
+      }
+    }
+  }
+}

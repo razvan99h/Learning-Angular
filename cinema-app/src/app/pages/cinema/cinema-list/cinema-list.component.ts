@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateCinemaComponent } from '../create-cinema/create-cinema.component';
 import { CinemaService } from '../../../shared/services/cinema.service';
 import { CinemaRoom } from '../../../shared/models/cinema.model';
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'cmb-cinema-list',
@@ -17,7 +18,7 @@ export class CinemaListComponent implements OnInit {
 
   constructor(
     private sharedService: SharedService,
-    private cinemaService: CinemaService,
+    public cinemaService: CinemaService,
     public dialog: MatDialog,
   ) {
   }
@@ -41,5 +42,21 @@ export class CinemaListComponent implements OnInit {
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log(`Dialog result: ${result}`);
     // });
+  }
+
+  openConfirmationDialog(roomID: string, name: string): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      panelClass: 'custom-modal',
+      maxWidth: '90vw',
+      data: {
+        message: `remove the cinema room "${name}"`,
+        fctRef: this.removeCinemaRoom,
+        args: [roomID]
+      }
+    });
+  }
+
+  removeCinemaRoom(roomID: string): void {
+    this.cinemaService.removeRoom(roomID);
   }
 }
