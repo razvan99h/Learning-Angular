@@ -6,6 +6,7 @@ import { MovieDetailsResolverService } from './pages/movie-details/movie-details
 import { PageUnavailableComponent } from './shared/components/page-unavailable/page-unavailable.component';
 import { CinemaListComponent } from './pages/cinema/cinema-list/cinema-list.component';
 import { CinemaComponent } from './pages/cinema/cinema.component';
+import { CinemaListResolverService } from './pages/cinema/cinema-list/cinema-list-resolver.service';
 
 
 const routes: Routes = [
@@ -14,13 +15,8 @@ const routes: Routes = [
     component: HomepageComponent
   },
   {
-    path: 'unavailable',
-    component: PageUnavailableComponent,
-  },
-  {
     path: 'movie/:id',
     component: MovieDetailsComponent,
-    children: [],
     resolve: {
       movie: MovieDetailsResolverService
     }
@@ -31,14 +27,25 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: CinemaListComponent
+        component: CinemaListComponent,
+        resolve: {
+          cinemaList: CinemaListResolverService
+        }
       },
       // {
       //   path: 'create',
       //   component: CreateCinemaComponent
       // }
     ]
-  }
+  },
+  {
+    path: '**',
+    component: PageUnavailableComponent,
+  },
+  {
+    path: 'unavailable',
+    component: PageUnavailableComponent,
+  },
 ];
 
 @NgModule({
