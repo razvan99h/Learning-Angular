@@ -38,6 +38,13 @@ export class CinemaService {
     });
   }
 
+  editRoom(roomID: string, newRoom: CinemaRoom): void {
+    console.log(`editRoom <<< roomID: ${roomID}, newRoom: `, newRoom);
+    this.db.object('/cinema-rooms/' + roomID).set(newRoom).then(() => {
+      console.log(`editRoom >>>`);
+    });
+  }
+
   removeRoom(roomID: string): void {
     console.log(`removeRoom <<< roomID: `, roomID);
     this.db.object('/cinema-rooms/' + roomID).remove().then(() => {

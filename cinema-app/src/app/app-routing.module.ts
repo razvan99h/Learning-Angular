@@ -4,7 +4,6 @@ import { HomepageComponent } from './pages/homepage/homepage.component';
 import { MovieDetailsComponent } from './pages/movie-details/movie-details.component';
 import { MovieDetailsResolverService } from './pages/movie-details/movie-details-resolver.service';
 import { PageUnavailableComponent } from './shared/components/page-unavailable/page-unavailable.component';
-import { CreateCinemaComponent } from './pages/cinema/create-cinema/create-cinema.component';
 import { CinemaListComponent } from './pages/cinema/cinema-list/cinema-list.component';
 import { CinemaComponent } from './pages/cinema/cinema.component';
 

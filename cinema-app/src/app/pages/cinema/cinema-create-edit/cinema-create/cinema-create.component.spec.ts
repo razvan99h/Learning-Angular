@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateCinemaComponent } from './create-cinema.component';
+import { CinemaCreateComponent } from './cinema-create.component';
 
-describe('CreateCinemaComponent', () => {
-  let component: CreateCinemaComponent;
-  let fixture: ComponentFixture<CreateCinemaComponent>;
+describe('CinemaCreateComponent', () => {
+  let component: CinemaCreateComponent;
+  let fixture: ComponentFixture<CinemaCreateComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateCinemaComponent ]
+      declarations: [ CinemaCreateComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateCinemaComponent);
+    fixture = TestBed.createComponent(CinemaCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SharedService } from '../../../shared/services/shared.service';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateCinemaComponent } from '../create-cinema/create-cinema.component';
+import { CinemaCreateComponent } from '../cinema-create-edit/cinema-create/cinema-create.component';
 import { CinemaService } from '../../../shared/services/cinema.service';
 import { CinemaRoom } from '../../../shared/models/cinema.model';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { CinemaEditComponent } from '../cinema-create-edit/cinema-edit/cinema-edit.component';
 
 @Component({
   selector: 'cmb-cinema-list',
@@ -33,7 +34,7 @@ export class CinemaListComponent implements OnInit {
   }
 
   openCreateDialog(): void {
-    const dialogRef = this.dialog.open(CreateCinemaComponent, {
+    const dialogRef = this.dialog.open(CinemaCreateComponent, {
       panelClass: 'custom-modal',
       maxWidth: '90vw',
       autoFocus: false
@@ -42,6 +43,15 @@ export class CinemaListComponent implements OnInit {
     // dialogRef.afterClosed().subscribe(result => {
     //   console.log(`Dialog result: ${result}`);
     // });
+  }
+
+  openEditDialog(room: CinemaRoom): void {
+    const dialogRef = this.dialog.open(CinemaEditComponent, {
+      panelClass: 'custom-modal',
+      maxWidth: '90vw',
+      data: room,
+      autoFocus: false
+    });
   }
 
   openConfirmationDialog(roomID: string, name: string): void {

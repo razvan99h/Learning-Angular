@@ -1,18 +1,15 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SharedService } from '../../../shared/services/shared.service';
 import { FormControl, Validators } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../shared/models/error.model';
-import { MatDialogRef } from '@angular/material/dialog';
+import { SharedService } from '../../../shared/services/shared.service';
 import { CinemaService } from '../../../shared/services/cinema.service';
-import { CinemaRoom } from '../../../shared/models/cinema.model';
 
 @Component({
-  selector: 'cmb-create-cinema',
-  templateUrl: './create-cinema.component.html',
-  styleUrls: ['./create-cinema.component.scss']
+  selector: 'cmb-cinema-create-edit-base',
+  template: ''
 })
-export class CreateCinemaComponent implements OnInit {
+export abstract class CinemaCreateEditBaseComponent implements OnInit {
   isHandset$: Observable<boolean>;
   nameFC: FormControl;
   rowFC: FormControl;
@@ -20,12 +17,11 @@ export class CreateCinemaComponent implements OnInit {
   matcher: MyErrorStateMatcher;
   showConfig: boolean;
   cinemaConfig: string[][];
+  title: string;
 
-  constructor(
-    private sharedService: SharedService,
-    private cinemaService: CinemaService,
-    public dialogRef: MatDialogRef<CreateCinemaComponent>,
-
+  protected constructor(
+    public sharedService: SharedService,
+    public cinemaService: CinemaService,
   ) {
     this.nameFC = new FormControl('', [
       Validators.required,
@@ -45,6 +41,7 @@ export class CreateCinemaComponent implements OnInit {
     ]);
     this.matcher = new MyErrorStateMatcher();
     this.showConfig = false;
+    this.title = 'Default title for CinemaCreateEditBaseComponent component';
   }
 
   ngOnInit(): void {
@@ -70,7 +67,5 @@ export class CreateCinemaComponent implements OnInit {
     this.createCinemaConfig();
   }
 
-  saveConfig(): void {
-    this.cinemaService.addRoom(new CinemaRoom(this.nameFC.value, this.rowFC.value, this.colFC.value));
-  }
+  abstract saveConfig(): void;
 }

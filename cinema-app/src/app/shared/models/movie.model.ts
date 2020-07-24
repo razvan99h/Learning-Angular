@@ -189,6 +189,7 @@ export interface MoviePlayingFB {
   title: string;
   runtime: number;
   releaseDate: Date;
+  poster_path: string;
   _dates: MovieDateFB[];
 }
 
@@ -197,13 +198,15 @@ export class MoviePlaying {
   title: string;
   runtime: number;
   releaseDate: Date;
+  posterPath: string;
   private _dates: MovieDate[];
 
-  constructor(id: number, title: string, runtime: number, releaseDate: Date) {
+  constructor(id: number, title: string, runtime: number, releaseDate: Date, posterPath: string) {
     this.id = id;
     this.title = title;
     this.runtime = runtime;
     this.releaseDate = releaseDate;
+    this.posterPath = posterPath;
   }
 
   get dates(): MovieDate[] {
