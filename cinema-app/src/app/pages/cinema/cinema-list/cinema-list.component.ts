@@ -7,6 +7,8 @@ import { CinemaService } from '../../../shared/services/cinema.service';
 import { CinemaRoom } from '../../../shared/models/cinema.model';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { CinemaEditComponent } from '../cinema-create-edit/cinema-edit/cinema-edit.component';
+import { Movie } from '../../../shared/models/movie.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'cmb-cinema-list',
@@ -20,16 +22,17 @@ export class CinemaListComponent implements OnInit {
   constructor(
     private sharedService: SharedService,
     public cinemaService: CinemaService,
+    private route: ActivatedRoute,
     public dialog: MatDialog,
   ) {
   }
 
   ngOnInit(): void {
     this.isHandset$ = this.sharedService.isHandset$;
-    this.cinemaService
-      .getCinemaRooms()
-      .subscribe(rooms => {
-        this.rooms = rooms;
+    // fetch data through CinemaListResolver
+    this.route.data
+      .subscribe((data: { rooms: CinemaRoom[] }) => {
+        this.rooms = data.rooms;
       });
   }
 

@@ -29,7 +29,7 @@ const routes: Routes = [
         path: '',
         component: CinemaListComponent,
         resolve: {
-          cinemaList: CinemaListResolverService
+          rooms: CinemaListResolverService
         }
       },
       // {

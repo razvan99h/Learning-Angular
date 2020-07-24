@@ -25,6 +25,13 @@ mat-card {
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.45);
   cursor: pointer;
 
+  h4 {
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .crop-container {
     width: 232px;
     height: 344px;

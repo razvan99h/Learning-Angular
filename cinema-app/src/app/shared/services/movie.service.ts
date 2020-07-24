@@ -46,13 +46,7 @@ export class MovieService {
       .get<MoviesTMDB>(url)
       .pipe(
         map(moviesTMDB => {
-          const movies = moviesTMDB.results.map(movieTMDB => {
-            const movie = new Movie(movieTMDB);
-            if (movie.title.length > maxTitleLength && maxTitleLength >= 0) {
-              movie.title = movie.title.slice(0, maxTitleLength) + '...';
-            }
-            return movie;
-          });
+          const movies = moviesTMDB.results.map(movieTMDB => new Movie(movieTMDB));
           console.log('getAllMovies >>> movies = ', movies);
           return movies;
         })
