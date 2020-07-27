@@ -10,19 +10,23 @@ import { ConfirmationMessage } from '../../models/confirmation.model';
 })
 export class ConfirmationDialogComponent implements OnInit {
   confirmation: ConfirmationMessage;
+  fctRef: any;
 
   constructor(
+    private cinemaService: CinemaService, // needed for confirm() method
     public dialogRef: MatDialogRef<ConfirmationDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ConfirmationMessage
   ) {
     this.confirmation = data;
+    this.fctRef = data.fctRef;
+    console.log(data);
   }
 
   ngOnInit(): void {
   }
 
   confirm(): void {
-    this.confirmation.fctRef(...this.confirmation.args);
+    this.fctRef(...this.confirmation.args);
     this.dialogRef.close();
   }
 

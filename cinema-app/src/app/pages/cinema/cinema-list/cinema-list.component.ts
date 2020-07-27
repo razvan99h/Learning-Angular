@@ -22,9 +22,9 @@ export class CinemaListComponent implements OnInit {
 
   constructor(
     private sharedService: SharedService,
-    public cinemaService: CinemaService,
+    private cinemaService: CinemaService,
     private route: ActivatedRoute,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
   ) {
   }
 

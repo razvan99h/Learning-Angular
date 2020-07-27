@@ -34,7 +34,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     private movieService: MovieService,
     private sanitizer: DomSanitizer,
     private sharedService: SharedService,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
   ) {
     this.youtubeVideo = this.sanitizer.bypassSecurityTrustResourceUrl('');
     this.movie = new Movie();
