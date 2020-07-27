@@ -15,6 +15,7 @@ export class CinemaRoom {
   private _columns: number;
   private _roomID: string;
   private _moviesPlaying: MoviePlaying[];
+  // TODO: move occupied seats to moviePlaying
   private _occupiedSeats: Seat[];
 
   constructor(

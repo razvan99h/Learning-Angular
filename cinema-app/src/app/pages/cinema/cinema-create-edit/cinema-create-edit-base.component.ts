@@ -25,7 +25,7 @@ export abstract class CinemaCreateEditBaseComponent implements OnInit {
   ) {
     this.nameFC = new FormControl('', [
       Validators.required,
-      Validators.maxLength(100),
+      Validators.maxLength(30),
     ]);
     this.rowFC = new FormControl('', [
       Validators.required,

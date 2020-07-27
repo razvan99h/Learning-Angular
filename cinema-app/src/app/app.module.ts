@@ -36,6 +36,7 @@ import { CinemaListComponent } from './pages/cinema/cinema-list/cinema-list.comp
 import { CinemaComponent } from './pages/cinema/cinema.component';
 import { CinemaService } from './shared/services/cinema.service';
 import { CinemaEditComponent } from './pages/cinema/cinema-create-edit/cinema-edit/cinema-edit.component';
+import { ScheduleComponent } from './pages/cinema/schedule/schedule.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { CinemaEditComponent } from './pages/cinema/cinema-create-edit/cinema-ed
     CinemaListComponent,
     CinemaComponent,
     CinemaEditComponent,
+    ScheduleComponent,
   ],
   imports: [
     BrowserModule,

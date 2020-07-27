@@ -13,7 +13,6 @@ mat-list-item {
   min-height: 72px;
 }
 
-
 .flex-container-room {
   display: flex;
   flex-wrap: wrap;
@@ -33,10 +32,11 @@ mat-list-item {
     flex-wrap: nowrap;
     align-items: center;
     margin: 8px 0;
-    min-width: 250px;
+    min-width: 385px;
 
     .text {
       margin-left: 16px;
+      max-width: calc(100vw - 150px);
     }
   }
 
@@ -56,6 +56,19 @@ mat-list-item {
 
       mat-icon {
         margin-right: 4px;
+      }
+    }
+  }
+}
+
+@media (max-width: 1023px) {
+  .flex-container-room  .right {
+    button {
+      font-size: 0;
+      min-width: 50px;
+
+      mat-icon {
+        margin-right: 0;
       }
     }
   }

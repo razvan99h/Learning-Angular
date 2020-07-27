@@ -7,8 +7,9 @@ import { CinemaService } from '../../../shared/services/cinema.service';
 import { CinemaRoom } from '../../../shared/models/cinema.model';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { CinemaEditComponent } from '../cinema-create-edit/cinema-edit/cinema-edit.component';
-import { Movie } from '../../../shared/models/movie.model';
 import { ActivatedRoute } from '@angular/router';
+import { skip } from 'rxjs/operators';
+import { ConfirmationMessage } from '../../../shared/models/confirmation.model';
 
 @Component({
   selector: 'cmb-cinema-list',
@@ -34,6 +35,14 @@ export class CinemaListComponent implements OnInit {
       .subscribe((data: { rooms: CinemaRoom[] }) => {
         this.rooms = data.rooms;
       });
+    this.cinemaService
+      .getCinemaRooms()
+      .pipe(skip(1))
+      .subscribe(rooms => {
+        this.rooms = rooms;
+      });
+    this.cinemaService.getRoom('-MCwIqnzBpUu9bd-cZGr').subscribe(() => {
+    });
   }
 
   openCreateDialog(): void {
@@ -49,7 +58,7 @@ export class CinemaListComponent implements OnInit {
   }
 
   openEditDialog(room: CinemaRoom): void {
-    const dialogRef = this.dialog.open(CinemaEditComponent, {
+    this.dialog.open(CinemaEditComponent, {
       panelClass: 'custom-modal',
       maxWidth: '90vw',
       data: room,
@@ -58,14 +67,19 @@ export class CinemaListComponent implements OnInit {
   }
 
   openConfirmationDialog(roomID: string, name: string): void {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const confirmation: ConfirmationMessage = new ConfirmationMessage();
+    confirmation.icon = 'error_outline';
+    confirmation.title = 'Warning';
+    confirmation.message = `Are you sure you want to remove the cinema room "${name}"?`;
+    confirmation.yesButton = 'Yes';
+    confirmation.noButton = 'No';
+    confirmation.fctRef = this.removeCinemaRoom;
+    confirmation.args = [roomID];
+
+    this.dialog.open(ConfirmationDialogComponent, {
       panelClass: 'custom-modal',
       maxWidth: '90vw',
-      data: {
-        message: `remove the cinema room "${name}"`,
-        fctRef: this.removeCinemaRoom,
-        args: [roomID]
-      }
+      data: confirmation
     });
   }
 

@@ -8,16 +8,16 @@
       <mat-icon>close</mat-icon>
       Close
     </mat-toolbar>
-    <mat-nav-list [disableRipple]="true">
-      <a mat-list-item routerLink="cinema" [disableRipple]="true">
+    <mat-nav-list>
+      <a mat-list-item routerLink="cinema" (click)="drawer.close()">
         <mat-icon>video_settings</mat-icon>
         Config rooms
       </a>
-      <a mat-list-item href="#" [disableRipple]="true">
+      <a mat-list-item href="#">
         <mat-icon>login</mat-icon>
         Link 2
       </a>
-      <a mat-list-item href="#" [disableRipple]="true">
+      <a mat-list-item href="#">
         <mat-icon>share</mat-icon>
         Link 3
       </a>

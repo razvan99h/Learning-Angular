@@ -71,7 +71,7 @@
 
 .custom-image-modal {
   mat-dialog-container {
-    background-color: map-get($primary-map, default);
+    background-color: map-get($primary-map, 900);
     padding: 12px;
     color: white;
 
@@ -102,6 +102,9 @@
   }
 }
 
+.mat-button-focus-overlay {
+  background-color: transparent;
+}
 
 .mat-form-field-label {
   color: white !important;

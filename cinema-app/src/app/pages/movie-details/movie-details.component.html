@@ -52,7 +52,6 @@
       <div class="text-left">
         <div *ngIf="movie.cast !== undefined">
           <h4>Cast</h4>
-          <!--              TODO: nu e mai bine sa fi scris ngIf la cele 2 div-uri: fullCastList, shortCastList?-->
           <div *ngIf="fullCast then fullCastList else shortCastList"></div>
           <ng-template #shortCastList>
             <mat-list>
@@ -128,7 +127,6 @@
         <!--            <p *ngIf="movie.overview.length > 0">{{movie.overview}}</p>-->
         <!--            <p *ngIf="movie.overview.length === 0" class="italic">No synopsis available yet.</p>-->
 
-        <!-- TODO: nu e mai mult / mai urat de scris asa un if/else, decat ca mai sus?-->
         <div *ngIf="movie.overview.length > 0 then overview else noOverview"></div>
         <ng-template #overview><p>{{movie.overview}}</p></ng-template>
         <ng-template #noOverview class="italic"><p>No synopsis available yet.</p></ng-template>

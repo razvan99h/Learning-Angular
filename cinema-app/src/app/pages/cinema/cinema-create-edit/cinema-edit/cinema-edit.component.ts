@@ -30,7 +30,9 @@ export class CinemaEditComponent extends CinemaCreateEditBaseComponent implement
     this.oldRoom.name = this.nameFC.value;
     this.oldRoom.rows = this.rowFC.value;
     this.oldRoom.columns = this.colFC.value;
-    this.cinemaService.editRoom(this.oldRoom.roomID, this.oldRoom);
+    const roomID = this.oldRoom.roomID;
+    this.oldRoom.roomID = null;
+    this.cinemaService.editRoom(roomID, this.oldRoom);
   }
 
 }

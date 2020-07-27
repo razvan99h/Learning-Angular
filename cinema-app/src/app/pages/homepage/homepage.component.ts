@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MovieService } from '../../shared/services/movie.service';
 import { Movie } from '../../shared/models/movie.model';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
-import { MovieDetailsComponent } from '../movie-details/movie-details.component';
 import { SharedService } from '../../shared/services/shared.service';
 
 
@@ -14,10 +12,6 @@ import { SharedService } from '../../shared/services/shared.service';
   styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent implements OnInit {
-
-  @ViewChild(MovieDetailsComponent)
-  private movieDetailsComponent: MovieDetailsComponent;
-
   movies: Movie[];
   genres: Map<number, string>;
   isHandset$: Observable<boolean>;
@@ -27,14 +21,7 @@ export class HomepageComponent implements OnInit {
     private movieService: MovieService,
     private sharedService: SharedService,
   ) {
-
-    this.isHandset$ = this.breakpointObserver
-      .observe(Breakpoints.Handset)
-      .pipe(
-        map(result => result.matches),
-        shareReplay()
-      );
-    this.sharedService.isHandset$ = this.isHandset$;
+    this.isHandset$ = this.sharedService.isHandset$;
   }
 
   ngOnInit(): void {

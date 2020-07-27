@@ -222,6 +222,10 @@ ng-template {
         height: 192px;
         border: 4px solid white;
       }
+
+      img:hover {
+        cursor: pointer;
+      }
     }
   }
 }

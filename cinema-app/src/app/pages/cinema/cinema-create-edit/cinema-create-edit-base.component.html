@@ -9,9 +9,9 @@
       <input matInput placeholder=""
              [formControl]="nameFC"
              [errorStateMatcher]="matcher">
-      <mat-hint>Less than 100 characters</mat-hint>
-      <mat-error *ngIf="nameFC.hasError('maxLength')">
-        Please specify a name with less than 100 characters!
+      <mat-hint>Less than 30 characters</mat-hint>
+      <mat-error *ngIf="nameFC.hasError('maxlength')">
+        Please specify a name with less than 30 characters!
       </mat-error>
       <mat-error *ngIf="nameFC.hasError('required')">
         Name of the room is <strong>required!</strong>

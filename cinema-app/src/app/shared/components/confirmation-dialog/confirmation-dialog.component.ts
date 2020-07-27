@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CinemaService } from '../../services/cinema.service';
+import { ConfirmationMessage } from '../../models/confirmation.model';
 
 @Component({
   selector: 'cmb-confirmation-dialog',
@@ -8,29 +9,20 @@ import { CinemaService } from '../../services/cinema.service';
   styleUrls: ['./confirmation-dialog.component.scss']
 })
 export class ConfirmationDialogComponent implements OnInit {
-  message: string;
-  fctRef: any;
-  args: any[];
+  confirmation: ConfirmationMessage;
 
   constructor(
-    private cinemaService: CinemaService,
     public dialogRef: MatDialogRef<ConfirmationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {
-      message: string,
-      fctRef: any,
-      args: any[]
-    },
+    @Inject(MAT_DIALOG_DATA) public data: ConfirmationMessage
   ) {
-    this.message = data.message;
-    this.fctRef = data.fctRef;
-    this.args = data.args;
+    this.confirmation = data;
   }
 
   ngOnInit(): void {
   }
 
   confirm(): void {
-    this.fctRef(...this.args);
+    this.confirmation.fctRef(...this.confirmation.args);
     this.dialogRef.close();
   }
 

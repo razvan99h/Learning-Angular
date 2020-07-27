@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CinemaRoom } from '../../../shared/models/cinema.model';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
-import { EMPTY, Observable, of } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { CinemaService } from '../../../shared/services/cinema.service';
-import { catchError, mergeMap, take } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +16,13 @@ export class CinemaListResolverService implements Resolve<CinemaRoom[]> {
   ) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<CinemaRoom[]> | Promise<CinemaRoom[]> | CinemaRoom[] {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<CinemaRoom[]>{
     return this.cinemaService
       .getCinemaRooms()
       .pipe(
         take(1),
-        mergeMap((rooms: CinemaRoom[]) => {
-          return of(rooms);
+        map((rooms: CinemaRoom[]) => {
+          return rooms;
         }),
         catchError(error => {
           console.log(error);

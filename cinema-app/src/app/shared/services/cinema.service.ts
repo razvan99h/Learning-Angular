@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
-import { Seat } from '../models/seat.model';
 import { map } from 'rxjs/operators';
 import { CinemaRoom, CinemaRoomFB } from '../models/cinema.model';
 
@@ -27,6 +26,20 @@ export class CinemaService {
           });
           console.log(`getCinemaRooms >>> rooms: `, rooms);
           return rooms;
+        })
+      );
+  }
+
+  getRoom(roomID: string): Observable<CinemaRoom> {
+    console.log(`getRoom <<< roomID: ${roomID}`);
+    return this.db
+      .object<CinemaRoomFB>('/cinema-rooms/' + roomID)
+      .valueChanges()
+      .pipe(
+        map(roomFB => {
+          const room = new CinemaRoom(roomFB._name, roomFB._rows, roomFB._columns);
+          console.log(`getRoom >>> room: `, room);
+          return room;
         })
       );
   }

@@ -7,6 +7,8 @@ import { PageUnavailableComponent } from './shared/components/page-unavailable/p
 import { CinemaListComponent } from './pages/cinema/cinema-list/cinema-list.component';
 import { CinemaComponent } from './pages/cinema/cinema.component';
 import { CinemaListResolverService } from './pages/cinema/cinema-list/cinema-list-resolver.service';
+import { ScheduleComponent } from './pages/cinema/schedule/schedule.component';
+import { ScheduleResolverService } from './pages/cinema/schedule/schedule-resolver.service';
 
 
 const routes: Routes = [
@@ -30,6 +32,13 @@ const routes: Routes = [
         component: CinemaListComponent,
         resolve: {
           rooms: CinemaListResolverService
+        }
+      },
+      {
+        path: ':id',
+        component: ScheduleComponent,
+        resolve: {
+          room: ScheduleResolverService
         }
       },
       // {
