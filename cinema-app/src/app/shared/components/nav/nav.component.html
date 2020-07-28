@@ -1,9 +1,9 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false"
-      [ngClass]="{hidden: !(isHandset$ | async)}">
+      [attr.role]="isHandset ? 'dialog' : 'navigation'"
+      [mode]="isHandset ? 'over' : 'side'"
+      [opened]="isHandset === false"
+      [ngClass]="{hidden: !isHandset}">
     <mat-toolbar color="primary" (click)="drawer.close()" class="close-button">
       <mat-icon>close</mat-icon>
       Close
@@ -25,20 +25,20 @@
   </mat-sidenav>
   <mat-sidenav-content>
 
-    <mat-toolbar color="primary" [ngClass]="{'navbar-small': (isHandset$ | async), 'navbar-big': !(isHandset$ | async)}">
+    <mat-toolbar color="primary" [ngClass]="{'navbar-small': isHandset, 'navbar-big': !isHandset}">
       <button
         type="button"
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
+        *ngIf="isHandset">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
 
-      <img alt="" (click)="goToMain()" src="./assets/img/logo.png" [ngClass]="{'logo-small': (isHandset$ | async), 'logo-big': !(isHandset$ | async)}">
+      <img alt="" (click)="goToMain()" src="./assets/img/logo.png" [ngClass]="{'logo-small': isHandset, 'logo-big': !isHandset}">
 
-      <span class="spacer" *ngIf="!(isHandset$ | async)"></span>
-      <div *ngIf="!(isHandset$ | async)">
+      <span class="spacer" *ngIf="!isHandset"></span>
+      <div *ngIf="!isHandset">
 
         <a routerLink="cinema">
           <mat-icon>video_settings</mat-icon>

@@ -1,17 +1,15 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Movie } from '../../shared/models/movie.model';
 import { MovieService } from '../../shared/services/movie.service';
 import { SharedService } from '../../shared/services/shared.service';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { map, shareReplay } from 'rxjs/operators';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Person } from '../../shared/models/person.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ReservationComponent } from '../reservation/reservation.component';
 import { Image } from '../../shared/models/image.model';
 import { ImageDialogComponent } from '../../shared/components/image-dialog/image-dialog.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cmb-movie-details',
@@ -20,13 +18,12 @@ import { ImageDialogComponent } from '../../shared/components/image-dialog/image
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MovieDetailsComponent implements OnInit, OnDestroy {
-  movie: Movie;
-  movieStatus: string;
-  isHandset$: Observable<boolean>;
-  subscriptionMovieDetails: Subscription;
-  fullCrew: boolean;
-  fullCast: boolean;
+  movie = new Movie();
+  fullCrew = false;
+  fullCast = false;
+  isHandset = false;
   youtubeVideo: SafeResourceUrl;
+  private isHandsetSubscription: Subscription;
 
   constructor(
     // private changeDetectorRef: ChangeDetectorRef,
@@ -37,15 +34,15 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
   ) {
     this.youtubeVideo = this.sanitizer.bypassSecurityTrustResourceUrl('');
-    this.movie = new Movie();
-    this.movieStatus = 'default';
-    this.fullCrew = false;
-    this.fullCast = false;
-    this.isHandset$ = this.sharedService.isHandset$;
   }
 
   ngOnInit(): void {
     // this.changeDetectorRef.markForCheck() // -> for not having iframe flicker issue because of change detection
+    this.isHandsetSubscription = this.sharedService
+      .isHandset()
+      .subscribe((isHandset: boolean) => {
+        this.isHandset = isHandset;
+      });
 
     // fetch data through MovieDetailsResolver
     this.route.data
@@ -53,10 +50,6 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
         this.youtubeVideo = this.transform(data.movie.videoYoutube.link);
         this.movie = data.movie;
       });
-
-    // this.subscriptionMovieDetails = this.sharedService.getClickEventMovieDetails().subscribe(id => {
-    //   console.log('movieID: ', id);
-    // });
   }
 
   transform(url: string): SafeResourceUrl {
@@ -78,19 +71,15 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   }
 
   openReservationDialog(): void {
-    const dialogRef = this.dialog.open(ReservationComponent, {
+    this.dialog.open(ReservationComponent, {
       data: this.movie,
       panelClass: 'custom-modal',
       maxWidth: '90vw'
     });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(`Dialog result: ${result}`);
-    // });
   }
 
   openImageDialog(images: Image[], imageIndex: number): void {
-    const dialogRef = this.dialog.open(ImageDialogComponent, {
+    this.dialog.open(ImageDialogComponent, {
       data: {
         imageList: images,
         currentImage: imageIndex
@@ -101,7 +90,6 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.subscriptionMovieDetails.unsubscribe();
-    // TODO: ar trebui sa dau unsubscribe la observable-urile din movieService? cu ce metoda?
+    this.isHandsetSubscription.unsubscribe();
   }
 }

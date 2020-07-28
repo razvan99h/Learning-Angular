@@ -24,11 +24,11 @@ export class CinemaListResolverService implements Resolve<CinemaRoom[]> {
         map((rooms: CinemaRoom[]) => {
           return rooms;
         }),
-        catchError(error => {
+        catchError((error) => {
           console.log(error);
           this.router.navigate(['unavailable']);
           return EMPTY;
-        })
+        }),
       );
   }
 }

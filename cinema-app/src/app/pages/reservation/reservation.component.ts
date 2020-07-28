@@ -20,7 +20,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
   selectedSeats: Seat[];
   availableDays: number[];
   days: string[];
-  selectedDay: string;
+  selectedDay = '';
   private bookedSeatsSubscription: Subscription;
 
 
@@ -59,8 +59,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
   getOccupiedSeats(): void {
     this.bookedSeatsSubscription = this.reservationService
       .getBookedSeats()
-      .subscribe(
-        seats => {
+      .subscribe((seats: Seat[]) => {
           this.cinemaConfig = this.cinemaConfig.map(row =>
             row.map(seatState => 'free')
           );

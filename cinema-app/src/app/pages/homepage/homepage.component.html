@@ -1,4 +1,4 @@
-<header *ngIf="isHandset$ | async as isHandset">
+<header>
   <h1 [ngClass]="{'h1-small': isHandset, 'h1-big': !isHandset}">
     Top movies currently running in the cinema:
   </h1>

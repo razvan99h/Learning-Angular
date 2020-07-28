@@ -16,7 +16,7 @@ export class CinemaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isHandset$ = this.sharedService.isHandset$;
+    this.isHandset$ = this.sharedService.isHandset();
   }
 
 }

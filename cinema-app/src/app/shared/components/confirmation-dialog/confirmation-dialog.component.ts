@@ -19,7 +19,6 @@ export class ConfirmationDialogComponent implements OnInit {
   ) {
     this.confirmation = data;
     this.fctRef = data.fctRef;
-    console.log(data);
   }
 
   ngOnInit(): void {

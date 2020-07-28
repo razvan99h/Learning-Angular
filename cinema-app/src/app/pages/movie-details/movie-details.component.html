@@ -1,8 +1,8 @@
-<div class="container" [ngClass]="{'container-big': !(isHandset$ | async)}">
+<div class="container" [ngClass]="{'container-big': !isHandset}">
   <div class="background">
 
     <header>
-      <h1 [ngClass]="{'h1-small': (isHandset$ | async), 'h1-big': !(isHandset$ | async)}">
+      <h1 [ngClass]="{'h1-small': isHandset, 'h1-big': !isHandset}">
         {{movie.title}} ({{movie.releaseDate.getFullYear()}})
       </h1>
       <div class="line"></div>
@@ -50,7 +50,7 @@
 
     <section class="flex-container-text">
       <div class="text-left">
-        <div *ngIf="movie.cast !== undefined">
+        <div *ngIf="movie.cast">
           <h4>Cast</h4>
           <div *ngIf="fullCast then fullCastList else shortCastList"></div>
           <ng-template #shortCastList>
@@ -65,7 +65,7 @@
             </mat-list>
             <div class="expand">
               <mat-icon>expand_more</mat-icon>
-              <a (click)="fullCast = ! fullCast">Full cast</a>
+              <a (click)="fullCast = !fullCast">Full cast</a>
             </div>
           </ng-template>
           <ng-template #fullCastList>
@@ -85,7 +85,7 @@
           </ng-template>
         </div>
 
-        <div *ngIf="movie.crew != undefined">
+        <div *ngIf="movie.crew">
           <h4>Crew</h4>
           <div *ngIf="fullCrew then fullCrewList else shortCrewList"></div>
           <ng-template #shortCrewList>
@@ -100,7 +100,7 @@
             </mat-list>
             <div class="expand">
               <mat-icon>expand_more</mat-icon>
-              <a (click)="fullCrew = ! fullCrew">Full crew</a>
+              <a (click)="fullCrew = !fullCrew">Full crew</a>
             </div>
           </ng-template>
           <ng-template #fullCrewList>
@@ -115,7 +115,7 @@
             </mat-list>
             <div class="expand">
               <mat-icon>expand_less</mat-icon>
-              <a (click)="fullCrew = ! fullCrew">Less details</a>
+              <a (click)="fullCrew = !fullCrew">Less details</a>
             </div>
           </ng-template>
         </div>
@@ -124,12 +124,10 @@
 
       <div class="text-right">
         <h4>Synopsis</h4>
-        <!--            <p *ngIf="movie.overview.length > 0">{{movie.overview}}</p>-->
-        <!--            <p *ngIf="movie.overview.length === 0" class="italic">No synopsis available yet.</p>-->
 
         <div *ngIf="movie.overview.length > 0 then overview else noOverview"></div>
         <ng-template #overview><p>{{movie.overview}}</p></ng-template>
-        <ng-template #noOverview class="italic"><p>No synopsis available yet.</p></ng-template>
+        <ng-template #noOverview><p class="italic">No synopsis available yet.</p></ng-template>
 
         <h4>Production companies</h4>
         <div *ngFor="let company of movie.productionCompanies" class="span-list">

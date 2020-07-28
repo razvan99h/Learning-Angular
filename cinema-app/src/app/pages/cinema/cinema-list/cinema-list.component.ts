@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { SharedService } from '../../../shared/services/shared.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CinemaCreateComponent } from '../cinema-create-edit/cinema-create/cinema-create.component';
@@ -16,9 +16,10 @@ import { ConfirmationMessage } from '../../../shared/models/confirmation.model';
   templateUrl: './cinema-list.component.html',
   styleUrls: ['./cinema-list.component.scss', '../cinema.component.scss']
 })
-export class CinemaListComponent implements OnInit {
-  isHandset$: Observable<boolean>;
+export class CinemaListComponent implements OnInit, OnDestroy {
   rooms: CinemaRoom[];
+  isHandset = false;
+  private isHandsetSubscription: Subscription;
 
   constructor(
     private sharedService: SharedService,
@@ -29,7 +30,11 @@ export class CinemaListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isHandset$ = this.sharedService.isHandset$;
+    this.isHandsetSubscription = this.sharedService
+      .isHandset()
+      .subscribe((isHandset: boolean) => {
+        this.isHandset = isHandset;
+      });
     // fetch data through CinemaListResolver
     this.route.data
       .subscribe((data: { rooms: CinemaRoom[] }) => {
@@ -38,23 +43,17 @@ export class CinemaListComponent implements OnInit {
     this.cinemaService
       .getCinemaRooms()
       .pipe(skip(1))
-      .subscribe(rooms => {
+      .subscribe((rooms: CinemaRoom[]) => {
         this.rooms = rooms;
       });
-    this.cinemaService.getRoom('-MCwIqnzBpUu9bd-cZGr').subscribe(() => {
-    });
   }
 
   openCreateDialog(): void {
-    const dialogRef = this.dialog.open(CinemaCreateComponent, {
+    this.dialog.open(CinemaCreateComponent, {
       panelClass: 'custom-modal',
       maxWidth: '90vw',
       autoFocus: false
     });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(`Dialog result: ${result}`);
-    // });
   }
 
   openEditDialog(room: CinemaRoom): void {
@@ -85,5 +84,9 @@ export class CinemaListComponent implements OnInit {
 
   removeCinemaRoom(roomID: string): void {
     this.cinemaService.removeRoom(roomID);
+  }
+
+  ngOnDestroy(): void {
+    this.isHandsetSubscription.unsubscribe();
   }
 }

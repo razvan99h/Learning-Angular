@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../shared/models/error.model';
 import { SharedService } from '../../../shared/services/shared.service';
@@ -10,14 +9,13 @@ import { CinemaService } from '../../../shared/services/cinema.service';
   template: ''
 })
 export abstract class CinemaCreateEditBaseComponent implements OnInit {
-  isHandset$: Observable<boolean>;
   nameFC: FormControl;
   rowFC: FormControl;
   colFC: FormControl;
-  matcher: MyErrorStateMatcher;
-  showConfig: boolean;
+  matcher = new MyErrorStateMatcher();
+  showConfig = false;
   cinemaConfig: string[][];
-  title: string;
+  title = 'Default title';
 
   protected constructor(
     public sharedService: SharedService,
@@ -39,13 +37,9 @@ export abstract class CinemaCreateEditBaseComponent implements OnInit {
       Validators.max(100),
       Validators.min(1)
     ]);
-    this.matcher = new MyErrorStateMatcher();
-    this.showConfig = false;
-    this.title = 'Default title for CinemaCreateEditBaseComponent component';
   }
 
   ngOnInit(): void {
-    this.isHandset$ = this.sharedService.isHandset$;
   }
 
   createCinemaConfig(): void {
