@@ -1,0 +1,14 @@
+@import 'src/assets/styles/_variables.scss';
+
+header {
+  h1 {
+    margin-bottom: 16px;
+  }
+  p {
+    margin-top: 0;
+    color: $light-gray;
+  }
+  button {
+    margin: 8px 16px 8px 0;
+  }
+}

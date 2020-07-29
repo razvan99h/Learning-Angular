@@ -4,11 +4,11 @@ import { HomepageComponent } from './pages/homepage/homepage.component';
 import { MovieDetailsComponent } from './pages/movie-details/movie-details.component';
 import { MovieDetailsResolverService } from './pages/movie-details/movie-details-resolver.service';
 import { PageUnavailableComponent } from './shared/components/page-unavailable/page-unavailable.component';
-import { CinemaListComponent } from './pages/cinema/cinema-list/cinema-list.component';
+import { CinemaListComponent } from './pages/cinema/cinema-list-details/cinema-list/cinema-list.component';
 import { CinemaComponent } from './pages/cinema/cinema.component';
-import { CinemaListResolverService } from './pages/cinema/cinema-list/cinema-list-resolver.service';
-import { ScheduleComponent } from './pages/cinema/schedule/schedule.component';
-import { ScheduleResolverService } from './pages/cinema/schedule/schedule-resolver.service';
+import { CinemaListResolverService } from './pages/cinema/cinema-list-details/cinema-list/cinema-list-resolver.service';
+import { CinemaDetailsComponent } from './pages/cinema/cinema-list-details/cinema-details/cinema-details.component';
+import { CinemaDetailsResolverService } from './pages/cinema/cinema-list-details/cinema-details/cinema-details-resolver.service';
 
 
 const routes: Routes = [
@@ -36,15 +36,11 @@ const routes: Routes = [
       },
       {
         path: ':id',
-        component: ScheduleComponent,
+        component: CinemaDetailsComponent,
         resolve: {
-          room: ScheduleResolverService
+          room: CinemaDetailsResolverService
         }
       },
-      // {
-      //   path: 'create',
-      //   component: CreateCinemaComponent
-      // }
     ]
   },
   {

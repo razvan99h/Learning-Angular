@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { CinemaRoom } from '../../../shared/models/cinema.model';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { CinemaRoom } from '../../../../shared/models/cinema.model';
+import { CinemaService } from '../../../../shared/services/cinema.service';
 import { EMPTY, Observable } from 'rxjs';
-import { CinemaService } from '../../../shared/services/cinema.service';
 import { catchError, map, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ScheduleResolverService implements Resolve<CinemaRoom> {
+export class CinemaDetailsResolverService implements Resolve<CinemaRoom> {
 
   constructor(
     private router: Router,

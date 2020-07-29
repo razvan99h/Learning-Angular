@@ -4,8 +4,7 @@ import { SharedService } from '../../shared/services/shared.service';
 
 @Component({
   selector: 'cmb-cinema',
-  templateUrl: './cinema.component.html',
-  styleUrls: ['./cinema.component.scss']
+  templateUrl: './cinema.component.html'
 })
 export class CinemaComponent implements OnInit {
   isHandset$: Observable<boolean>;

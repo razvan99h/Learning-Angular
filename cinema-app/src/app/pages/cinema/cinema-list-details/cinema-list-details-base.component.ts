@@ -1,31 +1,27 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../../shared/services/shared.service';
-import { MatDialog } from '@angular/material/dialog';
-import { CinemaCreateComponent } from '../cinema-create-edit/cinema-create/cinema-create.component';
 import { CinemaService } from '../../../shared/services/cinema.service';
-import { CinemaRoom } from '../../../shared/models/cinema.model';
-import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
-import { CinemaEditComponent } from '../cinema-create-edit/cinema-edit/cinema-edit.component';
 import { ActivatedRoute } from '@angular/router';
-import { skip } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { CinemaRoom } from '../../../shared/models/cinema.model';
+import { CinemaEditComponent } from '../cinema-create-edit/cinema-edit/cinema-edit.component';
 import { ConfirmationMessage } from '../../../shared/models/confirmation.model';
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
-  selector: 'cmb-cinema-list',
-  templateUrl: './cinema-list.component.html',
-  styleUrls: ['./cinema-list.component.scss', '../cinema.component.scss']
+  selector: 'cmb-cinema-list-details-base',
+  template: '',
 })
-export class CinemaListComponent implements OnInit, OnDestroy {
-  rooms: CinemaRoom[];
-  isHandset = false;
-  private isHandsetSubscription: Subscription;
 
-  constructor(
-    private sharedService: SharedService,
-    private cinemaService: CinemaService,
-    private route: ActivatedRoute,
-    private dialog: MatDialog,
+export abstract class CinemaListDetailsBaseComponent implements OnInit, OnDestroy {
+  isHandset = false;
+  isHandsetSubscription: Subscription;
+
+  protected constructor(
+    public sharedService: SharedService,
+    public cinemaService: CinemaService,
+    public dialog: MatDialog,
   ) {
   }
 
@@ -35,25 +31,6 @@ export class CinemaListComponent implements OnInit, OnDestroy {
       .subscribe((isHandset: boolean) => {
         this.isHandset = isHandset;
       });
-    // fetch data through CinemaListResolver
-    this.route.data
-      .subscribe((data: { rooms: CinemaRoom[] }) => {
-        this.rooms = data.rooms;
-      });
-    this.cinemaService
-      .getCinemaRooms()
-      .pipe(skip(1))
-      .subscribe((rooms: CinemaRoom[]) => {
-        this.rooms = rooms;
-      });
-  }
-
-  openCreateDialog(): void {
-    this.dialog.open(CinemaCreateComponent, {
-      panelClass: 'custom-modal',
-      maxWidth: '90vw',
-      autoFocus: false
-    });
   }
 
   openEditDialog(room: CinemaRoom): void {

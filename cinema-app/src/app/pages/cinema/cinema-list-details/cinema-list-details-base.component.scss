@@ -1,0 +1,15 @@
+@import 'src/assets/styles/variables';
+
+.container, header h1, mat-list h4, mat-list mat-icon, mat-list p, mat-list h1, mat-list span, mat-list a{
+  color: white;
+}
+
+.mat-divider {
+  border-color: $line-gray;
+}
+
+header {
+  h1 {
+    margin: 0 0 24px 0;
+  }
+}

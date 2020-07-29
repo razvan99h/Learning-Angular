@@ -32,11 +32,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { CinemaCreateComponent } from './pages/cinema/cinema-create-edit/cinema-create/cinema-create.component';
 
-import { CinemaListComponent } from './pages/cinema/cinema-list/cinema-list.component';
+import { CinemaListComponent } from './pages/cinema/cinema-list-details/cinema-list/cinema-list.component';
 import { CinemaComponent } from './pages/cinema/cinema.component';
 import { CinemaService } from './shared/services/cinema.service';
 import { CinemaEditComponent } from './pages/cinema/cinema-create-edit/cinema-edit/cinema-edit.component';
-import { ScheduleComponent } from './pages/cinema/schedule/schedule.component';
+import { CinemaDetailsComponent } from './pages/cinema/cinema-list-details/cinema-details/cinema-details.component';
 
 
 @NgModule({
@@ -49,7 +49,7 @@ import { ScheduleComponent } from './pages/cinema/schedule/schedule.component';
     CinemaListComponent,
     CinemaComponent,
     CinemaEditComponent,
-    ScheduleComponent,
+    CinemaDetailsComponent,
   ],
   imports: [
     BrowserModule,
