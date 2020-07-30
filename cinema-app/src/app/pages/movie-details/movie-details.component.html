@@ -18,8 +18,8 @@
       <div id="details2" *ngIf="movie.genres.length > 0">
         <mat-icon>flag</mat-icon>
         <span *ngFor="let genre of movie.genres; last as isLast">
-              {{genre.name}}<span *ngIf="! isLast">, </span>
-            </span>
+              {{genre.name}}<span *ngIf=" isLast">, </span>
+        </span>
       </div>
       <div id="details3">
         <mat-icon>calendar_today</mat-icon>

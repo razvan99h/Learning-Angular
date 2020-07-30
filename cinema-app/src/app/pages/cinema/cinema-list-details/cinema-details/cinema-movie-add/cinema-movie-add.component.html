@@ -1,0 +1,89 @@
+<h2 mat-dialog-title>Add a new movie to the schedule for {{room.name}}</h2>
+
+<mat-dialog-content>
+
+  <mat-vertical-stepper [linear]="true" #stepper>
+
+    <mat-step label="Select movie"
+              [editable]="true"
+              [completed]="selectedMovie !== -1">
+      <p>Click to select a movie</p>
+
+      <div *ngFor="let movie of movies; first as isFirst" class="flex-container-movies">
+        <mat-divider *ngIf="isFirst"></mat-divider>
+        <mat-list-item>
+          <div class="movie">
+
+            <div class="left">
+              <div class="hover">
+                <mat-icon>check_circle</mat-icon>
+              </div>
+              <img src="{{movie.posterPath}}" alt="">
+            </div>
+
+            <div class="right">
+              <h5>{{movie.title}}</h5>
+              <div class="date">
+                <mat-icon>calendar_today</mat-icon>
+                <p>
+                  {{movie.releaseDate.toLocaleDateString(
+                  'en-GB',
+                  {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                  })}}
+                </p>
+              </div>
+              <div class="genres">
+                <mat-icon>flag</mat-icon>
+                <span *ngFor="let genre of movie.genres; last as isLast">
+                  {{genre.name}}<span *ngIf=" isLast">, </span>
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </div>
+      <button mat-button matStepperNext type="button" [disabled]="selectedMovie === -1">
+          <span *ngIf="selectedMovie === -1" class="italic">
+            Select a movie in order to continue
+          </span>
+        <span *ngIf="selectedMovie !== -1">
+            Next
+          </span>
+      </button>
+
+    </mat-step>
+
+    <mat-step label="Select dates">
+
+
+    </mat-step>
+
+    <mat-step label="Confirm" [editable]="false">
+      <p>yay</p>
+
+      <button mat-button matStepperPrevious>
+        <mat-icon>create</mat-icon>
+        Modify
+      </button>
+    </mat-step>
+
+  </mat-vertical-stepper>
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+    Cancel
+  </button>
+  <button mat-raised-button mat-dialog-close cdkFocusInitial color="accent" class="main-button">
+    <mat-icon>save</mat-icon>
+    Save
+  </button>
+</mat-dialog-actions>

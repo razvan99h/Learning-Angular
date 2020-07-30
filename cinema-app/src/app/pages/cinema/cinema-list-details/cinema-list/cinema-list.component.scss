@@ -1,5 +1,9 @@
 @import '../../../../../assets/styles/variables';
 
+.mat-list-item-content {
+  padding: 0 0 0 16px !important;
+}
+
 .create-button {
   margin-top: 24px;
 }
@@ -20,7 +24,7 @@ mat-list-item {
   vertical-align: middle;
   justify-content: space-between;
   width: 100%;
-  padding: 8px;
+  padding: 8px 0;
 
   h4, p {
     margin: 4px 0;

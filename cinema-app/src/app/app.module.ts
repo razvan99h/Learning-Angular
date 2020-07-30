@@ -37,6 +37,7 @@ import { CinemaComponent } from './pages/cinema/cinema.component';
 import { CinemaService } from './shared/services/cinema.service';
 import { CinemaEditComponent } from './pages/cinema/cinema-create-edit/cinema-edit/cinema-edit.component';
 import { CinemaDetailsComponent } from './pages/cinema/cinema-list-details/cinema-details/cinema-details.component';
+import { CinemaMovieAddComponent } from './pages/cinema/cinema-list-details/cinema-details/cinema-movie-add/cinema-movie-add.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { CinemaDetailsComponent } from './pages/cinema/cinema-list-details/cinem
     CinemaComponent,
     CinemaEditComponent,
     CinemaDetailsComponent,
+    CinemaMovieAddComponent,
   ],
   imports: [
     BrowserModule,

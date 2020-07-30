@@ -4,9 +4,9 @@
 
   <mat-vertical-stepper [linear]="true" #stepper>
 
-    <mat-step label="Choose dates" state="phone"
+    <mat-step label="Choose dates"
               [editable]="true"
-              [completed]="selectedDay != ''">
+              [completed]="selectedDay !== ''">
 
       <label id="day-radio-group-label">Choose one of the following days:</label>
       <mat-radio-group
@@ -29,14 +29,14 @@
           <span *ngIf="selectedDay === ''" class="italic">
             Select a day in order to continue
           </span>
-          <span *ngIf="selectedDay != ''">
+          <span *ngIf="selectedDay !== ''">
             Next
           </span>
         </button>
       </div>
     </mat-step>
 
-    <mat-step label="Choose seats" state="chat"
+    <mat-step label="Choose seats"
               [editable]="true"
               [completed]="selectedSeats.length > 0">
       <p>Click one or more of the available seats to select: </p>

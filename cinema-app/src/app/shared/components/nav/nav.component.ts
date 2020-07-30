@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { SharedService } from '../../services/shared.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'cmb-nav',
@@ -9,15 +10,24 @@ import { SharedService } from '../../services/shared.service';
 })
 export class NavComponent {
   isHandset = false;
+  backButton = false;
 
   constructor(
     private sharedService: SharedService,
-    public router: Router
+    private router: Router,
+    private location: Location
   ) {
     this.sharedService
       .isHandset()
       .subscribe((isHandset: boolean) => {
         this.isHandset = isHandset;
+      });
+
+    this.router.events
+      .subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.backButton = event.url.includes('cinema/');
+        }
       });
   }
 
@@ -25,5 +35,8 @@ export class NavComponent {
     this.router.navigate(['/']);
   }
 
+  goBack(): void {
+    this.location.back();
+  }
 
 }

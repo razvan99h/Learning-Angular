@@ -1,5 +1,13 @@
 @import 'src/assets/styles/_variables.scss';
 
+button {
+  margin: 8px 16px 8px 0;
+
+  mat-icon {
+    margin-right: 5px;
+  }
+}
+
 header {
   h1 {
     margin-bottom: 16px;
@@ -8,7 +16,11 @@ header {
     margin-top: 0;
     color: $light-gray;
   }
-  button {
-    margin: 8px 16px 8px 0;
+}
+
+.schedule {
+  h4 {
+    color: white;
+    font-size: 24px;
   }
 }

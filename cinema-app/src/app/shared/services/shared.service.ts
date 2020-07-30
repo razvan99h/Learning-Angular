@@ -14,14 +14,6 @@ export class SharedService {
   ) {
   }
 
-  getClickEventMovieDetails(): Observable<number> {
-    return this.sourceMovieDetails.asObservable();
-  }
-
-  sendClickEventMovieDetails(movieID: number): void {
-    this.sourceMovieDetails.next(movieID);
-  }
-
   isHandset(): Observable<boolean> {
     return this.breakpointObserver
       .observe(Breakpoints.HandsetPortrait)
@@ -32,5 +24,13 @@ export class SharedService {
         }),
         // shareReplay()
       );
+  }
+
+  getClickEventMovieDetails(): Observable<number> {
+    return this.sourceMovieDetails.asObservable();
+  }
+
+  sendClickEventMovieDetails(movieID: number): void {
+    this.sourceMovieDetails.next(movieID);
   }
 }
