@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SharedService } from '../../../shared/services/shared.service';
 import { CinemaService } from '../../../shared/services/cinema.service';
-import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CinemaRoom } from '../../../shared/models/cinema.model';
 import { CinemaEditComponent } from '../cinema-create-edit/cinema-edit/cinema-edit.component';

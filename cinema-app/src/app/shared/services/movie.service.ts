@@ -39,8 +39,8 @@ export class MovieService {
       );
   }
 
-  getAllMovies(page: number = 1, maxTitleLength: number = -1): Observable<Movie[]> {
-    console.log(`getAllMovies <<< page = ${page}, maxTitleLength = ${maxTitleLength}`);
+  getAllMovies(page: number = 1): Observable<Movie[]> {
+    console.log(`getAllMovies <<< page = ${page}`);
     const url = environment.MOVIES_LINK + '/now_playing?page=' + page + '&api_key=' + environment.API_KEY;
     return this.httpClient
       .get<MoviesTMDB>(url)

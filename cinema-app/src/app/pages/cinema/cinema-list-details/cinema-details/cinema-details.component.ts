@@ -47,18 +47,25 @@ export class CinemaDetailsComponent extends CinemaListDetailsBaseComponent imple
   }
 
   openMovieAddDialog(): void {
+    // TODO: folosesc fork join in loc de astea 2 subscribe-uri sau switch map in serviciu
+    //  eventual arat un spinner intre timp (pana se incarca)
     this.movieService
-      .getAllMovies(1)
-      .subscribe((moviesList: Movie[]) => {
-        this.dialog.open(CinemaMovieAddComponent, {
-          panelClass: 'custom-modal',
-          maxWidth: '90vw',
-          autoFocus: false,
-          data: {
-            room: this.room,
-            movies: moviesList
-          }
-        });
+      .getAllGenres()
+      .subscribe((genresMap: Map<number, string>) => {
+        this.movieService
+          .getAllMovies(1)
+          .subscribe((moviesList: Movie[]) => {
+            this.dialog.open(CinemaMovieAddComponent, {
+              panelClass: 'custom-modal',
+              maxWidth: '90vw',
+              autoFocus: false,
+              data: {
+                room: this.room,
+                movies: moviesList,
+                genres: genresMap
+              }
+            });
+          });
       });
   }
 }

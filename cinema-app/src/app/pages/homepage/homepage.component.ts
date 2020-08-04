@@ -37,7 +37,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
         this.genres = genres;
 
         this.movieService
-          .getAllMovies(4, 22)
+          .getAllMovies(4)
           .subscribe((movies: Movie[]) => {
             this.movies = movies;
             // TODO: citesc despre merge request

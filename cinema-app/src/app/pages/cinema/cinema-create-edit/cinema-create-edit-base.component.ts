@@ -37,6 +37,7 @@ export abstract class CinemaCreateEditBaseComponent implements OnInit {
       Validators.max(100),
       Validators.min(1)
     ]);
+    // TODO: fac cu form builder asta
   }
 
   ngOnInit(): void {

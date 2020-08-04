@@ -4,6 +4,8 @@ import { environment } from '../../../environments/environment';
 import { Person } from './person.model';
 import { Genre } from './genre.model';
 import { Company, CompanyTMDB } from './company.model';
+import * as firebase from 'firebase';
+import Timestamp = firebase.firestore.Timestamp;
 
 export interface MovieTMDB {
   // tslint:disable:variable-name
@@ -72,7 +74,7 @@ export class Movie {
   }
 }
 
-export interface MovieDateFB {
+export interface MovieDateOldFB {
   _day: string;
   _startHour: number;
   _startMinute: number;
@@ -80,7 +82,7 @@ export interface MovieDateFB {
   _endMinute: number;
 }
 
-export class MovieDate {
+export class MovieDateOld {
   private _day: string;
   private _startHour: number;
   private _startMinute: number;
@@ -88,11 +90,11 @@ export class MovieDate {
   private _endMinute: number;
 
   constructor(day: string, startHour: number, startMinute: number, endHour: number, endMinute: number) {
-    MovieDate.validateDay(day);
-    MovieDate.validateHour(startHour);
-    MovieDate.validateHour(endHour);
-    MovieDate.validateMinute(startMinute);
-    MovieDate.validateMinute(endMinute);
+    MovieDateOld.validateDay(day);
+    MovieDateOld.validateHour(startHour);
+    MovieDateOld.validateHour(endHour);
+    MovieDateOld.validateMinute(startMinute);
+    MovieDateOld.validateMinute(endMinute);
     this._day = day;
     this._startHour = startHour;
     this._startMinute = startMinute;
@@ -124,7 +126,7 @@ export class MovieDate {
   }
 
   set day(value: string) {
-    MovieDate.validateDay(value);
+    MovieDateOld.validateDay(value);
     this._day = value;
   }
 
@@ -133,7 +135,7 @@ export class MovieDate {
   }
 
   set startHour(value: number) {
-    MovieDate.validateHour(value);
+    MovieDateOld.validateHour(value);
     this._startHour = value;
   }
 
@@ -142,7 +144,7 @@ export class MovieDate {
   }
 
   set startMinute(value: number) {
-    MovieDate.validateMinute(value);
+    MovieDateOld.validateMinute(value);
     this._startMinute = value;
   }
 
@@ -151,7 +153,7 @@ export class MovieDate {
   }
 
   set endHour(value: number) {
-    MovieDate.validateHour(value);
+    MovieDateOld.validateHour(value);
     this._endHour = value;
   }
 
@@ -160,16 +162,16 @@ export class MovieDate {
   }
 
   set endMinute(value: number) {
-    MovieDate.validateMinute(value);
+    MovieDateOld.validateMinute(value);
     this._endMinute = value;
   }
 
-  equals(other: MovieDate): boolean {
+  equals(other: MovieDateOld): boolean {
     return this.day === other.day && this.startHour === other.startHour && this.startMinute === other.startMinute &&
       this.endHour === other.endHour && this.endMinute === other.endMinute;
   }
 
-  overlaps(other: MovieDate): boolean {
+  overlaps(other: MovieDateOld): boolean {
     if (this.day === other.day) {
       if (this.startHour <= other.startHour && other.startHour <= this.endHour) {
         // TODO: more logic could be added here, regarding overlapping minutes
@@ -181,6 +183,36 @@ export class MovieDate {
       }
     }
     return false;
+  }
+}
+
+export interface MovieDateFB {
+  startTime: Timestamp;
+  endTime: Timestamp;
+}
+
+export class MovieDate {
+  startTime: Timestamp;
+  endTime: Timestamp;
+
+  constructor(startTime: firebase.firestore.Timestamp, endTime: firebase.firestore.Timestamp) {
+    this.startTime = startTime;
+    this.endTime = endTime;
+  }
+
+  getDay(): string {
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    return days[this.startTime.toDate().getDay()];
+  }
+
+  overlaps(other: MovieDate): boolean {
+    // TODO: implement this
+    return true;
+  }
+
+  equals(other: MovieDate): boolean {
+    // TODO: implement this
+    return true;
   }
 }
 
@@ -224,7 +256,7 @@ export class MoviePlaying {
 
   removeDate(date: MovieDate): void {
     const initialLength = this._dates.length;
-    this._dates = this._dates.filter(oldDate => ! oldDate.equals(date));
+    this._dates = this._dates.filter(oldDate => !oldDate.equals(date));
     // TODO: trebuie dau throw de error daca nu gasesc ?
     if (initialLength === this._dates.length) {
       throw Error(`Date ${date} does not exist on movie ${this.title}!`);

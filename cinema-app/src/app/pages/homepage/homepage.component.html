@@ -14,7 +14,9 @@
           <mat-icon>star</mat-icon>
           {{movie.voteAverage}}
         </h1>
-        <h4 *ngFor="let genreID of movie.genreIDs | slice:0:3;">{{genres.get(genreID)}}</h4>
+        <h4 *ngFor="let genreID of movie.genreIDs | slice:0:3;">
+          {{genres.get(genreID)}}
+        </h4>
         <button mat-raised-button color="accent" >View Details</button>
       </div>
       <img src="{{movie.posterPath}}" alt="Movie poster">

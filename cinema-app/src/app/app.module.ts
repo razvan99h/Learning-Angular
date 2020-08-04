@@ -38,6 +38,7 @@ import { CinemaService } from './shared/services/cinema.service';
 import { CinemaEditComponent } from './pages/cinema/cinema-create-edit/cinema-edit/cinema-edit.component';
 import { CinemaDetailsComponent } from './pages/cinema/cinema-list-details/cinema-details/cinema-details.component';
 import { CinemaMovieAddComponent } from './pages/cinema/cinema-list-details/cinema-details/cinema-movie-add/cinema-movie-add.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import { CinemaMovieAddComponent } from './pages/cinema/cinema-list-details/cine
     MatRadioModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.FIREBASE),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    MatSelectModule
   ],
   providers: [
     MovieService,

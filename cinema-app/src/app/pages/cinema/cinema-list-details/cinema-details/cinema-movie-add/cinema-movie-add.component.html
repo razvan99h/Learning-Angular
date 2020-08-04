@@ -7,22 +7,26 @@
     <mat-step label="Select movie"
               [editable]="true"
               [completed]="selectedMovie !== -1">
-      <p>Click to select a movie</p>
+      <p>Click on the image to select a movie. Click on the title to see more details.</p>
 
-      <div *ngFor="let movie of movies; first as isFirst" class="flex-container-movies">
+      <div *ngFor="let movie of movies; index as i; first as isFirst" class="flex-container-movies">
         <mat-divider *ngIf="isFirst"></mat-divider>
         <mat-list-item>
           <div class="movie">
 
-            <div class="left">
+            <div class="left"
+                 [ngClass]="{'left-selected': i === selectedMovie}"
+                 (click)="clickMovie(i)">
               <div class="hover">
                 <mat-icon>check_circle</mat-icon>
               </div>
-              <img src="{{movie.posterPath}}" alt="">
+              <img src="{{movie.posterPath}}" alt="" >
             </div>
 
             <div class="right">
-              <h5>{{movie.title}}</h5>
+              <a target="_blank" routerLink="movie/{{movie.id}}">
+                {{movie.title}}
+              </a>
               <div class="date">
                 <mat-icon>calendar_today</mat-icon>
                 <p>
@@ -37,8 +41,8 @@
               </div>
               <div class="genres">
                 <mat-icon>flag</mat-icon>
-                <span *ngFor="let genre of movie.genres; last as isLast">
-                  {{genre.name}}<span *ngIf=" isLast">, </span>
+                <span *ngFor="let genreID of movie.genreIDs; last as isLast">
+                  {{genres.get(genreID)}}<span *ngIf="!isLast">,&nbsp;</span>
                 </span>
               </div>
 
@@ -47,7 +51,17 @@
         </mat-list-item>
         <mat-divider></mat-divider>
       </div>
-      <button mat-button matStepperNext type="button" [disabled]="selectedMovie === -1">
+      <button mat-button class="bottom-button"
+              *ngIf="currentPage > 1"
+              (click)="showLess()">
+        Show less
+      </button>
+      <button mat-button class="bottom-button"
+              (click)="showMore()">
+        Show more
+      </button>
+      <button mat-button matStepperNext type="button" class="bottom-button"
+              [disabled]="selectedMovie === -1">
           <span *ngIf="selectedMovie === -1" class="italic">
             Select a movie in order to continue
           </span>
@@ -59,7 +73,29 @@
     </mat-step>
 
     <mat-step label="Select dates">
+      <p>Select one of the available days and times:</p>
 
+      <mat-form-field appearance="fill">
+        <mat-label>Days</mat-label>
+        <mat-select multiple
+                    [formControl]="selectedDays"
+                    (selectionChange)="updateAvailableTimes()">
+          <mat-option *ngFor="let day of availableDays" value="{{day}}">
+            {{day}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+<!--      <mat-form-field appearance="fill">-->
+<!--        <mat-label>Days</mat-label>-->
+<!--        <mat-select multiple-->
+<!--                    [formControl]="selectedDays"-->
+<!--                    (selectionChange)="updateAvailableTimes()">-->
+<!--          <mat-option *ngFor="let day of availableDays" value="{{day}}">-->
+<!--            {{day}}-->
+<!--          </mat-option>-->
+<!--        </mat-select>-->
+<!--      </mat-form-field>-->
 
     </mat-step>
 

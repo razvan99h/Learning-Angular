@@ -53,11 +53,6 @@
     visibility: hidden;
   }
 
-  // Tine de tema indigo-pink, de aia nu mergea
-  //.mat-ripple {
-  //  visibility: hidden;
-  //}
-
   button:hover {
     transition: 0.2s;
     background-color: map-get($primary-map, 800);
@@ -66,8 +61,15 @@
   .main-button:hover {
     background-color: map-get($accent-map, 500);
   }
-}
 
+  .mat-select-arrow {
+    color: white;
+  }
+
+  .mat-select-value {
+    color: map-get($accent-map, 100);
+  }
+}
 
 .custom-image-modal {
   mat-dialog-container {
@@ -120,7 +122,7 @@
   color: $light-gray !important;
 }
 
-.mat-form-field-underline {
+.mat-form-field-underline, .mat-form-field-underline::before {
   background-color: $line-gray !important;
 }
 
