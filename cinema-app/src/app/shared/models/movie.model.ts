@@ -7,6 +7,7 @@ import { Company, CompanyTMDB } from './company.model';
 import * as firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
 
+
 export interface MovieTMDB {
   // tslint:disable:variable-name
   id: number;
@@ -195,14 +196,22 @@ export class MovieDate {
   startTime: Timestamp;
   endTime: Timestamp;
 
-  constructor(startTime: firebase.firestore.Timestamp, endTime: firebase.firestore.Timestamp) {
+  constructor(startTime: firebase.firestore.Timestamp = null, endTime: firebase.firestore.Timestamp = null) {
     this.startTime = startTime;
     this.endTime = endTime;
   }
 
   getDay(): string {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    return days[this.startTime.toDate().getDay()];
+    return days[this.startTime.toDate().getDay() - 1];
+  }
+
+  getStartTime(): string {
+    return this.startTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false});
+  }
+
+  getEndTime(): string {
+    return this.endTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false});
   }
 
   overlaps(other: MovieDate): boolean {
@@ -213,6 +222,17 @@ export class MovieDate {
   equals(other: MovieDate): boolean {
     // TODO: implement this
     return true;
+  }
+
+  toJSONString(): string {
+    return JSON.stringify(this);
+  }
+
+  fromJSONString(movieDateJSON: string): MovieDate {
+    const obj = JSON.parse(movieDateJSON);
+    this.startTime = new Timestamp(obj.startTime.seconds, obj.startTime.nanoseconds);
+    this.endTime = new Timestamp(obj.endTime.seconds, obj.endTime.nanoseconds);
+    return this;
   }
 }
 

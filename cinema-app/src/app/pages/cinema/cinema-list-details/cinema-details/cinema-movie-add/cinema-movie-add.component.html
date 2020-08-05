@@ -7,7 +7,8 @@
     <mat-step label="Select movie"
               [editable]="true"
               [completed]="selectedMovie !== -1">
-      <p>Click on the image to select a movie. Click on the title to see more details.</p>
+      <p>Click on the image to select a movie.</p>
+      <p>Click on the title to see more details.</p>
 
       <div *ngFor="let movie of movies; index as i; first as isFirst" class="flex-container-movies">
         <mat-divider *ngIf="isFirst"></mat-divider>
@@ -20,7 +21,7 @@
               <div class="hover">
                 <mat-icon>check_circle</mat-icon>
               </div>
-              <img src="{{movie.posterPath}}" alt="" >
+              <img src="{{movie.posterPath}}" alt="">
             </div>
 
             <div class="right">
@@ -62,40 +63,70 @@
       </button>
       <button mat-button matStepperNext type="button" class="bottom-button"
               [disabled]="selectedMovie === -1">
-          <span *ngIf="selectedMovie === -1" class="italic">
-            Select a movie in order to continue
-          </span>
-        <span *ngIf="selectedMovie !== -1">
-            Next
-          </span>
+        <span *ngIf="selectedMovie === -1" class="italic">Select a movie in order to continue</span>
+        <span *ngIf="selectedMovie !== -1">Next</span>
       </button>
 
     </mat-step>
 
-    <mat-step label="Select dates">
+    <mat-step label="Select dates"
+              [completed]="this.validForms()">
+      <p *ngIf="selectedMovie !== -1">Create the schedule for the movie "{{movies[selectedMovie].title}}"</p>
       <p>Select one of the available days and times:</p>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Days</mat-label>
-        <mat-select multiple
-                    [formControl]="selectedDays"
-                    (selectionChange)="updateAvailableTimes()">
-          <mat-option *ngFor="let day of availableDays" value="{{day}}">
-            {{day}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="time-row" *ngFor="let _ of selectedDays; index as i">
+<!--        TODO: are bug-uri extrem de ciudate, apar si dispar time-uri cand vrea-->
+        <mat-form-field appearance="fill" id="day{{i}}">
+          <mat-label>Day</mat-label>
+          <mat-select [(value)]="selectedDays[i]"
+                      (selectionChange)="updateDisplayTimes(i)"
+                      [formControl]="daysControl[i]" required>
+            <mat-option *ngFor="let availableDay of availableDays" value="{{availableDay}}">
+              {{availableDay}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="daysControl[i].hasError('required')">Choosing a day is required!</mat-error>
+        </mat-form-field>
 
-<!--      <mat-form-field appearance="fill">-->
-<!--        <mat-label>Days</mat-label>-->
-<!--        <mat-select multiple-->
-<!--                    [formControl]="selectedDays"-->
-<!--                    (selectionChange)="updateAvailableTimes()">-->
-<!--          <mat-option *ngFor="let day of availableDays" value="{{day}}">-->
-<!--            {{day}}-->
-<!--          </mat-option>-->
-<!--        </mat-select>-->
-<!--      </mat-form-field>-->
+        <mat-form-field appearance="fill" id="time{{i}}">
+          <mat-label>Time</mat-label>
+          <mat-select [(value)]="selectedTimes[i]"
+                      (selectionChange)="selectedTimeForDay(i)"
+                      [formControl]="timesControl[i]" required>
+            <mat-option *ngFor="let displayTime of displayTimes[i]" value="{{displayTime.toJSONString()}}">
+              {{displayTime.getStartTime()}} - {{displayTime.getEndTime()}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="timesControl[i].hasError('required')">Choosing a time is required!</mat-error>
+        </mat-form-field>
+
+        <div class="buttons">
+          <button mat-icon-button color="warn"
+                  *ngIf="selectedDays.length > 1"
+                  (click)="deleteDate(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+
+          <button mat-icon-button color="accent"
+                  *ngIf="i === selectedDays.length - 1"
+                  (click)="addNewDate()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+      </div>
+
+
+      <!--      <mat-form-field appearance="fill">-->
+      <!--        <mat-label>Days</mat-label>-->
+      <!--        <mat-select multiple-->
+      <!--                    [formControl]="selectedDays"-->
+      <!--                    (selectionChange)="updateAvailableTimes()">-->
+      <!--          <mat-option *ngFor="let day of availableDays" value="{{day}}">-->
+      <!--            {{day}}-->
+      <!--          </mat-option>-->
+      <!--        </mat-select>-->
+      <!--      </mat-form-field>-->
 
     </mat-step>
 

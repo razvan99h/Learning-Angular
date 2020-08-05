@@ -18,7 +18,7 @@
       <div id="details2" *ngIf="movie.genres.length > 0">
         <mat-icon>flag</mat-icon>
         <span *ngFor="let genre of movie.genres; last as isLast">
-              {{genre.name}}<span *ngIf=" isLast">, </span>
+              {{genre.name}}<span *ngIf="!isLast">, </span>
         </span>
       </div>
       <div id="details3">
@@ -51,8 +51,11 @@
 
     <section class="flex-container-text">
       <div class="text-left">
-        <div *ngIf="movie.cast">
-          <h4>Cast</h4>
+
+        <h4>Cast</h4>
+        <div *ngIf="movie.cast.length then availableCast else unavailableCast"></div>
+
+        <ng-template #availableCast>
           <div *ngIf="fullCast then fullCastList else shortCastList"></div>
           <ng-template #shortCastList>
             <mat-list>
@@ -84,10 +87,16 @@
               <a (click)="fullCast = ! fullCast">Less details</a>
             </div>
           </ng-template>
-        </div>
+        </ng-template>
 
-        <div *ngIf="movie.crew">
-          <h4>Crew</h4>
+        <ng-template #unavailableCast>
+          <p class="italic">No information available yet.</p>
+        </ng-template>
+
+        <h4>Crew</h4>
+        <div *ngIf="movie.crew.length then availableCrew else unavailableCrew"></div>
+
+        <ng-template #availableCrew >
           <div *ngIf="fullCrew then fullCrewList else shortCrewList"></div>
           <ng-template #shortCrewList>
             <mat-list>
@@ -119,7 +128,11 @@
               <a (click)="fullCrew = !fullCrew">Less details</a>
             </div>
           </ng-template>
-        </div>
+        </ng-template>
+
+        <ng-template #unavailableCrew>
+          <p class="italic">No information available yet.</p>
+        </ng-template>
 
       </div>
 
@@ -136,7 +149,7 @@
                 {{company.name}}<span *ngIf="company.originCountry"> ({{company.originCountry}})</span>
               </span>
         </div>
-        <p *ngIf="movie.productionCompanies.length === 0">No companies available yet.</p>
+        <p class="italic" *ngIf="movie.productionCompanies.length === 0" >No companies available yet.</p>
 
         <h4>Financial figures</h4>
         <div class="span-list">
