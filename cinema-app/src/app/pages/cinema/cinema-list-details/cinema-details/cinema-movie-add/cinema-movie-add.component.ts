@@ -65,13 +65,12 @@ export class CinemaMovieAddComponent implements OnInit {
   }
 
   updateDisplayTimes(updatedDateIndex = -1): void {
+    if (updatedDateIndex !== -1) {
+      this.selectedTimes[updatedDateIndex] = '';
+    }
     this.selectedDays.forEach((day, dateIndex) => {
       this.addDisplayTimes(day, dateIndex);
       this.filterDisplayTimesForDate(dateIndex);
-      if (updatedDateIndex !== -1) {
-        this.selectedTimes[updatedDateIndex] = '';
-        this.timesControl[updatedDateIndex].reset();
-      }
     });
   }
 
@@ -111,7 +110,7 @@ export class CinemaMovieAddComponent implements OnInit {
 
   selectedTimeForDay(selectedDateIndex: number): void {
     this.filterDisplayTimesAll(selectedDateIndex);
-    console.log(this.selectedTimes);
+    // console.log(this.selectedTimes);
   }
 
   addNewDate(): void {

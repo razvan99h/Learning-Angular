@@ -76,7 +76,7 @@
 
       <div class="time-row" *ngFor="let _ of selectedDays; index as i">
 <!--        TODO: are bug-uri extrem de ciudate, apar si dispar time-uri cand vrea-->
-        <mat-form-field appearance="fill" id="day{{i}}">
+        <mat-form-field appearance="fill">
           <mat-label>Day</mat-label>
           <mat-select [(value)]="selectedDays[i]"
                       (selectionChange)="updateDisplayTimes(i)"
@@ -88,7 +88,7 @@
           <mat-error *ngIf="daysControl[i].hasError('required')">Choosing a day is required!</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" id="time{{i}}">
+        <mat-form-field appearance="fill">
           <mat-label>Time</mat-label>
           <mat-select [(value)]="selectedTimes[i]"
                       (selectionChange)="selectedTimeForDay(i)"
