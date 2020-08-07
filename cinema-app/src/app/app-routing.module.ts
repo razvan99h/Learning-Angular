@@ -38,7 +38,7 @@ const routes: Routes = [
         path: ':id',
         component: CinemaDetailsComponent,
         resolve: {
-          room: CinemaDetailsResolverService
+          roomAndGenres: CinemaDetailsResolverService
         }
       },
     ]

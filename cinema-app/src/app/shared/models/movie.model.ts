@@ -5,6 +5,8 @@ import { Person } from './person.model';
 import { Genre } from './genre.model';
 import { Company, CompanyTMDB } from './company.model';
 import * as firebase from 'firebase';
+import { Seat, SeatFB } from './seat.model';
+import { CinemaRoom } from './cinema.model';
 import Timestamp = firebase.firestore.Timestamp;
 
 
@@ -190,15 +192,21 @@ export class MovieDateOld {
 export interface MovieDateFB {
   startTime: Timestamp;
   endTime: Timestamp;
+  _occupiedSeats: SeatFB[];
+
 }
 
 export class MovieDate {
   startTime: Timestamp;
   endTime: Timestamp;
+  private _occupiedSeats: Seat[];
 
-  constructor(startTime: firebase.firestore.Timestamp = null, endTime: firebase.firestore.Timestamp = null) {
+
+  constructor(startTime: firebase.firestore.Timestamp = null, endTime: firebase.firestore.Timestamp = null,
+              occupiedSeats: Seat[] = []) {
     this.startTime = startTime;
     this.endTime = endTime;
+    this._occupiedSeats = occupiedSeats;
   }
 
   getDay(): string {
@@ -215,13 +223,12 @@ export class MovieDate {
   }
 
   overlaps(other: MovieDate): boolean {
-    // TODO: implement this
-    return true;
+    return (other.startTime <= this.startTime && this.startTime <= other.endTime) ||
+      (other.startTime <= this.endTime && this.endTime <= other.endTime);
   }
 
   equals(other: MovieDate): boolean {
-    // TODO: implement this
-    return true;
+    return this.startTime === other.startTime && this.endTime === other.endTime;
   }
 
   toJSONString(): string {
@@ -234,14 +241,29 @@ export class MovieDate {
     this.endTime = new Timestamp(obj.endTime.seconds, obj.endTime.nanoseconds);
     return this;
   }
+
+  get occupiedSeats(): Seat[] {
+    return this._occupiedSeats;
+  }
+
+  addSeat(seat: Seat, cinemaRoom: CinemaRoom): void {
+    if (seat.column > cinemaRoom.columns || seat.row > cinemaRoom.rows) {
+      throw Error(`Invalid seat configuration for seat ${seat} in cinema room ${cinemaRoom.name}!`);
+    }
+    if (this._occupiedSeats.find(occupiedSeat => occupiedSeat.equals(seat))) {
+      throw Error(`Seat ${seat} already occupied!`);
+    }
+    this._occupiedSeats.push(seat);
+  }
 }
 
 export interface MoviePlayingFB {
   id: number;
   title: string;
   runtime: number;
-  releaseDate: Date;
-  poster_path: string;
+  releaseDate: Timestamp;
+  posterPath: string;
+  genreIDs: number[];
   _dates: MovieDateFB[];
 }
 
@@ -249,16 +271,20 @@ export class MoviePlaying {
   id: number;
   title: string;
   runtime: number;
-  releaseDate: Date;
+  releaseDate: Timestamp;
   posterPath: string;
+  genreIDs: number[];
   private _dates: MovieDate[];
 
-  constructor(id: number, title: string, runtime: number, releaseDate: Date, posterPath: string) {
+  constructor(id: number, title: string, runtime: number, releaseDate: Timestamp, posterPath: string, genreIDs: number[],
+              dates: MovieDate[] = []) {
     this.id = id;
     this.title = title;
     this.runtime = runtime;
     this.releaseDate = releaseDate;
     this.posterPath = posterPath;
+    this.genreIDs = genreIDs;
+    this._dates = dates;
   }
 
   get dates(): MovieDate[] {

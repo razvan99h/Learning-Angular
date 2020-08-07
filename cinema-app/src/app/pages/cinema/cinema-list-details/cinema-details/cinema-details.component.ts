@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CinemaListDetailsBaseComponent } from '../cinema-list-details-base.component';
 import { CinemaMovieAddComponent } from './cinema-movie-add/cinema-movie-add.component';
 import { MovieService } from '../../../../shared/services/movie.service';
-import { Movie } from '../../../../shared/models/movie.model';
+import { Movie, MoviePlaying } from '../../../../shared/models/movie.model';
 
 @Component({
   selector: 'cmb-cinema-details',
@@ -16,6 +16,8 @@ import { Movie } from '../../../../shared/models/movie.model';
 })
 export class CinemaDetailsComponent extends CinemaListDetailsBaseComponent implements OnInit, OnDestroy {
   room: CinemaRoom;
+  moviesPlaying: MoviePlaying[];
+  genres: Map<number, string>;
 
   constructor(
     public sharedService: SharedService,
@@ -32,13 +34,12 @@ export class CinemaDetailsComponent extends CinemaListDetailsBaseComponent imple
     super.ngOnInit();
 
     this.route.data
-      .subscribe((data: { room: CinemaRoom }) => {
-        this.room = data.room;
+      // TODO: e ok sa dau cele 2 date (room + genresList) prin resolver, asa?
+      .subscribe((data: { roomAndGenres: any[] }) => {
+        this.room = data.roomAndGenres[0];
         this.room.roomID = this.route.snapshot.paramMap.get('id');
+        this.genres = data.roomAndGenres[1];
       });
-
-    // TODO: remove this
-    this.openMovieAddDialog();
   }
 
   removeCinemaRoom(roomID: string): void {
@@ -47,25 +48,19 @@ export class CinemaDetailsComponent extends CinemaListDetailsBaseComponent imple
   }
 
   openMovieAddDialog(): void {
-    // TODO: folosesc fork join in loc de astea 2 subscribe-uri sau switch map in serviciu
-    //  eventual arat un spinner intre timp (pana se incarca)
     this.movieService
-      .getAllGenres()
-      .subscribe((genresMap: Map<number, string>) => {
-        this.movieService
-          .getAllMovies(1)
-          .subscribe((moviesList: Movie[]) => {
-            this.dialog.open(CinemaMovieAddComponent, {
-              panelClass: 'custom-modal',
-              maxWidth: '90vw',
-              autoFocus: false,
-              data: {
-                room: this.room,
-                movies: moviesList,
-                genres: genresMap
-              }
-            });
-          });
+      .getAllMovies()
+      .subscribe((moviesList: Movie[]) => {
+        this.dialog.open(CinemaMovieAddComponent, {
+          panelClass: 'custom-modal',
+          maxWidth: '90vw',
+          autoFocus: false,
+          data: {
+            room: this.room,
+            movies: moviesList,
+            genres: this.genres
+          }
+        });
       });
   }
 }

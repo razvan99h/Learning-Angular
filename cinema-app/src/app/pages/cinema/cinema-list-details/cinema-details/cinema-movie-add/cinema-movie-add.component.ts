@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { CinemaRoom } from '../../../../../shared/models/cinema.model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CinemaService } from '../../../../../shared/services/cinema.service';
-import { Movie, MovieDate } from '../../../../../shared/models/movie.model';
+import { Movie, MovieDate, MoviePlaying } from '../../../../../shared/models/movie.model';
 import { MovieService } from '../../../../../shared/services/movie.service';
 import * as firebase from 'firebase';
 import { FormControl, Validators } from '@angular/forms';
@@ -153,11 +153,27 @@ export class CinemaMovieAddComponent implements OnInit {
   }
 
   showMore(): void {
-    this.currentPage += 1;
     this.movieService
-      .getAllMovies(this.currentPage)
+      .getAllMovies(this.currentPage + 1)
       .subscribe((movies: Movie[]) => {
+        this.currentPage += 1;
         this.movies.push(...movies);
+      });
+  }
+
+  convertToMovieDate(movieDateStr: string): MovieDate {
+    return new MovieDate().fromJSONString(movieDateStr);
+  }
+
+  saveMovie(): void {
+    const movieID = this.movies[this.selectedMovie].id;
+    this.movieService
+      .getMovie(movieID)
+      .subscribe((movie: Movie) => {
+        const moviePlaying = new MoviePlaying(movie.id, movie.title, movie.runtime,
+          new Timestamp(movie.releaseDate.getTime() / 1000, 0), movie.posterPath, movie.genreIDs);
+        const dates = this.selectedTimes.map(selectedTime => new MovieDate().fromJSONString(selectedTime));
+        this.cinemaService.updateWithMoviePlaying(this.room, moviePlaying, dates);
       });
   }
 }
