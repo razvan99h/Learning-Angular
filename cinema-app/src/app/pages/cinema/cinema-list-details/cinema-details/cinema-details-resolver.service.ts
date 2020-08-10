@@ -2,25 +2,23 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { CinemaRoom } from '../../../../shared/models/cinema.model';
 import { CinemaService } from '../../../../shared/services/cinema.service';
-import { EMPTY, forkJoin, Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { catchError, map, take } from 'rxjs/operators';
-import { MovieService } from '../../../../shared/services/movie.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CinemaDetailsResolverService implements Resolve<any[]> {
+export class CinemaDetailsResolverService implements Resolve<CinemaRoom> {
 
   constructor(
     private router: Router,
-    private cinemaService: CinemaService,
-    private movieService: MovieService
+    private cinemaService: CinemaService
   ) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any[]>{
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<CinemaRoom>{
     const roomID = route.paramMap.get('id');
-    const response1 =  this.cinemaService
+    return this.cinemaService
       .getRoom(roomID)
       .pipe(
         take(1),
@@ -33,19 +31,5 @@ export class CinemaDetailsResolverService implements Resolve<any[]> {
           return EMPTY;
         })
       );
-    const response2 = this.movieService
-      .getAllGenres()
-      .pipe(
-        take(1),
-        map(genres => {
-          return genres;
-        }),
-        catchError(error => {
-          console.log(error);
-          this.router.navigate(['unavailable']);
-          return EMPTY;
-        })
-      );
-    return forkJoin([response1, response2]);
   }
 }

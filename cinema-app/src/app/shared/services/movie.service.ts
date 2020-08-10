@@ -125,5 +125,11 @@ export class MovieService {
         })
       );
   }
+
+  getMoviesAndGenres(): Observable<any[]> {
+    const response1 = this.getAllMovies();
+    const response2 = this.getAllGenres();
+    return forkJoin([response1, response2]);
+  }
 }
 

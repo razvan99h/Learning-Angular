@@ -24,7 +24,6 @@ export class CinemaService {
       .pipe(
         map(roomsObj => {
           const rooms = Object.entries(roomsObj).map(([key, roomFB]) => {
-            console.log(roomFB);
             return new CinemaRoom(roomFB._name, roomFB._rows, roomFB._columns, key);
           });
           console.log(`getCinemaRooms >>> rooms: `, rooms);
@@ -51,7 +50,7 @@ export class CinemaService {
                 return new MovieDate(dateFB.startTime, dateFB.endTime, seats);
               });
               room.addMoviePlaying(new MoviePlaying(movieFB.id, movieFB.title, movieFB.runtime, movieFB.releaseDate,
-                movieFB.posterPath, movieFB.genreIDs, dates));
+                movieFB.posterPath, movieFB.genres, dates));
             });
           }
           console.log(`getRoom >>> room: `, room);

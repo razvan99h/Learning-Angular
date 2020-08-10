@@ -171,7 +171,7 @@ export class CinemaMovieAddComponent implements OnInit {
       .getMovie(movieID)
       .subscribe((movie: Movie) => {
         const moviePlaying = new MoviePlaying(movie.id, movie.title, movie.runtime,
-          new Timestamp(movie.releaseDate.getTime() / 1000, 0), movie.posterPath, movie.genreIDs);
+          new Timestamp(movie.releaseDate.getTime() / 1000, 0), movie.posterPath, movie.genres);
         const dates = this.selectedTimes.map(selectedTime => new MovieDate().fromJSONString(selectedTime));
         this.cinemaService.updateWithMoviePlaying(this.room, moviePlaying, dates);
       });

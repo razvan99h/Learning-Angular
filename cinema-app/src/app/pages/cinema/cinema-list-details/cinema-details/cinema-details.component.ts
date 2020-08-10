@@ -7,7 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CinemaListDetailsBaseComponent } from '../cinema-list-details-base.component';
 import { CinemaMovieAddComponent } from './cinema-movie-add/cinema-movie-add.component';
 import { MovieService } from '../../../../shared/services/movie.service';
-import { Movie, MoviePlaying } from '../../../../shared/models/movie.model';
+import * as firebase from 'firebase';
+import Timestamp = firebase.firestore.Timestamp;
 
 @Component({
   selector: 'cmb-cinema-details',
@@ -16,8 +17,6 @@ import { Movie, MoviePlaying } from '../../../../shared/models/movie.model';
 })
 export class CinemaDetailsComponent extends CinemaListDetailsBaseComponent implements OnInit, OnDestroy {
   room: CinemaRoom;
-  moviesPlaying: MoviePlaying[];
-  genres: Map<number, string>;
 
   constructor(
     public sharedService: SharedService,
@@ -34,11 +33,9 @@ export class CinemaDetailsComponent extends CinemaListDetailsBaseComponent imple
     super.ngOnInit();
 
     this.route.data
-      // TODO: e ok sa dau cele 2 date (room + genresList) prin resolver, asa?
-      .subscribe((data: { roomAndGenres: any[] }) => {
-        this.room = data.roomAndGenres[0];
+      .subscribe((data: { room: CinemaRoom }) => {
+        this.room = data.room;
         this.room.roomID = this.route.snapshot.paramMap.get('id');
-        this.genres = data.roomAndGenres[1];
       });
   }
 
@@ -49,8 +46,10 @@ export class CinemaDetailsComponent extends CinemaListDetailsBaseComponent imple
 
   openMovieAddDialog(): void {
     this.movieService
-      .getAllMovies()
-      .subscribe((moviesList: Movie[]) => {
+      .getMoviesAndGenres()
+      .subscribe((response) => {
+        const moviesList = response[0];
+        const genresList = response[1];
         this.dialog.open(CinemaMovieAddComponent, {
           panelClass: 'custom-modal',
           maxWidth: '90vw',
@@ -58,9 +57,13 @@ export class CinemaDetailsComponent extends CinemaListDetailsBaseComponent imple
           data: {
             room: this.room,
             movies: moviesList,
-            genres: this.genres
+            genres: genresList
           }
         });
       });
+  }
+
+  convertToDate(timestamp: Timestamp): Date {
+    return new Date(timestamp.seconds * 1000);
   }
 }

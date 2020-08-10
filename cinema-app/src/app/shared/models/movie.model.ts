@@ -263,7 +263,7 @@ export interface MoviePlayingFB {
   runtime: number;
   releaseDate: Timestamp;
   posterPath: string;
-  genreIDs: number[];
+  genres: Genre[];
   _dates: MovieDateFB[];
 }
 
@@ -273,17 +273,17 @@ export class MoviePlaying {
   runtime: number;
   releaseDate: Timestamp;
   posterPath: string;
-  genreIDs: number[];
+  genres: Genre[];
   private _dates: MovieDate[];
 
-  constructor(id: number, title: string, runtime: number, releaseDate: Timestamp, posterPath: string, genreIDs: number[],
+  constructor(id: number, title: string, runtime: number, releaseDate: Timestamp, posterPath: string, genres: Genre[],
               dates: MovieDate[] = []) {
     this.id = id;
     this.title = title;
     this.runtime = runtime;
     this.releaseDate = releaseDate;
     this.posterPath = posterPath;
-    this.genreIDs = genreIDs;
+    this.genres = genres;
     this._dates = dates;
   }
 
