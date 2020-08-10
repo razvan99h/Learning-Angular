@@ -10,6 +10,8 @@ import { ReservationComponent } from '../reservation/reservation.component';
 import { Image } from '../../shared/models/image.model';
 import { ImageDialogComponent } from '../../shared/components/image-dialog/image-dialog.component';
 import { Subscription } from 'rxjs';
+import { CinemaService } from '../../shared/services/cinema.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'cmb-movie-details',
@@ -22,22 +24,41 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   fullCrew = false;
   fullCast = false;
   isHandset = false;
+  showBookButton = false;
   youtubeVideo: SafeResourceUrl;
   private isHandsetSubscription: Subscription;
+  private fromHomepageSubscription: Subscription;
 
   constructor(
     // private changeDetectorRef: ChangeDetectorRef,
     private route: ActivatedRoute,
     private movieService: MovieService,
+    private cinemaService: CinemaService,
     private sanitizer: DomSanitizer,
     private sharedService: SharedService,
     private dialog: MatDialog,
   ) {
     this.youtubeVideo = this.sanitizer.bypassSecurityTrustResourceUrl('');
+
+
   }
 
   ngOnInit(): void {
     // this.changeDetectorRef.markForCheck() // -> for not having iframe flicker issue because of change detection
+
+    this.fromHomepageSubscription = this.sharedService
+      .getClickEventFromHomepage()
+      .pipe(take(1))
+      .subscribe(() => {
+        this.showBookButton = true;
+      });
+
+    this.cinemaService
+      .checkIfMoviePlays(Number(this.route.snapshot.paramMap.get('id')))
+      .subscribe((result: boolean) => {
+        this.showBookButton = result;
+      });
+
     this.isHandsetSubscription = this.sharedService
       .isHandset()
       .subscribe((isHandset: boolean) => {
@@ -91,5 +112,6 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.isHandsetSubscription.unsubscribe();
+    this.fromHomepageSubscription.unsubscribe();
   }
 }

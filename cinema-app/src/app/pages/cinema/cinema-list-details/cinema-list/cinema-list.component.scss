@@ -15,6 +15,10 @@
 mat-list-item {
   height: inherit !important;
   min-height: 72px;
+
+  .mat-list-icon {
+    padding-left: 8px;
+  }
 }
 
 .flex-container-room {
@@ -72,6 +76,7 @@ mat-list-item {
       min-width: 50px;
 
       mat-icon {
+        margin-top: 0;
         margin-right: 0;
       }
     }

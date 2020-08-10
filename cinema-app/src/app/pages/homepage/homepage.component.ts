@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MovieService } from '../../shared/services/movie.service';
-import { Movie } from '../../shared/models/movie.model';
+import { MoviePlaying } from '../../shared/models/movie.model';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { SharedService } from '../../shared/services/shared.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { CinemaService } from '../../shared/services/cinema.service';
 
 
 @Component({
@@ -12,16 +13,16 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent implements OnInit, OnDestroy {
-  movies: Movie[];
-  genres: Map<number, string>;
+  moviesPlaying: MoviePlaying[];
   isHandset = false;
   private isHandsetSubscription: Subscription;
 
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private movieService: MovieService,
+    private cinemaService: CinemaService,
     private sharedService: SharedService,
+    private router: Router
   ) {
   }
 
@@ -31,18 +32,16 @@ export class HomepageComponent implements OnInit, OnDestroy {
       .subscribe((isHandset: boolean) => {
         this.isHandset = isHandset;
       });
-    this.movieService
-      .getAllGenres()
-      .subscribe((genres: Map<number, string>) => {
-        this.genres = genres;
-
-        this.movieService
-          .getAllMovies(4)
-          .subscribe((movies: Movie[]) => {
-            this.movies = movies;
-            // TODO: citesc despre merge request
-          });
+    this.cinemaService
+      .getAllMoviesPlaying()
+      .subscribe((moviePlaying: MoviePlaying[]) => {
+        this.moviesPlaying = moviePlaying;
       });
+  }
+
+  goToMovieDetails(movieID: number): void {
+    this.router.navigate([`movie/${movieID}`]);
+    this.sharedService.sendClickEventFromHomepage();
   }
 
   ngOnDestroy(): void {

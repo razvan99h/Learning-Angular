@@ -53,17 +53,6 @@ mat-dialog-content {
       }
     }
 
-    .left:hover,  {
-      transition: 0.3s;
-      border: 4px solid green;
-      cursor: pointer;
-
-      .hover {
-        opacity: 1;
-        transition: opacity 0.3s ease-in-out;
-      }
-    }
-
     .left-selected {
       border: 4px solid green;
 
@@ -107,6 +96,19 @@ mat-dialog-content {
         }
       }
 
+    }
+  }
+
+  .movie:hover {
+    .left  {
+      transition: 0.3s;
+      border: 4px solid green;
+      cursor: pointer;
+
+      .hover {
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+      }
     }
   }
 }

@@ -13,11 +13,9 @@
       <div *ngFor="let movie of movies; index as i; first as isFirst" class="flex-container-movies">
         <mat-divider *ngIf="isFirst"></mat-divider>
         <mat-list-item>
-          <div class="movie">
+          <div class="movie" (click)="clickMovie(i)">
 
-            <div class="left"
-                 [ngClass]="{'left-selected': i === selectedMovie}"
-                 (click)="clickMovie(i)">
+            <div class="left" [ngClass]="{'left-selected': i === selectedMovie}">
               <div class="hover">
                 <mat-icon>check_circle</mat-icon>
               </div>

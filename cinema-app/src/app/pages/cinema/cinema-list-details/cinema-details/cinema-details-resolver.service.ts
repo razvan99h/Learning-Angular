@@ -26,7 +26,7 @@ export class CinemaDetailsResolverService implements Resolve<CinemaRoom> {
           return room;
         }),
         catchError(error => {
-          console.log(error);
+          console.error(error);
           this.router.navigate(['unavailable']);
           return EMPTY;
         })

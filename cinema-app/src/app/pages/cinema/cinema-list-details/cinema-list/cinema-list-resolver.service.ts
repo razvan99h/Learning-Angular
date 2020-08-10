@@ -25,7 +25,7 @@ export class CinemaListResolverService implements Resolve<CinemaRoom[]> {
           return rooms;
         }),
         catchError((error) => {
-          console.log(error);
+          console.error(error);
           this.router.navigate(['unavailable']);
           return EMPTY;
         }),

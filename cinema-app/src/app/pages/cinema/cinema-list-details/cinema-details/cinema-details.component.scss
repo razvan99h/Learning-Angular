@@ -32,47 +32,37 @@ header {
     .movie {
       display: flex;
       flex-direction: row;
-      padding: 16px 0;
+      flex-wrap: wrap;
+      padding: 16px 24px 0 0;
 
       .left {
-        width: 80px;
-        height: 120px;
-        min-width: 80px;
-        margin-right: 24px;
-        border: 4px solid white;
-        border-radius: 4px;
-        position: relative;
-        transition: opacity 0.3s ease-in-out;
+        margin: 0 24px 16px 0;
 
-        .hover {
-          opacity: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          position: absolute;
-          background-color: rgba(0, 0, 0, 0.6);
-          width: 100%;
-          height: 100%;
-          vertical-align: middle;
-          text-align: center;
+        .img-wrapper {
+          width: 160px;
+          height: 240px;
+          min-width: 160px;
+          border: 4px solid white;
+          border-radius: 4px;
 
-          mat-icon {
-            opacity: 0;
-            color: green;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
           }
-
         }
 
-        img {
+        button {
           width: 100%;
-          height: 100%;
-          object-fit: cover;
+          margin-bottom: 0;
         }
       }
 
       .right {
         display: flex;
         flex-direction: column;
+        min-width: 300px;
 
         a {
           font-size: 18px;
@@ -83,24 +73,26 @@ header {
           margin-bottom: 16px;
         }
 
-        .date {
-          p {
-            margin-top: 0;
-          }
-        }
-
-        .date, .genres {
+        .times, .date, .genres {
           display: inline-flex;
-          flex-wrap: wrap;
+          flex-wrap: nowrap;
+          word-break: break-word;
           color: $light-gray;
 
           mat-icon {
             margin-top: -3px;
             margin-right: 8px;
           }
-        }
 
+          p {
+            margin-top: 0;
+          }
+        }
       }
     }
   }
+}
+
+.add-button {
+  margin-top: 16px;
 }

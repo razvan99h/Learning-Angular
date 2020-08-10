@@ -264,6 +264,7 @@ export interface MoviePlayingFB {
   releaseDate: Timestamp;
   posterPath: string;
   genres: Genre[];
+  voteAverage: number;
   _dates: MovieDateFB[];
 }
 
@@ -274,16 +275,18 @@ export class MoviePlaying {
   releaseDate: Timestamp;
   posterPath: string;
   genres: Genre[];
+  voteAverage: number;
   private _dates: MovieDate[];
 
   constructor(id: number, title: string, runtime: number, releaseDate: Timestamp, posterPath: string, genres: Genre[],
-              dates: MovieDate[] = []) {
+              voteAverage: number, dates: MovieDate[] = []) {
     this.id = id;
     this.title = title;
     this.runtime = runtime;
     this.releaseDate = releaseDate;
     this.posterPath = posterPath;
     this.genres = genres;
+    this.voteAverage = voteAverage;
     this._dates = dates;
   }
 

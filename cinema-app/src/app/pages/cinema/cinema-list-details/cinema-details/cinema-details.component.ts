@@ -7,8 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CinemaListDetailsBaseComponent } from '../cinema-list-details-base.component';
 import { CinemaMovieAddComponent } from './cinema-movie-add/cinema-movie-add.component';
 import { MovieService } from '../../../../shared/services/movie.service';
-import * as firebase from 'firebase';
-import Timestamp = firebase.firestore.Timestamp;
+import { ConfirmationMessage } from '../../../../shared/models/confirmation.model';
+import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'cmb-cinema-details',
@@ -63,7 +63,24 @@ export class CinemaDetailsComponent extends CinemaListDetailsBaseComponent imple
       });
   }
 
-  convertToDate(timestamp: Timestamp): Date {
-    return new Date(timestamp.seconds * 1000);
+  removeMoviePlaying(movieID: number, cinemaRoom: CinemaRoom, ): void {
+    this.cinemaService.removeMoviePlaying(movieID, cinemaRoom, );
+  }
+
+  openConfirmationDialogMovie(movieID: number, title: string): void {
+    const confirmation: ConfirmationMessage = new ConfirmationMessage();
+    confirmation.icon = 'error_outline';
+    confirmation.title = 'Warning';
+    confirmation.message = `Are you sure you want to remove "${title}" from the schedule?`;
+    confirmation.yesButton = 'Yes';
+    confirmation.noButton = 'No';
+    confirmation.fctRef = this.removeMoviePlaying;
+    confirmation.args = [movieID, this.room];
+
+    this.dialog.open(ConfirmationDialogComponent, {
+      panelClass: 'custom-modal',
+      maxWidth: '90vw',
+      data: confirmation
+    });
   }
 }

@@ -50,7 +50,7 @@ export class MovieDetailsResolverService implements Resolve<Movie> {
           }
         }),
         catchError(error => {
-          console.log(error);
+          console.error(error);
           this.router.navigate(['unavailable']);
           return EMPTY;
         })

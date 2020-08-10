@@ -6,24 +6,24 @@
 
 <main class="main-container">
   <mat-card class="example-card"
-            *ngFor="let movie of movies"
-            routerLink="movie/{{movie.id}}">
-    <div mat-card-image class="crop-container" >
+            *ngFor="let movie of moviesPlaying"
+            (click)="goToMovieDetails(movie.id)">
+    <div mat-card-image class="crop-container">
       <div class="hover">
         <h1>
           <mat-icon>star</mat-icon>
           {{movie.voteAverage}}
         </h1>
-        <h4 *ngFor="let genreID of movie.genreIDs | slice:0:3;">
-          {{genres.get(genreID)}}
+        <h4 *ngFor="let genre of movie.genres | slice:0:3;">
+          {{genre.name}}
         </h4>
-        <button mat-raised-button color="accent" >View Details</button>
+        <button mat-raised-button color="accent">View Details</button>
       </div>
       <img src="{{movie.posterPath}}" alt="Movie poster">
     </div>
     <mat-card-content>
       <h4>{{movie.title}}</h4>
-      <p>{{movie.releaseDate.getFullYear()}}</p>
+      <p>{{movie.releaseDate.toDate().getFullYear()}}</p>
     </mat-card-content>
 
   </mat-card>
