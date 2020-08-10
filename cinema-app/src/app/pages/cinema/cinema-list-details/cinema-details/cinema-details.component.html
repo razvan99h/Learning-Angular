@@ -16,8 +16,61 @@
 <section class="schedule">
   <h4>Movie schedule</h4>
 
+  <div *ngFor="let movie of room.moviesPlaying; index as i; first as isFirst" class="flex-container-movies">
+    <mat-divider *ngIf="isFirst"></mat-divider>
+    <mat-list-item>
+      <div class="movie">
 
-  <button mat-raised-button color="accent" (click)="openMovieAddDialog()">
+        <div class="left">
+          <div class="img-wrapper">
+            <img src="{{movie.posterPath}}" alt="">
+          </div>
+          <button mat-raised-button color="warn" (click)="openConfirmationDialogMovie(movie.id, movie.title)">
+            <mat-icon>delete</mat-icon>
+            Remove
+          </button>
+        </div>
+
+        <div class="right">
+          <a target="_blank" routerLink="movie/{{movie.id}}">
+            {{movie.title}}
+          </a>
+          <div class="times" *ngFor="let date of movie.dates">
+            <mat-icon>schedule</mat-icon>
+            <p>
+              {{date.getDay()}}, {{date.getStartTime()}} - {{date.getEndTime()}}
+            </p>
+          </div>
+          <div class="date">
+            <mat-icon>calendar_today</mat-icon>
+            <p>
+<!--              {{movie.releaseDate.seconds}}-->
+              {{movie.releaseDate.toDate().toLocaleDateString(
+              'en-GB',
+              {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+              })}}
+            </p>
+          </div>
+          <div class="genres">
+            <mat-icon>flag</mat-icon>
+            <p>
+              <span *ngFor="let genre of movie.genres; last as isLast">
+                  {{genre.name}}<span *ngIf="!isLast">,&nbsp;</span>
+                </span>
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </div>
+
+  <button mat-raised-button color="accent" (click)="openMovieAddDialog()" class="add-button">
     <mat-icon>add</mat-icon>
     Add new movie
   </button>
