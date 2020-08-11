@@ -18,6 +18,32 @@ export class CinemaService {
   ) {
   }
 
+  private static getFreeDatesFromNow(occupiedMinutes: number): MovieDate[] {
+    const now = new Date();
+    const freeDates = [];
+    const firstFreeDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0);
+
+    let counter = 0;
+    while (true) {
+      const newStartTime = firstFreeDate.getTime() + 1000 * 1800 * counter;
+      const newEndTime = newStartTime + occupiedMinutes * 1000 * 60;
+      const lastDayOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 6, 21, 0, 0, 0);
+      if (newStartTime > lastDayOfWeek.getTime()) {
+        break;
+      }
+      const newStartDate = new Date(newStartTime);
+      const newEndDate = new Date(newEndTime);
+      if (newStartDate.getHours() > 10 && newEndDate.getHours() < 23 && newStartDate.getDate() === newEndDate.getDate()) {
+        freeDates.push(new MovieDate(
+          new Timestamp(newStartTime / 1000, 0),
+          new Timestamp(newEndTime / 1000, 0)
+        ));
+      }
+      counter += 1;
+    }
+    return freeDates;
+  }
+
   private convertToCinemaRoom(roomFB: CinemaRoomFB, roomID: string): CinemaRoom {
     const room = new CinemaRoom(roomFB._name, roomFB._rows, roomFB._columns, roomID);
     if (roomFB._moviesPlaying) {
@@ -128,6 +154,7 @@ export class CinemaService {
 
   addMoviePlaying(cinemaRoom: CinemaRoom, moviePlaying: MoviePlaying, dates: MovieDate[]): void {
     console.log(`updateWithMoviePlaying <<< cinemaRoom: `, cinemaRoom, `moviePlaying: `, moviePlaying, `dates: `, dates);
+    dates.sort((date1, date2) => date1.startTime.seconds - date2.startTime.seconds);
     dates.forEach(date => {
       moviePlaying.addDate(date);
     });
@@ -143,5 +170,30 @@ export class CinemaService {
     this.db.object('/cinema-rooms/' + cinemaRoom.roomID).set(cinemaRoom).then(() => {
       console.log(`removeMoviePlaying >>>`);
     });
+  }
+
+  getAvailableDates(runtime: number, cinemaRoom: CinemaRoom): MovieDate[] {
+    console.log(`getAvailableDates <<< runtime: ${runtime}, cinemaRoom: `, cinemaRoom);
+    const occupiedMinutes = (Math.floor(runtime / 30) + 1 + ((runtime % 30 > 0) ? 1 : 0)) * 30;
+    const freeDates = CinemaService.getFreeDatesFromNow(occupiedMinutes);
+    const availableDates = [];
+
+    freeDates.forEach(freeDate => {
+      let overlaps = false;
+      cinemaRoom.moviesPlaying.forEach(moviePlaying => {
+        moviePlaying.dates.forEach(movieDate => {
+          if (freeDate.overlaps(movieDate)) {
+            overlaps = true;
+            console.log("overlaps", freeDate, movieDate);
+          }
+        });
+      });
+      if (!overlaps) {
+        availableDates.push(freeDate);
+      }
+    });
+    console.log(availableDates, freeDates);
+    console.log(`getAvailableDates >>> availableDates:`, availableDates);
+    return availableDates;
   }
 }

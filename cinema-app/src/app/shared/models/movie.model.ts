@@ -209,22 +209,41 @@ export class MovieDate {
     this._occupiedSeats = occupiedSeats;
   }
 
+  isAfterToday(): boolean {
+    return this.startTime.seconds > new Date().getTime() / 1000;
+  }
+
   getDay(): string {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     return days[this.startTime.toDate().getDay() - 1];
   }
 
+  getDate(): number {
+    return this.startTime.toDate().getDate();
+  }
+
+  getMonth(): string {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return months[this.startTime.toDate().getMonth()];
+  }
+
   getStartTime(): string {
+    // return this.startTime.toDate().toISOString();
+
     return this.startTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false});
   }
 
   getEndTime(): string {
+    // return this.endTime.toDate().toISOString();
+
     return this.endTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false});
   }
 
   overlaps(other: MovieDate): boolean {
     return (other.startTime <= this.startTime && this.startTime <= other.endTime) ||
-      (other.startTime <= this.endTime && this.endTime <= other.endTime);
+      (other.startTime <= this.endTime && this.endTime <= other.endTime) ||
+      (this.startTime <= other.startTime && other.startTime <= this.endTime) ||
+      (this.startTime <= other.endTime && other.endTime <= this.endTime);
   }
 
   equals(other: MovieDate): boolean {

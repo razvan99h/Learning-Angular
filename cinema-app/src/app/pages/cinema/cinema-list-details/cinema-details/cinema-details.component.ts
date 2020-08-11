@@ -9,6 +9,7 @@ import { CinemaMovieAddComponent } from './cinema-movie-add/cinema-movie-add.com
 import { MovieService } from '../../../../shared/services/movie.service';
 import { ConfirmationMessage } from '../../../../shared/models/confirmation.model';
 import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { MovieDate } from '../../../../shared/models/movie.model';
 
 @Component({
   selector: 'cmb-cinema-details',
@@ -82,5 +83,9 @@ export class CinemaDetailsComponent extends CinemaListDetailsBaseComponent imple
       maxWidth: '90vw',
       data: confirmation
     });
+  }
+
+  filterActiveDates(dates: MovieDate[]): MovieDate[] {
+    return dates.filter(date => date.isAfterToday());
   }
 }

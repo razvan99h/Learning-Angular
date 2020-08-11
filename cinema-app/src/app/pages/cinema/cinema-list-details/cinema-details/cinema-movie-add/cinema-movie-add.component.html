@@ -73,7 +73,6 @@
       <p>Select one of the available days and times:</p>
 
       <div class="time-row" *ngFor="let _ of selectedDays; index as i">
-<!--        TODO: are bug-uri extrem de ciudate, apar si dispar time-uri cand vrea-->
         <mat-form-field appearance="fill">
           <mat-label>Day</mat-label>
           <mat-select [(value)]="selectedDays[i]"
@@ -126,20 +125,34 @@
         </button>
       </ng-template>
 
-
     </mat-step>
 
-    <mat-step label="Confirm" [editable]="false">
-      <div *ngIf="validForms()">
-        <p>You selected the following dates to add to the movie "{{movies[selectedMovie].title}}":</p>
-        <p *ngFor="let time of selectedTimes; index as i">
-          - {{selectedDays[i]}}, {{convertToMovieDate(time).getStartTime()}} - {{convertToMovieDate(time).getEndTime()}}
-        </p>
+
+    <mat-step label="Confirm" [editable]="false" >
+      <div class="last-step">
+
+        <div *ngIf="validForms()">
+          <p>You selected the following dates to add to the movie "{{movies[selectedMovie].title}}":</p>
+          <p *ngFor="let time of selectedTimes; index as i">
+            - {{selectedDays[i]}}, {{convertToMovieDate(time).getStartTime()}} - {{convertToMovieDate(time).getEndTime()}}
+          </p>
+        </div>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Repeat this schedule for </mat-label>
+          <mat-select [(ngModel)]="selectedWeeks">
+            <mat-option *ngFor="let i of weeks; first as isFirst" [value]="i + 1">
+              {{i + 1}} week<span *ngIf="!isFirst">s</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-button matStepperPrevious class="modify-button">
+          <mat-icon>create</mat-icon>
+          Modify
+        </button>
+
       </div>
-      <button mat-button matStepperPrevious>
-        <mat-icon>create</mat-icon>
-        Modify
-      </button>
     </mat-step>
 
   </mat-vertical-stepper>

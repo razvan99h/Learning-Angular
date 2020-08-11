@@ -35,16 +35,15 @@
           <a target="_blank" routerLink="movie/{{movie.id}}">
             {{movie.title}}
           </a>
-          <div class="times" *ngFor="let date of movie.dates">
+          <div class="times" *ngFor="let date of filterActiveDates(movie.dates)">
             <mat-icon>schedule</mat-icon>
             <p>
-              {{date.getDay()}}, {{date.getStartTime()}} - {{date.getEndTime()}}
+              {{date.getDay()}}, {{date.getDate()}} {{date.getMonth()}}, {{date.getStartTime()}} - {{date.getEndTime()}}
             </p>
           </div>
           <div class="date">
             <mat-icon>calendar_today</mat-icon>
             <p>
-<!--              {{movie.releaseDate.seconds}}-->
               {{movie.releaseDate.toDate().toLocaleDateString(
               'en-GB',
               {

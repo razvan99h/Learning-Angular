@@ -79,13 +79,17 @@ export class CinemaRoom {
         }
       });
     });
-    this.moviesPlaying.push(movie);
+    const foundMovie = this.moviesPlaying.find(m => m.id === movie.id);
+    if (foundMovie) {
+      foundMovie.dates.push(...movie.dates);
+    } else {
+      this.moviesPlaying.push(movie);
+    }
   }
 
   removeMoviePlaying(movieID: number): void {
     const initialLength = this.moviesPlaying.length;
     this._moviesPlaying = this._moviesPlaying.filter(movie => movie.id !== movieID);
-    // TODO: ar trebui sa arunc eroare daca nu exista elementul care sa fie sters?
     if (initialLength === this.moviesPlaying.length) {
       throw Error(`Movie with movieID ${movieID} does not exist in cinema room ${this.name}!`);
     }

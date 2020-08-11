@@ -19,6 +19,7 @@ export class CinemaMovieAddComponent implements OnInit {
   currentPage = 1;
   genres: Map<number, string>;
   selectedMovie = -1;
+  movie: Movie;
   availableDays: string[];
   selectedDays: string[];
   availableTimes: MovieDate[];
@@ -26,6 +27,8 @@ export class CinemaMovieAddComponent implements OnInit {
   selectedTimes: string[];
   daysControl: FormControl[];
   timesControl: FormControl[];
+  selectedWeeks = 1;
+  weeks: number[];
 
   constructor(
     private cinemaService: CinemaService,
@@ -36,6 +39,7 @@ export class CinemaMovieAddComponent implements OnInit {
       genres: Map<number, string>
     }
   ) {
+    this.weeks = new Array(10).fill(0).map((_, i) => i);
     this.room = data.room;
     this.movies = data.movies;
     this.genres = data.genres;
@@ -48,20 +52,21 @@ export class CinemaMovieAddComponent implements OnInit {
 
     // TODO: fetch this from a service
     this.availableDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    this.availableTimes = [
-      new MovieDate(new Timestamp(1596650400, 0), new Timestamp(1596654000, 0)),
-      new MovieDate(new Timestamp(1596657600, 0), new Timestamp(1596661200, 0)),
-      new MovieDate(new Timestamp(1596715200, 0), new Timestamp(1596722400, 0)),
-      new MovieDate(new Timestamp(1596740400, 0), new Timestamp(1596744000, 0)),
-    ];
   }
 
   ngOnInit(): void {
-
   }
 
   clickMovie(index: number): void {
     this.selectedMovie = index;
+    const movieID = this.movies[this.selectedMovie].id;
+    this.movieService
+      .getMovie(movieID)
+      .subscribe((movie: Movie) => {
+        this.movie = movie;
+        this.availableTimes = this.cinemaService.getAvailableDates(movie.runtime, this.room);
+      });
+
   }
 
   updateDisplayTimes(updatedDateIndex = -1): void {
@@ -166,15 +171,21 @@ export class CinemaMovieAddComponent implements OnInit {
   }
 
   saveMovie(): void {
-    const movieID = this.movies[this.selectedMovie].id;
-    this.movieService
-      .getMovie(movieID)
-      .subscribe((movie: Movie) => {
-        const releaseDate = new Timestamp(movie.releaseDate.getTime() / 1000, 0);
-        const moviePlaying = new MoviePlaying(movie.id, movie.title, movie.runtime, releaseDate, movie.posterPath,
-          movie.genres, movie.voteAverage);
-        const dates = this.selectedTimes.map(selectedTime => new MovieDate().fromJSONString(selectedTime));
-        this.cinemaService.addMoviePlaying(this.room, moviePlaying, dates);
+    const releaseDate = new Timestamp(this.movie.releaseDate.getTime() / 1000, 0);
+    const moviePlaying = new MoviePlaying(this.movie.id, this.movie.title, this.movie.runtime, releaseDate,
+      this.movie.posterPath, this.movie.genres, this.movie.voteAverage);
+
+    const dates = this.selectedTimes.map(selectedTime => new MovieDate().fromJSONString(selectedTime));
+    const originalDates = this.selectedTimes.map(selectedTime => new MovieDate().fromJSONString(selectedTime));
+
+    for (let i = 2; i <= this.selectedWeeks; i++) {
+      const newDates = originalDates.map(date => {
+        const startTime = new Timestamp(date.startTime.seconds + 604800 * (i - 1), date.startTime.nanoseconds);
+        const endTime = new Timestamp(date.endTime.seconds + 604800 * (i - 1), date.endTime.nanoseconds);
+        return new MovieDate(startTime, endTime);
       });
+      dates.push(...newDates);
+    }
+    this.cinemaService.addMoviePlaying(this.room, moviePlaying, dates);
   }
 }
