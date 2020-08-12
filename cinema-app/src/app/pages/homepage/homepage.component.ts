@@ -16,6 +16,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
   moviesPlaying: MoviePlaying[];
   isHandset = false;
   private isHandsetSubscription: Subscription;
+  private getAllMoviesPlayingSubscription: Subscription;
 
 
   constructor(
@@ -24,6 +25,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private router: Router
   ) {
+    this.moviesPlaying = [];
   }
 
   ngOnInit(): void {
@@ -32,7 +34,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
       .subscribe((isHandset: boolean) => {
         this.isHandset = isHandset;
       });
-    this.cinemaService
+    this.getAllMoviesPlayingSubscription = this.cinemaService
       .getAllMoviesPlaying()
       .subscribe((moviePlaying: MoviePlaying[]) => {
         this.moviesPlaying = moviePlaying;
@@ -46,5 +48,6 @@ export class HomepageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.isHandsetSubscription.unsubscribe();
+    this.getAllMoviesPlayingSubscription.unsubscribe();
   }
 }

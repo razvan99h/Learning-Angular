@@ -73,6 +73,15 @@ header {
           margin-bottom: 16px;
         }
 
+        .times {
+          font-family: "Lucida Console", sans-serif;
+          font-size: 14px;
+
+          mat-icon {
+            margin-top: -7px !important;
+          }
+        }
+
         .times, .date, .genres {
           display: inline-flex;
           flex-wrap: nowrap;

@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
-
 import { Movie, MoviesTMDB, MovieTMDB } from '../models/movie.model';
-
 import { environment } from '../../../environments/environment';
-
 import { forkJoin, Observable } from 'rxjs';
-
 import { map } from 'rxjs/operators';
 import { VideosTMDB, VideoTMDB, VideoYoutube } from '../models/video.model';
 import { Image, ImagesTMDB } from '../models/image.model';
@@ -101,7 +96,7 @@ export class MovieService {
       );
   }
 
-  getMovieData(movieID: number): Observable<any[]> {
+  getMovieData(movieID: number): Observable<[VideoYoutube, Image[], Persons]> {
     const response1 = this.getVideoYoutube(movieID);
     const response2 = this.getImages(movieID);
     const response3 = this.getPersons(movieID);
@@ -126,7 +121,7 @@ export class MovieService {
       );
   }
 
-  getMoviesAndGenres(): Observable<any[]> {
+  getMoviesAndGenres(): Observable<[Movie[], Map<number, string>]> {
     const response1 = this.getAllMovies();
     const response2 = this.getAllGenres();
     return forkJoin([response1, response2]);

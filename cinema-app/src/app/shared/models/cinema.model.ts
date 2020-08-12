@@ -1,4 +1,5 @@
-import { MoviePlaying, MoviePlayingFB } from './movie.model';
+import { MovieDate, MoviePlaying, MoviePlayingFB } from './movie.model';
+
 
 export interface CinemaRoomFB {
   _name: string;
@@ -65,12 +66,15 @@ export class CinemaRoom {
     return this._moviesPlaying;
   }
 
+  private static sortDates(dates: MovieDate[]): void {
+    dates.sort((date1, date2) =>
+      date1.startTime.seconds - date2.startTime.seconds
+    );
+  }
+
   addMoviePlaying(movie: MoviePlaying): void {
     if (movie.dates.length === 0) {
       throw Error(`Movie ${movie.title} has no playing dates in cinema room ${this.name}!`);
-    }
-    if (this.moviesPlaying.find(moviePlaying => moviePlaying.id === movie.id)) {
-      throw Error(`Movie ${movie.title} already added to cinema room ${this.name}!`);
     }
     movie.dates.forEach(date => {
       this.moviesPlaying.forEach(moviePlaying => {
@@ -82,7 +86,9 @@ export class CinemaRoom {
     const foundMovie = this.moviesPlaying.find(m => m.id === movie.id);
     if (foundMovie) {
       foundMovie.dates.push(...movie.dates);
+      CinemaRoom.sortDates(foundMovie.dates);
     } else {
+      CinemaRoom.sortDates(movie.dates);
       this.moviesPlaying.push(movie);
     }
   }

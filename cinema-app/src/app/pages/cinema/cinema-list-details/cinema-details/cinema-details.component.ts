@@ -9,7 +9,7 @@ import { CinemaMovieAddComponent } from './cinema-movie-add/cinema-movie-add.com
 import { MovieService } from '../../../../shared/services/movie.service';
 import { ConfirmationMessage } from '../../../../shared/models/confirmation.model';
 import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
-import { MovieDate } from '../../../../shared/models/movie.model';
+import { Movie, MovieDate } from '../../../../shared/models/movie.model';
 
 @Component({
   selector: 'cmb-cinema-details',
@@ -48,7 +48,7 @@ export class CinemaDetailsComponent extends CinemaListDetailsBaseComponent imple
   openMovieAddDialog(): void {
     this.movieService
       .getMoviesAndGenres()
-      .subscribe((response) => {
+      .subscribe((response: [Movie[], Map<number, string>]) => {
         const moviesList = response[0];
         const genresList = response[1];
         this.dialog.open(CinemaMovieAddComponent, {

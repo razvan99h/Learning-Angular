@@ -1,7 +1,15 @@
 <header>
-  <h1 [ngClass]="{'h1-small': isHandset, 'h1-big': !isHandset}">
-    Top movies currently running in the cinema:
-  </h1>
+  <div *ngIf="moviesPlaying.length > 0 then available else unavailable"></div>
+  <ng-template #available>
+    <h1 [ngClass]="{'h1-small': isHandset, 'h1-big': !isHandset}">
+      Top movies currently running in the cinema:
+    </h1>
+  </ng-template>
+  <ng-template #unavailable>
+    <h1 class="italic" [ngClass]="{'h1-small': isHandset, 'h1-big': !isHandset}">
+      There are no movies currently running in the cinema
+    </h1>
+  </ng-template>
 </header>
 
 <main class="main-container">

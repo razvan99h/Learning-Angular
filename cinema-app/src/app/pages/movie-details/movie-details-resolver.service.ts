@@ -4,6 +4,9 @@ import { Movie } from '../../shared/models/movie.model';
 import { MovieService } from '../../shared/services/movie.service';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, map, mergeMap, take } from 'rxjs/operators';
+import { VideoYoutube } from '../../shared/models/video.model';
+import { Image } from '../../shared/models/image.model';
+import { Persons } from '../../shared/models/person.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +34,7 @@ export class MovieDetailsResolverService implements Resolve<Movie> {
               .pipe(
                 // we create an Observable<Movie> from the first call (1) of the .getMovieData()'s subscribe
                 take(1),
-                map(response => {
+                map((response: [VideoYoutube, Image[], Persons]) => {
                   const videoYoutube = response[0];
                   const images = response[1];
                   const persons = response[2];

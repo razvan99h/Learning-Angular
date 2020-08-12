@@ -79,7 +79,7 @@
                       (selectionChange)="updateDisplayTimes(i)"
                       [formControl]="daysControl[i]" required>
             <mat-option *ngFor="let availableDay of availableDays" value="{{availableDay}}">
-              {{availableDay}}
+              {{displayDays[availableDay]}}
             </mat-option>
           </mat-select>
           <mat-error *ngIf="daysControl[i].hasError('required')">Choosing a day is required!</mat-error>
@@ -131,7 +131,7 @@
     <mat-step label="Confirm" [editable]="false" >
       <div class="last-step">
 
-        <div *ngIf="validForms()">
+        <div *ngIf="stepper.selectedIndex === 2">
           <p>You selected the following dates to add to the movie "{{movies[selectedMovie].title}}":</p>
           <p *ngFor="let time of selectedTimes; index as i">
             - {{selectedDays[i]}}, {{convertToMovieDate(time).getStartTime()}} - {{convertToMovieDate(time).getEndTime()}}

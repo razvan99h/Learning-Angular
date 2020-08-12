@@ -7,14 +7,16 @@ import { CinemaRoom } from '../../../../shared/models/cinema.model';
 import { ActivatedRoute } from '@angular/router';
 import { skip } from 'rxjs/operators';
 import { CinemaListDetailsBaseComponent } from '../cinema-list-details-base.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'cmb-cinema-list',
   templateUrl: './cinema-list.component.html',
-  styleUrls: ['../cinema-list-details-base.component.scss', './cinema-list.component.scss', ]
+  styleUrls: ['../cinema-list-details-base.component.scss', './cinema-list.component.scss']
 })
 export class CinemaListComponent extends CinemaListDetailsBaseComponent implements OnInit, OnDestroy {
   rooms: CinemaRoom[];
+  private cinemaRoomsSubscription: Subscription;
 
   constructor(
     public sharedService: SharedService,
@@ -33,7 +35,7 @@ export class CinemaListComponent extends CinemaListDetailsBaseComponent implemen
       .subscribe((data: { rooms: CinemaRoom[] }) => {
         this.rooms = data.rooms;
       });
-    this.cinemaService
+    this.cinemaRoomsSubscription = this.cinemaService
       .getCinemaRooms()
       .pipe(skip(1))
       .subscribe((rooms: CinemaRoom[]) => {
@@ -47,5 +49,10 @@ export class CinemaListComponent extends CinemaListDetailsBaseComponent implemen
       maxWidth: '90vw',
       autoFocus: false
     });
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.cinemaRoomsSubscription.unsubscribe();
   }
 }

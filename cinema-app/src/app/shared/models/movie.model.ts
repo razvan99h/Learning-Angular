@@ -6,7 +6,6 @@ import { Genre } from './genre.model';
 import { Company, CompanyTMDB } from './company.model';
 import * as firebase from 'firebase';
 import { Seat, SeatFB } from './seat.model';
-import { CinemaRoom } from './cinema.model';
 import Timestamp = firebase.firestore.Timestamp;
 
 
@@ -45,7 +44,6 @@ export class Movie {
   budget: number;
   videoYoutube: VideoYoutube;
   images: Image[];
-  similarMovies: Movie[];
   cast: Person[];
   crew: Person[];
   productionCompanies: Company[];
@@ -77,136 +75,47 @@ export class Movie {
   }
 }
 
-export interface MovieDateOldFB {
-  _day: string;
-  _startHour: number;
-  _startMinute: number;
-  _endHour: number;
-  _endMinute: number;
-}
-
-export class MovieDateOld {
-  private _day: string;
-  private _startHour: number;
-  private _startMinute: number;
-  private _endHour: number;
-  private _endMinute: number;
-
-  constructor(day: string, startHour: number, startMinute: number, endHour: number, endMinute: number) {
-    MovieDateOld.validateDay(day);
-    MovieDateOld.validateHour(startHour);
-    MovieDateOld.validateHour(endHour);
-    MovieDateOld.validateMinute(startMinute);
-    MovieDateOld.validateMinute(endMinute);
-    this._day = day;
-    this._startHour = startHour;
-    this._startMinute = startMinute;
-    this._endHour = endHour;
-    this._endMinute = endMinute;
-  }
-
-  private static validateDay(day: string): void {
-    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-    if (days.indexOf(day.toLocaleLowerCase()) === -1) {
-      throw Error(`${day} is an invalid day name!`);
-    }
-  }
-
-  private static validateHour(hour: number): void {
-    if (hour < 0 || hour > 23) {
-      throw Error(`${hour} is an invalid hour!`);
-    }
-  }
-
-  private static validateMinute(minute: number): void {
-    if (minute < 0 || minute > 60) {
-      throw Error(`${minute} is an invalid minute!`);
-    }
-  }
-
-  get day(): string {
-    return this._day;
-  }
-
-  set day(value: string) {
-    MovieDateOld.validateDay(value);
-    this._day = value;
-  }
-
-  get startHour(): number {
-    return this._startHour;
-  }
-
-  set startHour(value: number) {
-    MovieDateOld.validateHour(value);
-    this._startHour = value;
-  }
-
-  get startMinute(): number {
-    return this._startMinute;
-  }
-
-  set startMinute(value: number) {
-    MovieDateOld.validateMinute(value);
-    this._startMinute = value;
-  }
-
-  get endHour(): number {
-    return this._endHour;
-  }
-
-  set endHour(value: number) {
-    MovieDateOld.validateHour(value);
-    this._endHour = value;
-  }
-
-  get endMinute(): number {
-    return this._endMinute;
-  }
-
-  set endMinute(value: number) {
-    MovieDateOld.validateMinute(value);
-    this._endMinute = value;
-  }
-
-  equals(other: MovieDateOld): boolean {
-    return this.day === other.day && this.startHour === other.startHour && this.startMinute === other.startMinute &&
-      this.endHour === other.endHour && this.endMinute === other.endMinute;
-  }
-
-  overlaps(other: MovieDateOld): boolean {
-    if (this.day === other.day) {
-      if (this.startHour <= other.startHour && other.startHour <= this.endHour) {
-        // TODO: more logic could be added here, regarding overlapping minutes
-        return true;
-      }
-      if (this.startHour <= other.endHour && other.endHour <= this.endHour) {
-        // and here
-        return true;
-      }
-    }
-    return false;
-  }
-}
 
 export interface MovieDateFB {
+  roomID: string;
   startTime: Timestamp;
   endTime: Timestamp;
-  _occupiedSeats: SeatFB[];
-
+  occupiedSeats: SeatFB[];
 }
 
+
 export class MovieDate {
+  roomID: string;
   startTime: Timestamp;
   endTime: Timestamp;
-  private _occupiedSeats: Seat[];
-
+  occupiedSeats: Seat[];
 
   constructor(startTime: firebase.firestore.Timestamp = null, endTime: firebase.firestore.Timestamp = null,
-              occupiedSeats: Seat[] = []) {
+              roomID: string = '', occupiedSeats: Seat[] = []) {
     this.startTime = startTime;
     this.endTime = endTime;
-    this._occupiedSeats = occupiedSeats;
+    this.roomID = roomID;
+    this.occupiedSeats = occupiedSeats;
+  }
+
+  static getDisplayDays(): any {
+    return {
+      Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday'
+    };
+  }
+
+  static firstDayOfWeek(date: Date): number {
+    return new Date(
+      new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0, 0)
+        .setDate(date.getDate() - date.getDay() + 1)
+    ).getTime();
+  }
+
+  static lastDayOfWeek(date: Date): number {
+    return new Date(
+      new Date(date.getFullYear(), date.getMonth(), date.getDate(), 21, 0, 0, 0)
+        .setDate(date.getDate() - date.getDay() + 7)
+    ).getTime();
   }
 
   isAfterToday(): boolean {
@@ -214,12 +123,13 @@ export class MovieDate {
   }
 
   getDay(): string {
-    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     return days[this.startTime.toDate().getDay() - 1];
   }
 
-  getDate(): number {
-    return this.startTime.toDate().getDate();
+  getDate(): string {
+    const date = this.startTime.toDate().getDate();
+    return (date < 10) ? '0' + date.toString() : date.toString();
   }
 
   getMonth(): string {
@@ -239,6 +149,12 @@ export class MovieDate {
     return this.endTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false});
   }
 
+  sameWeek(other: MovieDate): boolean {
+    const thisDate = this.startTime.toDate();
+    const otherDate = other.startTime.toDate();
+    return MovieDate.lastDayOfWeek(thisDate) === MovieDate.lastDayOfWeek(otherDate);
+  }
+
   overlaps(other: MovieDate): boolean {
     return (other.startTime <= this.startTime && this.startTime <= other.endTime) ||
       (other.startTime <= this.endTime && this.endTime <= other.endTime) ||
@@ -247,7 +163,7 @@ export class MovieDate {
   }
 
   equals(other: MovieDate): boolean {
-    return this.startTime === other.startTime && this.endTime === other.endTime;
+    return this.startTime.isEqual(other.startTime) && this.endTime.isEqual(other.endTime) && this.roomID === other.roomID;
   }
 
   toJSONString(): string {
@@ -258,23 +174,11 @@ export class MovieDate {
     const obj = JSON.parse(movieDateJSON);
     this.startTime = new Timestamp(obj.startTime.seconds, obj.startTime.nanoseconds);
     this.endTime = new Timestamp(obj.endTime.seconds, obj.endTime.nanoseconds);
+    this.roomID = obj.roomID;
     return this;
   }
-
-  get occupiedSeats(): Seat[] {
-    return this._occupiedSeats;
-  }
-
-  addSeat(seat: Seat, cinemaRoom: CinemaRoom): void {
-    if (seat.column > cinemaRoom.columns || seat.row > cinemaRoom.rows) {
-      throw Error(`Invalid seat configuration for seat ${seat} in cinema room ${cinemaRoom.name}!`);
-    }
-    if (this._occupiedSeats.find(occupiedSeat => occupiedSeat.equals(seat))) {
-      throw Error(`Seat ${seat} already occupied!`);
-    }
-    this._occupiedSeats.push(seat);
-  }
 }
+
 
 export interface MoviePlayingFB {
   id: number;
@@ -286,6 +190,7 @@ export interface MoviePlayingFB {
   voteAverage: number;
   _dates: MovieDateFB[];
 }
+
 
 export class MoviePlaying {
   id: number;
@@ -315,7 +220,7 @@ export class MoviePlaying {
 
   // TODO: as putea sa fac un serviciu care sa arate mesajele de eroare - poate cu snackbar din angular material
   addDate(date: MovieDate): void {
-    if (this._dates.find(oldDate => oldDate.overlaps(date))) {
+    if (this._dates.find(oldDate => oldDate.overlaps(date) && oldDate.roomID === date.roomID)) {
       // apelez aici serviciul de snackbar
       throw Error(`Movie ${this.title} already playing over the selected date and time: ${date}!`);
     }

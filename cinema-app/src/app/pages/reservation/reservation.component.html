@@ -6,30 +6,31 @@
 
     <mat-step label="Choose dates"
               [editable]="true"
-              [completed]="selectedDay !== ''">
+              [completed]="selectedDate !== ''">
 
       <label id="day-radio-group-label">Choose one of the following days:</label>
       <mat-radio-group
         aria-labelledby="day-radio-group-label"
         class="day-radio-group"
         color="accent"
-        [(ngModel)]="selectedDay">
+        [(ngModel)]="selectedDate"
+        (change)="selectedDateChanged()">
         <mat-radio-button
-          class="day-radio-button"
-          *ngFor="let day of availableDays"
+          class="day-radio-group"
           required
+          *ngFor="let date of filterActiveDates(availableDates)"
           [disableRipple]="true"
-          [value]="days[day]">
-          {{days[day]}}
+          [value]="date.toJSONString()">
+          {{movieDateDisplay(date.toJSONString())}}
         </mat-radio-button>
       </mat-radio-group>
 
       <div>
-        <button mat-button matStepperNext type="button" [disabled]="selectedDay === ''">
-          <span *ngIf="selectedDay === ''" class="italic">
+        <button mat-button matStepperNext type="button" [disabled]="selectedDate === ''">
+          <span *ngIf="selectedDate === ''" class="italic">
             Select a day in order to continue
           </span>
-          <span *ngIf="selectedDay !== ''">
+          <span *ngIf="selectedDate !== ''">
             Next
           </span>
         </button>
@@ -45,36 +46,14 @@
       </div>
       <div class="flex-container-seats">
 
-        <!--    <div class="flex-item"-->
-        <!--         *ngFor="let seat of seats"-->
-        <!--         [ngClass]="{'break': (seat + 1) % cinemaWidth === 0 && seat != 0}">-->
-
-        <!--      <div class="square" style="-->
-        <!--          width: calc({{computeSquareWidth()}} - 10px);-->
-        <!--          padding-bottom: calc({{computeSquareWidth()}}% - 10px);-->
-        <!--          margin: 5px;-->
-        <!--          font-size: {{computeSquareWidth() + 7}}px;">-->
-        <!--        <div class="content">-->
-        <!--          <div class="table">-->
-        <!--            <div class="table-cell">-->
-        <!--              R{{getInteger(seat / cinemaWidth + 1)}}-->
-        <!--              S{{seat % cinemaWidth + 1}}-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </div>-->
-        <!--      </div>-->
-
-        <!--      <br *ngIf="seat % cinemaWidth === 0 && seat != 0">-->
-        <!--    </div>-->
-
         <div class="flex-row" *ngFor="let configRow of cinemaConfig; index as row">
           <div class="seat"
                *ngFor="let seat of configRow; index as column"
                [ngClass]="{
-           'selected': cinemaConfig[row][column] === 'selected',
-           'occupied': cinemaConfig[row][column] === 'occupied',
-           'free': cinemaConfig[row][column] === 'free'
-           }"
+                 'selected': cinemaConfig[row][column] === 'selected',
+                 'occupied': cinemaConfig[row][column] === 'occupied',
+                 'free': cinemaConfig[row][column] === 'free'
+                 }"
                (click)="selectSeat(row, column)">
             R{{row + 1}} S{{column + 1}}
           </div>
@@ -98,7 +77,7 @@
     </mat-step>
 
     <mat-step label="Confirm selection" [editable]="false">
-      <p>You have the following tickets for {{selectedDay}}:</p>
+      <p>You have the following tickets for {{movieDateDisplay(selectedDate)}}:</p>
       <!--      TODO: merita sa folosesc mat-list daca imi adauga prea mult default styling? (spatii prea mari int linii)-->
       <p *ngFor="let seat of selectedSeats">
         - Row {{seat.row + 1}}, Seat nr. {{seat.column + 1}}

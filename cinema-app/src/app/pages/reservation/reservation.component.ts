@@ -1,68 +1,81 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { Movie } from '../../shared/models/movie.model';
+import { Movie, MovieDate } from '../../shared/models/movie.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Seat } from '../../shared/models/seat.model';
 import { ReservationService } from '../../shared/services/reservation.service';
 import { Subscription } from 'rxjs';
+import { CinemaService } from '../../shared/services/cinema.service';
+import { CinemaRoom } from '../../shared/models/cinema.model';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'cmb-reservation',
   templateUrl: './reservation.component.html',
-  styleUrls: ['./reservation.component.scss']
+  styleUrls: ['./reservation.component.scss'],
 })
-// TODO: read about encapsulation
 
 export class ReservationComponent implements OnInit, OnDestroy {
+  displayDays: any;
   movie: Movie;
-  cinemaWidth: number;
-  cinemaHeight: number;
+  cinemaRows: number;
+  cinemaColumns: number;
   cinemaConfig: string[][];
   selectedSeats: Seat[];
-  availableDays: number[];
-  days: string[];
-  selectedDay = '';
+  occupiedSeats: Seat[];
+  availableDates: MovieDate[];
+  selectedDate = '';
+  roomsNames: Map<string, string>;
   private bookedSeatsSubscription: Subscription;
 
-
   constructor(
-    public reservationService: ReservationService,
+    private reservationService: ReservationService,
+    private cinemaService: CinemaService,
     public dialogRef: MatDialogRef<ReservationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Movie,
   ) {
-    this.days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    this.displayDays = MovieDate.getDisplayDays();
     this.movie = data;
+    this.selectedDate = '';
     this.selectedSeats = [];
-    this.selectedDay = '';
-
-    // TODO: fetch data from elsewhere
-    this.cinemaConfig = [];
-    this.cinemaWidth = 15;
-    this.cinemaHeight = 7;
-    this.availableDays = [0, 1, 3, 6];
-
-    this.createCinemaConfig();
+    this.availableDates = [];
   }
 
   ngOnInit(): void {
-    this.getOccupiedSeats();
+    this.cinemaService
+      .getReservationInfo(this.movie.id)
+      .subscribe((response: [MovieDate[], Map<string, string>]) => {
+        this.availableDates = response[0];
+        this.roomsNames = response[1];
+      });
+  }
+
+  filterActiveDates(dates: MovieDate[]): MovieDate[] {
+    return dates.filter(date => date.isAfterToday());
+  }
+
+  selectedDateChanged(): void {
+    this.getCinemaConfig(this.movie.id, this.convertToMovieDate(this.selectedDate));
   }
 
   createCinemaConfig(): void {
-    for (let i = 0; i < this.cinemaHeight; i++) {
+    this.cinemaConfig = [];
+    for (let i = 0; i < this.cinemaColumns; i++) {
       this.cinemaConfig.push([]);
-      for (let j = 0; j < this.cinemaWidth; j++) {
+      for (let j = 0; j < this.cinemaRows; j++) {
         this.cinemaConfig[i].push('free');
       }
     }
   }
 
-  getOccupiedSeats(): void {
+  getCinemaConfig(movieID: number, playingDate: MovieDate): void {
     this.bookedSeatsSubscription = this.reservationService
-      .getBookedSeats()
-      .subscribe((seats: Seat[]) => {
-          this.cinemaConfig = this.cinemaConfig.map(row =>
-            row.map(seatState => 'free')
-          );
+      .getSeatsConfig(playingDate.roomID, movieID, playingDate)
+      .subscribe((response: [Seat[], [number, number]]) => {
+          const seats = response[0];
+          this.cinemaRows = response[1][0];
+          this.cinemaColumns = response[1][1];
+          this.createCinemaConfig();
+          this.occupiedSeats = seats;
           seats.forEach(seat => {
             this.cinemaConfig[seat.row][seat.column] = 'occupied';
           });
@@ -71,7 +84,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
   }
 
   selectSeat(row: number, column: number): void {
-    // console.log(this.config[row][column], row, column);
+    console.log(this.cinemaConfig[row][column], row, column);
     if (this.cinemaConfig[row][column] === 'selected') {
       this.cinemaConfig[row][column] = 'free';
       this.selectedSeats = this.selectedSeats
@@ -82,8 +95,28 @@ export class ReservationComponent implements OnInit, OnDestroy {
     }
   }
 
+  convertToMovieDate(movieDateString: string): MovieDate {
+    return new MovieDate().fromJSONString(movieDateString);
+  }
+
+  movieDateDisplay(movieDateString: string): string {
+    if (movieDateString === '') {
+      return '';
+    }
+    const date = this.convertToMovieDate(movieDateString);
+    return `${this.displayDays[date.getDay()]}, ${date.getStartTime()} - ${date.getEndTime()}, ` +
+      `room "${this.roomsNames.get(date.roomID)}"`;
+  }
+
   bookSeats(): void {
-    this.reservationService.bookSeats(this.selectedSeats);
+    this.occupiedSeats.push(...this.selectedSeats);
+    const playingDate = this.convertToMovieDate(this.selectedDate);
+    this.cinemaService
+      .getRoom(playingDate.roomID)
+      .pipe(take(1))
+      .subscribe((room: CinemaRoom) => {
+        this.reservationService.bookSeats(room, this.movie.id, playingDate, this.occupiedSeats);
+      });
   }
 
   ngOnDestroy(): void {

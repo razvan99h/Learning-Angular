@@ -20,6 +20,7 @@ export class CinemaMovieAddComponent implements OnInit {
   genres: Map<number, string>;
   selectedMovie = -1;
   movie: Movie;
+  displayDays: any;
   availableDays: string[];
   selectedDays: string[];
   availableTimes: MovieDate[];
@@ -49,9 +50,10 @@ export class CinemaMovieAddComponent implements OnInit {
     this.daysControl = [];
     this.timesControl = [];
     this.addNewDate();
+    this.displayDays = MovieDate.getDisplayDays();
 
     // TODO: fetch this from a service
-    this.availableDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    this.availableDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   }
 
   ngOnInit(): void {
@@ -76,10 +78,12 @@ export class CinemaMovieAddComponent implements OnInit {
     this.selectedDays.forEach((day, dateIndex) => {
       this.addDisplayTimes(day, dateIndex);
       this.filterDisplayTimesForDate(dateIndex);
+
     });
   }
 
   private addDisplayTimes(day: string, dateIndex: number): void {
+
     this.displayTimes[dateIndex] = [];
     this.availableTimes.forEach(time => {
       if (time.getDay() === day) {
@@ -94,7 +98,7 @@ export class CinemaMovieAddComponent implements OnInit {
       .filter(displayTime => {
         for (let i = 0; i < this.selectedTimes.length; i++) {
           if (i !== dateIndex) {
-            if (displayTime.toJSONString() === this.selectedTimes[i]) {
+            if (this.selectedTimes[i] !== '' && displayTime.overlaps(new MovieDate().fromJSONString(this.selectedTimes[i]))) {
               return false;
             }
           }
@@ -107,7 +111,9 @@ export class CinemaMovieAddComponent implements OnInit {
     const selectedTime = this.selectedTimes[selectedDateIndex];
     for (let i = 0; i < this.selectedDays.length; i++) {
       if (i !== selectedDateIndex) {
-        this.displayTimes[i] = this.displayTimes[i].filter(displayTime => displayTime.toJSONString() !== selectedTime);
+        this.displayTimes[i] = this.displayTimes[i].filter(displayTime =>
+          this.selectedTimes[i] !== '' && !displayTime.overlaps(new MovieDate().fromJSONString(selectedTime))
+        );
       }
     }
   }
@@ -175,14 +181,18 @@ export class CinemaMovieAddComponent implements OnInit {
     const moviePlaying = new MoviePlaying(this.movie.id, this.movie.title, this.movie.runtime, releaseDate,
       this.movie.posterPath, this.movie.genres, this.movie.voteAverage);
 
-    const dates = this.selectedTimes.map(selectedTime => new MovieDate().fromJSONString(selectedTime));
-    const originalDates = this.selectedTimes.map(selectedTime => new MovieDate().fromJSONString(selectedTime));
+    const dates = this.selectedTimes.map(selectedTime =>
+      new MovieDate(null, null, this.room.roomID).fromJSONString(selectedTime)
+    );
+    const originalDates = this.selectedTimes.map(selectedTime =>
+      new MovieDate(null, null, this.room.roomID).fromJSONString(selectedTime)
+    );
 
     for (let i = 2; i <= this.selectedWeeks; i++) {
       const newDates = originalDates.map(date => {
         const startTime = new Timestamp(date.startTime.seconds + 604800 * (i - 1), date.startTime.nanoseconds);
         const endTime = new Timestamp(date.endTime.seconds + 604800 * (i - 1), date.endTime.nanoseconds);
-        return new MovieDate(startTime, endTime);
+        return new MovieDate(startTime, endTime, date.roomID);
       });
       dates.push(...newDates);
     }
