@@ -120,6 +120,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.bookedSeatsSubscription.unsubscribe();
+    // TODO: solve this
+    // this.bookedSeatsSubscription.unsubscribe();
   }
 }

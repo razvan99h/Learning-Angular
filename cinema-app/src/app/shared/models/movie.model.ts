@@ -174,7 +174,9 @@ export class MovieDate {
     const obj = JSON.parse(movieDateJSON);
     this.startTime = new Timestamp(obj.startTime.seconds, obj.startTime.nanoseconds);
     this.endTime = new Timestamp(obj.endTime.seconds, obj.endTime.nanoseconds);
-    this.roomID = obj.roomID;
+    if (obj.roomID) {
+      this.roomID = obj.roomID;
+    }
     return this;
   }
 }

@@ -1,7 +1,22 @@
+@import 'src/assets/styles/variables';
+
 h2 {
   mat-icon {
     margin-right: 5px;
     display: inline-flex;
     vertical-align: sub;
   }
+
+  padding: 10px 24px;
+  margin: 0;
+  background-color: map-get($primary-map, 800);
 }
+
+p {
+  margin: 24px 24px 10px 24px;
+}
+
+mat-dialog-actions {
+  margin: 0 24px;
+}
+

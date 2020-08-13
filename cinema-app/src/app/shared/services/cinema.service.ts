@@ -133,13 +133,13 @@ export class CinemaService {
     });
   }
 
-  getAllMoviesPlaying(): Observable<MoviePlaying[]> {
-    console.log(`getAllMoviesPlaying <<<`);
+  getAllMoviesPlayingThisWeek(): Observable<MoviePlaying[]> {
+    console.log(`getAllMoviesPlayingThisWeek <<<`);
     return this
       .getCinemaRooms()
       .pipe(
         map((rooms: CinemaRoom[]) => {
-          const movies: MoviePlaying[] = [];
+          let movies: MoviePlaying[] = [];
           rooms.forEach(room => {
             room.moviesPlaying.forEach(moviePlaying => {
               const foundMovie = movies.find(movie => movie.id === moviePlaying.id);
@@ -152,7 +152,12 @@ export class CinemaService {
               }
             });
           });
-          console.log(`getAllMoviesPlaying >>> moviesPlaying:`, movies);
+          const now = new MovieDate(new Timestamp(new Date().getTime() / 1000, 0));
+          movies = movies.filter(movie =>
+            movie.dates.find(date => date.sameWeek(now) && date.startTime.seconds > now.startTime.seconds)
+          );
+          movies = movies.sort((m1, m2) => m2.voteAverage - m1.voteAverage);
+          console.log(`getAllMoviesPlayingThisWeek >>> moviesPlaying:`, movies);
           return movies;
         })
       );
@@ -224,7 +229,7 @@ export class CinemaService {
   getPlayingDatesThisWeek(movieID: number): Observable<MovieDate[]> {
     console.log(`getPlayingDatesThisWeek <<<`);
     return this
-      .getAllMoviesPlaying()
+      .getAllMoviesPlayingThisWeek()
       .pipe(
         take(1),
         map((moviesPlaying: MoviePlaying[]) => {

@@ -27,7 +27,9 @@ export class ConfirmationDialogComponent implements OnInit {
   }
 
   confirm(): void {
-    this.fctRef(...this.confirmation.args);
+    if (this.fctRef) {
+      this.fctRef(...this.confirmation.args);
+    }
     this.dialogRef.close();
   }
 

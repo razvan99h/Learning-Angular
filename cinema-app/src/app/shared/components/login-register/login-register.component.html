@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>{{title}}</h2>
+
+<mat-dialog-content class="mat-typography">
+
+  <form class="create-form" autocomplete="off">
+
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput type="email" placeholder=""
+             [formControl]="emailFC"
+             [errorStateMatcher]="matcher">
+      <mat-hint>Your email adress</mat-hint>
+      <mat-error *ngIf="emailFC.hasError('email') && !emailFC.hasError('required')">
+        Please specify a valid email address!
+      </mat-error>
+      <mat-error *ngIf="emailFC.hasError('required')">
+        Email is <strong>required!</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input type="password" matInput placeholder=""
+             [formControl]="passwordFC"
+             [errorStateMatcher]="matcher">
+      <mat-hint>At least 8 characters</mat-hint>
+      <mat-error *ngIf="passwordFC.hasError('minlength') && !passwordFC.hasError('required')">
+        Please specify a password with at least 8 characters!
+      </mat-error>
+      <mat-error *ngIf="passwordFC.hasError('required')">
+        Password is <strong>required!</strong>
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+    Cancel
+  </button>
+  <button mat-raised-button mat-dialog-close cdkFocusInitial color="accent" class="main-button"
+          *ngIf="this.emailFC.valid && this.passwordFC.valid"
+          (click)="doAction()">
+    <mat-icon>{{actionButtonIcon}}</mat-icon>
+    {{actionButtonText}}
+  </button>
+</mat-dialog-actions>
+

@@ -53,6 +53,9 @@ export class CinemaMovieAddComponent implements OnInit {
     this.displayDays = MovieDate.getDisplayDays();
 
     // TODO: fetch this from a service
+
+    // TODO: check why sunday is not working on options list
+
     this.availableDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   }
 

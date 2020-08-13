@@ -79,7 +79,7 @@ export class CinemaDetailsComponent extends CinemaListDetailsBaseComponent imple
     confirmation.args = [movieID, this.room];
 
     this.dialog.open(ConfirmationDialogComponent, {
-      panelClass: 'custom-modal',
+      panelClass: 'custom-confirmation-modal',
       maxWidth: '90vw',
       data: confirmation
     });

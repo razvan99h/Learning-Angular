@@ -9,12 +9,17 @@ import { CinemaComponent } from './pages/cinema/cinema.component';
 import { CinemaListResolverService } from './pages/cinema/cinema-list-details/cinema-list/cinema-list-resolver.service';
 import { CinemaDetailsComponent } from './pages/cinema/cinema-list-details/cinema-details/cinema-details.component';
 import { CinemaDetailsResolverService } from './pages/cinema/cinema-list-details/cinema-details/cinema-details-resolver.service';
+import { CinemaResolverService } from './pages/cinema/cinema-resolver.service';
+import { HomepageResolverService } from './pages/homepage/homepage-resolver.service';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: HomepageComponent
+    component: HomepageComponent,
+    resolve: {
+      moviesPlaying: HomepageResolverService
+    }
   },
   {
     path: 'movie/:id',
@@ -26,6 +31,7 @@ const routes: Routes = [
   {
     path: 'cinema',
     component: CinemaComponent,
+    canActivate: [CinemaResolverService],
     children: [
       {
         path: '',

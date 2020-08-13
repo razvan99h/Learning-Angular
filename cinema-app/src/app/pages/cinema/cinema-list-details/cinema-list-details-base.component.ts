@@ -52,7 +52,7 @@ export abstract class CinemaListDetailsBaseComponent implements OnInit, OnDestro
     confirmation.args = [roomID];
 
     this.dialog.open(ConfirmationDialogComponent, {
-      panelClass: 'custom-modal',
+      panelClass: 'custom-confirmation-modal',
       maxWidth: '90vw',
       data: confirmation
     });

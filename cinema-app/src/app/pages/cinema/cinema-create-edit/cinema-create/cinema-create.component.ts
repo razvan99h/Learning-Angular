@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedService } from '../../../../shared/services/shared.service';
 import { CinemaService } from '../../../../shared/services/cinema.service';
 import { CinemaRoom } from '../../../../shared/models/cinema.model';
 import { CinemaCreateEditBaseComponent } from '../cinema-create-edit-base.component';
@@ -12,10 +11,9 @@ import { CinemaCreateEditBaseComponent } from '../cinema-create-edit-base.compon
 export class CinemaCreateComponent extends CinemaCreateEditBaseComponent implements OnInit {
 
   constructor(
-    public sharedService: SharedService,
     public cinemaService: CinemaService,
   ) {
-    super(sharedService, cinemaService);
+    super(cinemaService);
     this.title = 'Create a new room';
   }
 

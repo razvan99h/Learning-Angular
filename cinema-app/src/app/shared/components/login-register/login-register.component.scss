@@ -1,0 +1,17 @@
+.create-form {
+  min-width: 250px;
+  max-width: 500px;
+  width: 100%;
+  color: white;
+  display: flex;
+  flex-flow: column;
+
+  .mat-form-field {
+    min-width: 250px;
+    margin: 10px 0;
+  }
+}
+
+.mat-dialog-content {
+  overflow: auto;
+}

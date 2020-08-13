@@ -2,7 +2,7 @@
 
 .custom-modal {
   mat-dialog-container, mat-vertical-stepper {
-    background-color: mat-color($my-app-primary, default);
+    background-color: map-get($primary-map, 900);
     color: white;
 
     button {
@@ -79,6 +79,7 @@
   }
 }
 
+
 .custom-image-modal {
   mat-dialog-container {
     background-color: map-get($primary-map, 900);
@@ -138,5 +139,32 @@
   background-color: $accent-color !important;
 }
 
+
+.custom-confirmation-modal {
+  mat-dialog-container{
+    background-color: map-get($primary-map, 900);
+    color: white;
+    padding: 0;
+
+    button {
+      box-shadow: none !important;
+    }
+
+    overflow: hidden;
+  }
+
+  button {
+    mat-icon {
+      margin-top: -3px;
+      margin-right: 2px;
+    }
+  }
+
+  button:hover {
+    transition: 0.2s;
+    background-color: map-get($primary-map, 800);
+  }
+
+}
 
 

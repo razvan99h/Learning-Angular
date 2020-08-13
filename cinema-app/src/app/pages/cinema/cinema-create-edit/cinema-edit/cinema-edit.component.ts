@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { SharedService } from '../../../../shared/services/shared.service';
 import { CinemaService } from '../../../../shared/services/cinema.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CinemaRoom } from '../../../../shared/models/cinema.model';
@@ -14,11 +13,10 @@ export class CinemaEditComponent extends CinemaCreateEditBaseComponent implement
   oldRoom: CinemaRoom;
 
   constructor(
-    public sharedService: SharedService,
     public cinemaService: CinemaService,
     @Inject(MAT_DIALOG_DATA) public data: CinemaRoom,
   ) {
-    super(sharedService, cinemaService);
+    super(cinemaService);
     this.nameFC.setValue(data.name);
     this.rowFC.setValue(data.rows);
     this.colFC.setValue(data.columns);

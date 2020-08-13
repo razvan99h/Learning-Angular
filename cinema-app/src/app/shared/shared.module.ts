@@ -13,6 +13,11 @@ import { RouterModule } from '@angular/router';
 import { ImageDialogComponent } from './components/image-dialog/image-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { RegisterDialogComponent } from './components/login-register/register-dialog/register-dialog.component';
+import { LoginDialogComponent } from './components/login-register/login-dialog/login-dialog.component';
 
 
 @NgModule({
@@ -20,7 +25,9 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     NavComponent,
     PageUnavailableComponent,
     ImageDialogComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    RegisterDialogComponent,
+    LoginDialogComponent
   ],
   exports: [
     NavComponent
@@ -36,6 +43,10 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     MatListModule,
     RouterModule,
     MatDialogModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatInputModule
   ]
 })
 export class SharedModule {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../shared/models/error.model';
-import { SharedService } from '../../../shared/services/shared.service';
 import { CinemaService } from '../../../shared/services/cinema.service';
 
 @Component({
@@ -18,7 +17,6 @@ export abstract class CinemaCreateEditBaseComponent implements OnInit {
   title = 'Default title';
 
   protected constructor(
-    public sharedService: SharedService,
     public cinemaService: CinemaService,
   ) {
     this.nameFC = new FormControl('', [

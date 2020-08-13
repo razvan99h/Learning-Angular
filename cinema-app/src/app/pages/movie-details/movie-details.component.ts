@@ -12,6 +12,8 @@ import { ImageDialogComponent } from '../../shared/components/image-dialog/image
 import { Subscription } from 'rxjs';
 import { CinemaService } from '../../shared/services/cinema.service';
 import { take } from 'rxjs/operators';
+import { ConfirmationMessage } from '../../shared/models/confirmation.model';
+import { ConfirmationDialogComponent } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'cmb-movie-details',
@@ -91,12 +93,40 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     return this.sortCrew(crew.filter(person => person.job === 'Director'));
   }
 
+  isLoggedIn(): boolean {
+    // TODO: do it with Firebase
+    return localStorage.getItem('email') !== null && localStorage.getItem('password') !== null;
+  }
+
+  openConfirmationDialog(): void {
+    const confirmation: ConfirmationMessage = new ConfirmationMessage();
+    confirmation.icon = 'info';
+    confirmation.title = 'Information';
+    confirmation.message = `You must be logged in in order to book a ticket!`;
+    confirmation.yesButton = 'Ok';
+    confirmation.noButton = 'Close';
+
+    this.dialog.open(ConfirmationDialogComponent, {
+      panelClass: 'custom-confirmation-modal',
+      maxWidth: '90vw',
+      data: confirmation
+    });
+  }
+
   openReservationDialog(): void {
     this.dialog.open(ReservationComponent, {
       data: this.movie,
       panelClass: 'custom-modal',
       maxWidth: '90vw'
     });
+  }
+
+  openDialog(): void {
+    if (!this.isLoggedIn()) {
+      this.openConfirmationDialog();
+    } else {
+      this.openReservationDialog();
+    }
   }
 
   openImageDialog(images: Image[], imageIndex: number): void {
