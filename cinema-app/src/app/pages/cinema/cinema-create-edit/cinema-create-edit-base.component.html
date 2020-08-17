@@ -2,18 +2,18 @@
 
 <mat-dialog-content class="mat-typography">
 
-  <form class="create-form" autocomplete="off">
+  <form class="create-form" autocomplete="off" [formGroup]="form">
 
     <mat-form-field>
       <mat-label>Name of the room</mat-label>
       <input matInput placeholder=""
-             [formControl]="nameFC"
+             formControlName="nameFC"
              [errorStateMatcher]="matcher">
       <mat-hint>Less than 30 characters</mat-hint>
-      <mat-error *ngIf="nameFC.hasError('maxlength')">
+      <mat-error *ngIf="form.controls.nameFC.hasError('maxlength')">
         Please specify a name with less than 30 characters!
       </mat-error>
-      <mat-error *ngIf="nameFC.hasError('required')">
+      <mat-error *ngIf="form.controls.nameFC.hasError('required')">
         Name of the room is <strong>required!</strong>
       </mat-error>
     </mat-form-field>
@@ -21,14 +21,14 @@
     <mat-form-field>
       <mat-label>Number of rows</mat-label>
       <input type="text" matInput placeholder=""
-             [formControl]="rowFC"
+             formControlName="rowFC"
              [errorStateMatcher]="matcher">
       <mat-hint>Between 1 and 100</mat-hint>
-      <mat-error *ngIf="(rowFC.hasError('min') || rowFC.hasError('max') || rowFC.hasError('pattern'))
-      && !rowFC.hasError('required')">
+      <mat-error *ngIf="(form.controls.rowFC.hasError('min') || form.controls.rowFC.hasError('max')
+      || form.controls.rowFC.hasError('pattern')) && !form.controls.rowFC.hasError('required')">
         Please specify a number between 1 and 100!
       </mat-error>
-      <mat-error *ngIf="rowFC.hasError('required')">
+      <mat-error *ngIf="form.controls.rowFC.hasError('required')">
         Number of rows is <strong>required!</strong>
       </mat-error>
     </mat-form-field>
@@ -36,11 +36,11 @@
     <mat-form-field>
       <mat-label>Number of seats / row</mat-label>
       <input type="text" matInput placeholder=""
-             [formControl]="colFC"
+             formControlName="colFC"
              [errorStateMatcher]="matcher">
       <mat-hint>Between 1 and 100</mat-hint>
-      <mat-error *ngIf="(colFC.hasError('min') || colFC.hasError('max') || colFC.hasError('pattern'))
-      && !colFC.hasError('required')">
+      <mat-error *ngIf="(form.controls.colFC.hasError('min') || form.controls.colFC.hasError('max')
+      || form.controls.colFC.hasError('pattern')) && !form.controls.colFC.hasError('required')">
         Please specify a number between 1 and 100!
       </mat-error>
       <mat-error *ngIf="colFC.hasError('required')">
@@ -52,7 +52,7 @@
 
   <div class="button-row">
     <button mat-button class="view-button"
-            *ngIf="rowFC.valid && colFC.valid && showConfig === false"
+            *ngIf="form.controls.rowFC.valid && form.controls.colFC.valid && showConfig === false"
             (click)="expandConfig()">
       <mat-icon>view_comfy</mat-icon>
       View configuration
@@ -93,7 +93,7 @@
     Cancel
   </button>
   <button mat-raised-button mat-dialog-close cdkFocusInitial color="accent" class="main-button"
-          *ngIf="this.colFC.valid && this.rowFC.valid && this.nameFC.valid"
+          *ngIf="form.valid"
           (click)="saveConfig()">
     <mat-icon>save</mat-icon>
     Save

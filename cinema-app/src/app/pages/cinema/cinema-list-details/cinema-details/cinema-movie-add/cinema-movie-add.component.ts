@@ -5,7 +5,7 @@ import { CinemaService } from '../../../../../shared/services/cinema.service';
 import { Movie, MovieDate, MoviePlaying } from '../../../../../shared/models/movie.model';
 import { MovieService } from '../../../../../shared/services/movie.service';
 import * as firebase from 'firebase';
-import { FormControl, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import Timestamp = firebase.firestore.Timestamp;
 
 @Component({
@@ -26,14 +26,14 @@ export class CinemaMovieAddComponent implements OnInit {
   availableTimes: MovieDate[];
   displayTimes: MovieDate[][];
   selectedTimes: string[];
-  daysControl: FormControl[];
-  timesControl: FormControl[];
+  form: FormGroup;
   selectedWeeks = 1;
   weeks: number[];
 
   constructor(
     private cinemaService: CinemaService,
     private movieService: MovieService,
+    private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) private data: {
       room: CinemaRoom,
       movies: Movie[],
@@ -47,12 +47,12 @@ export class CinemaMovieAddComponent implements OnInit {
     this.selectedDays = [];
     this.selectedTimes = [];
     this.displayTimes = [];
-    this.daysControl = [];
-    this.timesControl = [];
+    this.form = this.formBuilder.group({
+      days: this.formBuilder.array([]),
+      times: this.formBuilder.array([]),
+    });
     this.addNewDate();
     this.displayDays = MovieDate.getDisplayDays();
-
-    // TODO: fetch this from a service
 
     // TODO: check why sunday is not working on options list
 
@@ -127,36 +127,29 @@ export class CinemaMovieAddComponent implements OnInit {
     // console.log(this.selectedTimes);
   }
 
+  getDaysControls(): FormArray {
+    return this.form.controls.days as FormArray;
+  }
+
+  getTimesControls(): FormArray {
+    return this.form.controls.times as FormArray;
+  }
+
   addNewDate(): void {
     this.selectedDays.push('');
     this.selectedTimes.push('');
     this.displayTimes.push([]);
-    this.daysControl.push(new FormControl('', Validators.required));
-    this.timesControl.push(new FormControl('', Validators.required));
+    this.getDaysControls().push(new FormControl('', Validators.required));
+    this.getTimesControls().push(new FormControl('', Validators.required));
   }
 
   deleteDate(index: number): void {
     this.selectedDays.splice(index, 1);
     this.selectedTimes.splice(index, 1);
     this.displayTimes.splice(index, 1);
-    this.daysControl.splice(index, 1);
-    this.timesControl.splice(index, 1);
+    this.getDaysControls().removeAt(index);
+    this.getTimesControls().removeAt(index);
     this.updateDisplayTimes();
-  }
-
-  validForms(): boolean {
-    let isValid = true;
-    this.daysControl.forEach(control => {
-      if (!control.valid) {
-        isValid = false;
-      }
-    });
-    this.timesControl.forEach(control => {
-      if (!control.valid) {
-        isValid = false;
-      }
-    });
-    return isValid;
   }
 
   showLess(): void {

@@ -68,33 +68,39 @@
     </mat-step>
 
     <mat-step label="Select dates"
-              [completed]="validForms()">
+              [completed]="form.valid">
       <p *ngIf="selectedMovie !== -1">Create the schedule for the movie "{{movies[selectedMovie].title}}"</p>
       <p>Select one of the available days and times:</p>
 
-      <div class="time-row" *ngFor="let _ of selectedDays; index as i">
-        <mat-form-field appearance="fill">
+      <div class="time-row"
+           *ngFor="let _ of selectedDays; index as i"
+            [formGroup]="form">
+        <mat-form-field appearance="fill" formArrayName="days">
           <mat-label>Day</mat-label>
           <mat-select [(value)]="selectedDays[i]"
                       (selectionChange)="updateDisplayTimes(i)"
-                      [formControl]="daysControl[i]" required>
+                      formControlName="{{i}}" required>
             <mat-option *ngFor="let availableDay of availableDays" value="{{availableDay}}">
               {{displayDays[availableDay]}}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="daysControl[i].hasError('required')">Choosing a day is required!</mat-error>
+          <mat-error *ngIf="getDaysControls().at(i) && getDaysControls().at(i).hasError('required')">
+            Choosing a day is required!
+          </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" formArrayName="times">
           <mat-label>Time</mat-label>
           <mat-select [(value)]="selectedTimes[i]"
                       (selectionChange)="selectedTimeForDay(i)"
-                      [formControl]="timesControl[i]" required>
+                      formControlName="{{i}}"  required>
             <mat-option *ngFor="let displayTime of displayTimes[i]" value="{{displayTime.toJSONString()}}">
               {{displayTime.getStartTime()}} - {{displayTime.getEndTime()}}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="timesControl[i].hasError('required')">Choosing a time is required!</mat-error>
+          <mat-error *ngIf="getTimesControls().at(i) && getTimesControls().at(i).hasError('required')">
+            Choosing a time is required!
+          </mat-error>
         </mat-form-field>
 
         <div class="buttons">
@@ -113,7 +119,7 @@
 
       </div>
 
-      <div *ngIf="validForms() then valid else invalid" ></div>
+      <div *ngIf="form.valid then valid else invalid" ></div>
       <ng-template #invalid>
         <button mat-button class="bottom-button italic" [disabled]="true">
           Invalid dates
