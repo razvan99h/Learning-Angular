@@ -98,7 +98,7 @@ export class MovieDate {
     this.occupiedSeats = occupiedSeats;
   }
 
-  static getDisplayDays(): any {
+  static getDisplayDaysNames(): any {
     return {
       Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday'
     };
@@ -123,8 +123,8 @@ export class MovieDate {
   }
 
   getDay(): string {
-    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    return days[this.startTime.toDate().getDay() - 1];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    return days[this.startTime.toDate().getDay()];
   }
 
   getDate(): string {

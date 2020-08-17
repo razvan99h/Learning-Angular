@@ -74,14 +74,14 @@
 
       <div class="time-row"
            *ngFor="let _ of selectedDays; index as i"
-            [formGroup]="form">
+           [formGroup]="form">
         <mat-form-field appearance="fill" formArrayName="days">
           <mat-label>Day</mat-label>
           <mat-select [(value)]="selectedDays[i]"
-                      (selectionChange)="updateDisplayTimes(i)"
                       formControlName="{{i}}" required>
-            <mat-option *ngFor="let availableDay of availableDays" value="{{availableDay}}">
-              {{displayDays[availableDay]}}
+            <mat-option *ngFor="let displayDay of getDisplayDays()"
+                        value="{{displayDay}}">
+              {{displayDaysNames[displayDay]}}
             </mat-option>
           </mat-select>
           <mat-error *ngIf="getDaysControls().at(i) && getDaysControls().at(i).hasError('required')">
@@ -93,8 +93,10 @@
           <mat-label>Time</mat-label>
           <mat-select [(value)]="selectedTimes[i]"
                       (selectionChange)="selectedTimeForDay(i)"
-                      formControlName="{{i}}"  required>
-            <mat-option *ngFor="let displayTime of displayTimes[i]" value="{{displayTime.toJSONString()}}">
+                      formControlName="{{i}}" required>
+            <mat-option *ngFor="let displayTime of availableDatesMap.get(this.selectedDays[i])"
+                        value="{{displayTime.toJSONString()}}"
+                        [disabled]="disabledTimes.includes(displayTime)">
               {{displayTime.getStartTime()}} - {{displayTime.getEndTime()}}
             </mat-option>
           </mat-select>
@@ -119,14 +121,14 @@
 
       </div>
 
-      <div *ngIf="form.valid then valid else invalid" ></div>
+      <div *ngIf="form.valid then valid else invalid"></div>
       <ng-template #invalid>
         <button mat-button class="bottom-button italic" [disabled]="true">
           Invalid dates
         </button>
       </ng-template>
       <ng-template #valid>
-        <button mat-button matStepperNext type="button" class="bottom-button" >
+        <button mat-button matStepperNext type="button" class="bottom-button">
           Next
         </button>
       </ng-template>
@@ -134,18 +136,19 @@
     </mat-step>
 
 
-    <mat-step label="Confirm" [editable]="false" >
+    <mat-step label="Confirm" [editable]="false">
       <div class="last-step">
 
         <div *ngIf="stepper.selectedIndex === 2">
           <p>You selected the following dates to add to the movie "{{movies[selectedMovie].title}}":</p>
           <p *ngFor="let time of selectedTimes; index as i">
-            - {{selectedDays[i]}}, {{convertToMovieDate(time).getStartTime()}} - {{convertToMovieDate(time).getEndTime()}}
+            - {{selectedDays[i]}}, {{convertToMovieDate(time).getStartTime()}}
+            - {{convertToMovieDate(time).getEndTime()}}
           </p>
         </div>
 
         <mat-form-field appearance="fill">
-          <mat-label>Repeat this schedule for </mat-label>
+          <mat-label>Repeat this schedule for</mat-label>
           <mat-select [(ngModel)]="selectedWeeks">
             <mat-option *ngFor="let i of weeks; first as isFirst" [value]="i + 1">
               {{i + 1}} week<span *ngIf="!isFirst">s</span>

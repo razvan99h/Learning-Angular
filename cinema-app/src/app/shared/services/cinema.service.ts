@@ -222,8 +222,22 @@ export class CinemaService {
         availableDates.push(freeDate);
       }
     });
-    console.log(`getAvailableDates >>> availableDates:`, availableDates);
+    console.log(`getAvailableDates >>> availableDates:`);
+    console.dir(availableDates, {maxArrayLength: 10});
     return availableDates;
+  }
+
+  getAvailableDays(availableDates: MovieDate[]): string[] {
+    console.log(`getAvailableDays <<< availableDates:`);
+    console.dir(availableDates, {maxArrayLength: 10});
+    const availableDays = [];
+    availableDates.forEach(date => {
+      if (!availableDays.includes(date.getDay())) {
+        availableDays.push(date.getDay());
+      }
+    });
+    console.log(`getAvailableDays >>> availableDays:`, availableDays);
+    return availableDays;
   }
 
   getPlayingDatesThisWeek(movieID: number): Observable<MovieDate[]> {

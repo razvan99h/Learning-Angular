@@ -33,7 +33,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<ReservationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Movie,
   ) {
-    this.displayDays = MovieDate.getDisplayDays();
+    this.displayDays = MovieDate.getDisplayDaysNames();
     this.movie = data;
     this.selectedDate = '';
     this.selectedSeats = [];

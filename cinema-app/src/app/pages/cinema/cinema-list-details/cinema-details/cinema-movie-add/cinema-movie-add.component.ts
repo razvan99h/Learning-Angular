@@ -20,12 +20,16 @@ export class CinemaMovieAddComponent implements OnInit {
   genres: Map<number, string>;
   selectedMovie = -1;
   movie: Movie;
-  displayDays: any;
-  availableDays: string[];
+
+  displayDaysNames: any;
   selectedDays: string[];
+
+  disabledTimes: MovieDate[];
   availableTimes: MovieDate[];
+  availableDatesMap: Map<string, MovieDate[]>;
   displayTimes: MovieDate[][];
   selectedTimes: string[];
+
   form: FormGroup;
   selectedWeeks = 1;
   weeks: number[];
@@ -44,22 +48,40 @@ export class CinemaMovieAddComponent implements OnInit {
     this.room = data.room;
     this.movies = data.movies;
     this.genres = data.genres;
+
+    this.displayDaysNames = MovieDate.getDisplayDaysNames();
     this.selectedDays = [];
+
+    this.disabledTimes = [];
+    this.availableTimes = [];
+    this.availableDatesMap = new Map<string, MovieDate[]>();
     this.selectedTimes = [];
+
     this.displayTimes = [];
     this.form = this.formBuilder.group({
       days: this.formBuilder.array([]),
       times: this.formBuilder.array([]),
     });
     this.addNewDate();
-    this.displayDays = MovieDate.getDisplayDays();
-
-    // TODO: check why sunday is not working on options list
-
-    this.availableDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   }
 
   ngOnInit(): void {
+  }
+
+  showLess(): void {
+    this.currentPage -= 1;
+    for (let i = 1; i <= 20; i++) {
+      this.movies.pop();
+    }
+  }
+
+  showMore(): void {
+    this.movieService
+      .getAllMovies(this.currentPage + 1)
+      .subscribe((movies: Movie[]) => {
+        this.currentPage += 1;
+        this.movies.push(...movies);
+      });
   }
 
   clickMovie(index: number): void {
@@ -70,61 +92,45 @@ export class CinemaMovieAddComponent implements OnInit {
       .subscribe((movie: Movie) => {
         this.movie = movie;
         this.availableTimes = this.cinemaService.getAvailableDates(movie.runtime, this.room);
+        this.createAvailableDatesMap();
       });
 
   }
 
-  updateDisplayTimes(updatedDateIndex = -1): void {
-    if (updatedDateIndex !== -1) {
-      this.selectedTimes[updatedDateIndex] = '';
-    }
-    this.selectedDays.forEach((day, dateIndex) => {
-      this.addDisplayTimes(day, dateIndex);
-      this.filterDisplayTimesForDate(dateIndex);
-
+  private createAvailableDatesMap(): void {
+    const newMap = new Map<string, MovieDate[]>();
+    newMap.set('', null);
+    this.availableTimes.forEach(availableTime => {
+      const key = availableTime.getDay();
+      if (newMap.has(key)) {
+        newMap.get(key).push(availableTime);
+      } else {
+        newMap.set(key, [availableTime]);
+      }
     });
+    this.availableDatesMap = newMap;
   }
 
-  private addDisplayTimes(day: string, dateIndex: number): void {
-
-    this.displayTimes[dateIndex] = [];
-    this.availableTimes.forEach(time => {
-      if (time.getDay() === day) {
-        this.displayTimes[dateIndex].push(time);
+  private updateDisabledTimes(): void {
+    this.disabledTimes = [];
+    this.availableTimes.forEach(availableTime => {
+      const overlaps = this.convertSelectedTimes().find(selectedTime =>
+        selectedTime && selectedTime.overlaps(availableTime)
+      );
+      if (overlaps) {
+        this.disabledTimes.push(availableTime);
       }
     });
   }
-
-  private filterDisplayTimesForDate(dateIndex: number): void {
-    // displayTimes for a dateIndex which are not found in the selected times
-    this.displayTimes[dateIndex] = this.displayTimes[dateIndex]
-      .filter(displayTime => {
-        for (let i = 0; i < this.selectedTimes.length; i++) {
-          if (i !== dateIndex) {
-            if (this.selectedTimes[i] !== '' && displayTime.overlaps(new MovieDate().fromJSONString(this.selectedTimes[i]))) {
-              return false;
-            }
-          }
-        }
-        return true;
-      });
-  }
-
-  private filterDisplayTimesAll(selectedDateIndex: number): void {
-    const selectedTime = this.selectedTimes[selectedDateIndex];
-    for (let i = 0; i < this.selectedDays.length; i++) {
-      if (i !== selectedDateIndex) {
-        this.displayTimes[i] = this.displayTimes[i].filter(displayTime =>
-          this.selectedTimes[i] !== '' && !displayTime.overlaps(new MovieDate().fromJSONString(selectedTime))
-        );
-      }
-    }
-  }
-
 
   selectedTimeForDay(selectedDateIndex: number): void {
-    this.filterDisplayTimesAll(selectedDateIndex);
-    // console.log(this.selectedTimes);
+    this.updateDisabledTimes();
+    const day = this.selectedDays[selectedDateIndex];
+    this.displayTimes[selectedDateIndex] = this.availableDatesMap.get(day);
+  }
+
+  getDisplayDays(): string[] {
+    return [...this.availableDatesMap.keys()].slice(1);
   }
 
   getDaysControls(): FormArray {
@@ -149,27 +155,17 @@ export class CinemaMovieAddComponent implements OnInit {
     this.displayTimes.splice(index, 1);
     this.getDaysControls().removeAt(index);
     this.getTimesControls().removeAt(index);
-    this.updateDisplayTimes();
-  }
-
-  showLess(): void {
-    this.currentPage -= 1;
-    for (let i = 1; i <= 20; i++) {
-      this.movies.pop();
-    }
-  }
-
-  showMore(): void {
-    this.movieService
-      .getAllMovies(this.currentPage + 1)
-      .subscribe((movies: Movie[]) => {
-        this.currentPage += 1;
-        this.movies.push(...movies);
-      });
+    this.updateDisabledTimes();
   }
 
   convertToMovieDate(movieDateStr: string): MovieDate {
     return new MovieDate().fromJSONString(movieDateStr);
+  }
+
+  private convertSelectedTimes(): MovieDate[] {
+    return this.selectedTimes.map(selectedTime => selectedTime === '' ? null :
+      new MovieDate(null, null, this.room.roomID).fromJSONString(selectedTime)
+    );
   }
 
   saveMovie(): void {
@@ -177,12 +173,8 @@ export class CinemaMovieAddComponent implements OnInit {
     const moviePlaying = new MoviePlaying(this.movie.id, this.movie.title, this.movie.runtime, releaseDate,
       this.movie.posterPath, this.movie.genres, this.movie.voteAverage);
 
-    const dates = this.selectedTimes.map(selectedTime =>
-      new MovieDate(null, null, this.room.roomID).fromJSONString(selectedTime)
-    );
-    const originalDates = this.selectedTimes.map(selectedTime =>
-      new MovieDate(null, null, this.room.roomID).fromJSONString(selectedTime)
-    );
+    const dates = this.convertSelectedTimes();
+    const originalDates = this.convertSelectedTimes();
 
     for (let i = 2; i <= this.selectedWeeks; i++) {
       const newDates = originalDates.map(date => {
