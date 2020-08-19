@@ -28,7 +28,6 @@ export class ReservationService {
           const room = CinemaService.convertToCinemaRoom(roomFB, roomID);
           const foundMovie = room.moviesPlaying.find(movie => movie.id === movieID);
           const foundDate = foundMovie.dates.find(date => date.equals(playingDate));
-          console.log(foundMovie.dates, playingDate);
           const seats = foundDate.occupiedSeats ? foundDate.occupiedSeats : [];
           console.log(`getSeatsConfig >>> seats: `, seats, `rows: ${roomFB._rows}, columns: ${roomFB._columns}`);
           return [seats, [roomFB._rows, roomFB._columns]];

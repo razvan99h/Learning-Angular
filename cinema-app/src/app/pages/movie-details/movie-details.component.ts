@@ -14,6 +14,7 @@ import { CinemaService } from '../../shared/services/cinema.service';
 import { take } from 'rxjs/operators';
 import { ConfirmationMessage } from '../../shared/models/confirmation.model';
 import { ConfirmationDialogComponent } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'cmb-movie-details',
@@ -22,6 +23,7 @@ import { ConfirmationDialogComponent } from '../../shared/components/confirmatio
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MovieDetailsComponent implements OnInit, OnDestroy {
+  loggedIn = false;
   movie = new Movie();
   fullCrew = false;
   fullCast = false;
@@ -36,6 +38,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private movieService: MovieService,
     private cinemaService: CinemaService,
+    private authService: AuthService,
     private sanitizer: DomSanitizer,
     private sharedService: SharedService,
     private dialog: MatDialog,
@@ -67,6 +70,19 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
         this.isHandset = isHandset;
       });
 
+    this.authService
+      .getCurrentUser()
+      .then(() => {
+        this.loggedIn = true;
+      });
+
+    this.sharedService
+      .getLoginInfo()
+      .pipe(take(1))
+      .subscribe(() => {
+        this.loggedIn = true;
+      });
+
     // fetch data through MovieDetailsResolver
     this.route.data
       .subscribe((data: { movie: Movie }) => {
@@ -93,11 +109,6 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     return this.sortCrew(crew.filter(person => person.job === 'Director'));
   }
 
-  isLoggedIn(): boolean {
-    // TODO: do it with Firebase
-    return localStorage.getItem('email') !== null && localStorage.getItem('password') !== null;
-  }
-
   openConfirmationDialog(): void {
     const confirmation: ConfirmationMessage = new ConfirmationMessage();
     confirmation.icon = 'info';
@@ -122,7 +133,7 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   }
 
   openDialog(): void {
-    if (!this.isLoggedIn()) {
+    if (!this.loggedIn) {
       this.openConfirmationDialog();
     } else {
       this.openReservationDialog();

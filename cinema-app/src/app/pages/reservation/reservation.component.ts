@@ -1,12 +1,13 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Movie, MovieDate } from '../../shared/models/movie.model';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Seat } from '../../shared/models/seat.model';
 import { ReservationService } from '../../shared/services/reservation.service';
 import { Subscription } from 'rxjs';
 import { CinemaService } from '../../shared/services/cinema.service';
 import { CinemaRoom } from '../../shared/models/cinema.model';
 import { take } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'cmb-reservation',
@@ -30,7 +31,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
   constructor(
     private reservationService: ReservationService,
     private cinemaService: CinemaService,
-    public dialogRef: MatDialogRef<ReservationComponent>,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: Movie,
   ) {
     this.displayDays = MovieDate.getDisplayDaysNames();
@@ -84,7 +85,6 @@ export class ReservationComponent implements OnInit, OnDestroy {
   }
 
   selectSeat(row: number, column: number): void {
-    console.log(this.cinemaConfig[row][column], row, column);
     if (this.cinemaConfig[row][column] === 'selected') {
       this.cinemaConfig[row][column] = 'free';
       this.selectedSeats = this.selectedSeats
@@ -117,10 +117,14 @@ export class ReservationComponent implements OnInit, OnDestroy {
       .subscribe((room: CinemaRoom) => {
         this.reservationService.bookSeats(room, this.movie.id, playingDate, this.occupiedSeats);
       });
+    this.snackBar.open('Reservation confirmed!', 'OK', {
+      duration: 5000,
+    });
   }
 
   ngOnDestroy(): void {
-    // TODO: solve this
-    // this.bookedSeatsSubscription.unsubscribe();
+    if (this.bookedSeatsSubscription) {
+      this.bookedSeatsSubscription.unsubscribe();
+    }
   }
 }

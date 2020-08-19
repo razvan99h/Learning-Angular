@@ -138,14 +138,10 @@ export class MovieDate {
   }
 
   getStartTime(): string {
-    // return this.startTime.toDate().toISOString();
-
     return this.startTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false});
   }
 
   getEndTime(): string {
-    // return this.endTime.toDate().toISOString();
-
     return this.endTime.toDate().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: false});
   }
 
@@ -220,10 +216,8 @@ export class MoviePlaying {
     return this._dates;
   }
 
-  // TODO: as putea sa fac un serviciu care sa arate mesajele de eroare - poate cu snackbar din angular material
   addDate(date: MovieDate): void {
     if (this._dates.find(oldDate => oldDate.overlaps(date) && oldDate.roomID === date.roomID)) {
-      // apelez aici serviciul de snackbar
       throw Error(`Movie ${this.title} already playing over the selected date and time: ${date}!`);
     }
     this._dates.push(date);
@@ -232,7 +226,6 @@ export class MoviePlaying {
   removeDate(date: MovieDate): void {
     const initialLength = this._dates.length;
     this._dates = this._dates.filter(oldDate => !oldDate.equals(date));
-    // TODO: trebuie dau throw de error daca nu gasesc ?
     if (initialLength === this._dates.length) {
       throw Error(`Date ${date} does not exist on movie ${this.title}!`);
     }

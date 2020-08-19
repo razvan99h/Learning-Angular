@@ -15,5 +15,6 @@ export const environment = {
     messagingSenderId: '340095530742',
     appId: '1:340095530742:web:870f1fd707ffcee186ded7',
     measurementId: 'G-1TPYQF14LK'
-  }
+  },
+  ADMIN_EMAIL: 'admin@cmb.com'
 };

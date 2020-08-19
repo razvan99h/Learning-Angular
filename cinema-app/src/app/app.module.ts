@@ -39,6 +39,10 @@ import { CinemaEditComponent } from './pages/cinema/cinema-create-edit/cinema-ed
 import { CinemaDetailsComponent } from './pages/cinema/cinema-list-details/cinema-details/cinema-details.component';
 import { CinemaMovieAddComponent } from './pages/cinema/cinema-list-details/cinema-details/cinema-movie-add/cinema-movie-add.component';
 import { MatSelectModule } from '@angular/material/select';
+import { AuthService } from './shared/services/auth.service';
+import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -73,15 +77,20 @@ import { MatSelectModule } from '@angular/material/select';
     MatNativeDateModule,
     MatRadioModule,
     FormsModule,
+    MatSelectModule,
+    MatSnackBarModule,
     AngularFireModule.initializeApp(environment.FIREBASE),
     AngularFireDatabaseModule,
-    MatSelectModule
+    AngularFirestoreModule,
+    AngularFireAuthModule
   ],
   providers: [
     MovieService,
     SharedService,
     ReservationService,
-    CinemaService
+    CinemaService,
+    AuthService,
+    AngularFirestore
   ],
   bootstrap: [AppComponent]
 })

@@ -78,7 +78,6 @@
 
     <mat-step label="Confirm selection" [editable]="false">
       <p>You have the following tickets for {{movieDateDisplay(selectedDate)}}:</p>
-      <!--      TODO: merita sa folosesc mat-list daca imi adauga prea mult default styling? (spatii prea mari int linii)-->
       <p *ngFor="let seat of selectedSeats">
         - Row {{seat.row + 1}}, Seat nr. {{seat.column + 1}}
       </p>

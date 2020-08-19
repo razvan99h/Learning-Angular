@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../shared/models/error.model';
 import { CinemaService } from '../../../shared/services/cinema.service';
 
@@ -9,9 +9,6 @@ import { CinemaService } from '../../../shared/services/cinema.service';
 })
 export abstract class CinemaCreateEditBaseComponent implements OnInit {
   form: FormGroup;
-  nameFC: FormControl;
-  rowFC: FormControl;
-  colFC: FormControl;
   matcher = new MyErrorStateMatcher();
   showConfig = false;
   cinemaConfig: string[][];
@@ -45,23 +42,6 @@ export abstract class CinemaCreateEditBaseComponent implements OnInit {
         ]
       ]
     });
-    this.nameFC = new FormControl('', [
-      Validators.required,
-      Validators.maxLength(30),
-    ]);
-    this.rowFC = new FormControl('', [
-      Validators.required,
-      Validators.pattern('^[0-9]*$'),
-      Validators.max(100),
-      Validators.min(1)
-    ]);
-    this.colFC = new FormControl('', [
-      Validators.required,
-      Validators.pattern('^[0-9]*$'),
-      Validators.max(100),
-      Validators.min(1)
-    ]);
-    // TODO: fac cu form builder asta
   }
 
   ngOnInit(): void {

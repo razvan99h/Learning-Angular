@@ -57,6 +57,16 @@ ng-template {
   }
 }
 
+@media (max-width: 767px) {
+  .flex-container-details {
+    display: block;
+
+    #details1, #details2, #details3 {
+      border-right: none;
+    }
+  }
+}
+
 .flex-container-img-video {
   display: flex;
   flex-wrap: wrap;

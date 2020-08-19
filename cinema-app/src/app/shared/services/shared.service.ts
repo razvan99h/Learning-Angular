@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
+import { User } from '../models/user.model';
 
 
 @Injectable({
@@ -10,6 +11,7 @@ import { map } from 'rxjs/operators';
 export class SharedService {
   private sourceMovieDetails = new Subject<number>();
   private sourceHomepage = new ReplaySubject<any>(); // better option
+  private sourceLogin = new ReplaySubject<any>();
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -42,5 +44,13 @@ export class SharedService {
 
   sendClickEventFromHomepage(): void {
     this.sourceHomepage.next();
+  }
+
+  getLoginInfo(): Observable<User> {
+    return this.sourceLogin.asObservable();
+  }
+
+  sendLoginInfo(user: User): void {
+    this.sourceLogin.next(user);
   }
 }

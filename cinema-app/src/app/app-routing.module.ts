@@ -18,7 +18,7 @@ const routes: Routes = [
     path: '',
     component: HomepageComponent,
     resolve: {
-      moviesPlaying: HomepageResolverService
+      moviesPlaying: HomepageResolverService,
     }
   },
   {

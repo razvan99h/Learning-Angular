@@ -12,25 +12,25 @@
       <a mat-list-item
          routerLink="cinema"
          (click)="drawer.close()"
-          *ngIf="isAdmin()">
+          *ngIf="admin">
         <mat-icon>video_settings</mat-icon>
         Config rooms
       </a>
       <a mat-list-item
          (click)="logout()"
-         *ngIf="isLoggedIn()">
+         *ngIf="loggedIn">
         <mat-icon>logout</mat-icon>
         Logout
       </a>
       <a mat-list-item
          (click)="openLoginDialog()"
-         *ngIf="!isLoggedIn()">
+         *ngIf="!loggedIn">
         <mat-icon>login</mat-icon>
         Login
       </a>
       <a mat-list-item
          (click)="openRegisterDialog()"
-         *ngIf="!isLoggedIn()">
+         *ngIf="!loggedIn">
         <mat-icon>person_add</mat-icon>
         Register
       </a>
@@ -57,22 +57,22 @@
       <div *ngIf="!isHandset">
 
         <a routerLink="cinema"
-           *ngIf="isAdmin()">
+           *ngIf="admin">
           <mat-icon>video_settings</mat-icon>
           Config rooms
         </a>
         <a (click)="logout()"
-           *ngIf="isLoggedIn()">
+           *ngIf="loggedIn">
           <mat-icon>logout</mat-icon>
           Logout
         </a>
         <a (click)="openLoginDialog()"
-           *ngIf="!isLoggedIn()">
+           *ngIf="!loggedIn">
           <mat-icon>login</mat-icon>
           Login
         </a>
         <a (click)="openRegisterDialog()"
-           *ngIf="!isLoggedIn()">
+           *ngIf="!loggedIn">
           <mat-icon>person_add</mat-icon>
           Register
         </a>

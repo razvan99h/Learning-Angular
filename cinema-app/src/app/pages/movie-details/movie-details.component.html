@@ -9,7 +9,6 @@
     </header>
 
     <section class="flex-container-details">
-      <!--          TODO: cum sa fac wrap la elemente si sa dispara linia daca se afla in capat?-->
       <div id="details1" *ngIf="movie.runtime > 0">
         <mat-icon>schedule</mat-icon>
         {{(movie.runtime / 60) | number:'1.0-0'}}h {{movie.runtime % 60}}min
